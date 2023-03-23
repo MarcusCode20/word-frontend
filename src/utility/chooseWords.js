@@ -1,81 +1,83 @@
-import { readFile } from 'fs';
+import { readFile } from 'fs'
 
 const levels = {
-    "Level 1" : [3,4],
-    "Level 2" : [4,5],
-    "Level 3" : [4,5],
-    "Level 4" : [5,6],
-    "Level 5" : [7,8,9]
+    'Level 1': [3, 4],
+    'Level 2': [4, 5],
+    'Level 3': [4, 5],
+    'Level 4': [5, 6],
+    'Level 5': [7, 8, 9],
 }
 
-var dictionary = {};
+var dictionary = {}
 
 readFile('structureDict.json', (err, data) => {
+    dictionary = JSON.parse(data.toString())
 
-    dictionary = JSON.parse(data.toString());
+    const words = getWords()
 
-    const words = getWords();
-
-    console.log(words);
-
-});
+    console.log(words)
+})
 
 function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
+    min = Math.ceil(min)
+    max = Math.floor(max)
+    return Math.floor(Math.random() * (max - min) + min) // The maximum is exclusive and the minimum is inclusive
 }
 
 function shuffleArray(origArray) {
-    const array = [...origArray];
+    const array = [...origArray]
     for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
+        const j = Math.floor(Math.random() * (i + 1))
+        ;[array[i], array[j]] = [array[j], array[i]]
     }
-    return array;
+    return array
 }
 
 function removeLettersFromWords(indexes, words) {
-
-    const wordsWithLettersRemoved = {};
+    const wordsWithLettersRemoved = {}
 
     for (let word of words) {
-
         const missWordArray = [...word]
 
-        indexes.forEach(index => missWordArray[index] = '_');
+        indexes.forEach((index) => (missWordArray[index] = '_'))
 
-        const missingWord = missWordArray.join('');
+        const missingWord = missWordArray.join('')
 
         if (wordsWithLettersRemoved[missingWord]) {
-            wordsWithLettersRemoved[missingWord] = [...wordsWithLettersRemoved[missingWord], word]
+            wordsWithLettersRemoved[missingWord] = [
+                ...wordsWithLettersRemoved[missingWord],
+                word,
+            ]
         } else {
-            wordsWithLettersRemoved[missingWord] = [word];
+            wordsWithLettersRemoved[missingWord] = [word]
         }
     }
 
-    return Object.keys(wordsWithLettersRemoved).map(key => {
-        return {[key] : wordsWithLettersRemoved[key]}
-    });
-
+    return Object.keys(wordsWithLettersRemoved).map((key) => {
+        return { [key]: wordsWithLettersRemoved[key] }
+    })
 }
 
 function getWords() {
+    const words = {}
 
-    const words = {};
+    Object.entries(levels).forEach((level) => {
+        const [levelNumber, choices] = level
+        const chosenLength = choices[getRandomInt(0, choices.length)]
+        const validWords = dictionary[chosenLength]
+        const lettersOfIndexToRemove = shuffleArray([
+            ...Array(chosenLength).keys(),
+        ]).slice(0, getRandomInt(1, chosenLength))
+        const wordsWithLettersRemoved = removeLettersFromWords(
+            lettersOfIndexToRemove,
+            validWords
+        )
 
-    Object.entries(levels).forEach(level => {
-
-        const [levelNumber, choices] = level;
-        const chosenLength = choices[getRandomInt(0, choices.length)];
-        const validWords = dictionary[chosenLength];
-        const lettersOfIndexToRemove = shuffleArray([...Array(chosenLength).keys()]).slice(0, getRandomInt(1, chosenLength));
-        const wordsWithLettersRemoved = removeLettersFromWords(lettersOfIndexToRemove, validWords);
-
-        words[levelNumber] = wordsWithLettersRemoved[getRandomInt(0, wordsWithLettersRemoved.length)];
-    
+        words[levelNumber] =
+            wordsWithLettersRemoved[
+                getRandomInt(0, wordsWithLettersRemoved.length)
+            ]
     })
 
-    return words;
-
+    return words
 }
