@@ -1,11 +1,7 @@
 import { Typography } from '@mui/material'
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 
-interface LetterProp {
-    letter: String
-}
-
-const Letter = (prop: LetterProp) => {
+const Letter = (prop: PropsWithChildren) => {
     return (
         <Typography
             variant="h6"
@@ -19,7 +15,7 @@ const Letter = (prop: LetterProp) => {
                 fontSize: '40px',
             }}
         >
-            {prop.letter}
+            {prop.children}
         </Typography>
     )
 }

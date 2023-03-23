@@ -4,13 +4,13 @@ import KeyboardButton from './KeyboardButton'
 
 const Keyboard = () => {
     const rowOne = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'].map(
-        (letter) => <KeyboardButton value={letter} />
+        (letter) => <KeyboardButton>{letter}</KeyboardButton>
     )
     const rowTwo = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'].map(
-        (letter) => <KeyboardButton value={letter} />
+        (letter) => <KeyboardButton>{letter}</KeyboardButton>
     )
     const rowThree = ['#', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '#'].map(
-        (letter) => <KeyboardButton value={letter} />
+        (letter) => <KeyboardButton>{letter}</KeyboardButton>
     )
 
     return (

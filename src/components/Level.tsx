@@ -8,7 +8,7 @@ interface LevelProp {
 
 const Level = (prop: LevelProp) => {
     const letters = Array.from(prop.word).map((letter) => (
-        <Letter letter={letter} />
+        <Letter>{letter}</Letter>
     ))
 
     const display = (
