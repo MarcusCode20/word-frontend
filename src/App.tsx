@@ -1,6 +1,7 @@
 import { Box } from '@mui/material'
 import React from 'react'
 import GameScreen from './components/GameScreen'
+import InformationBar from './components/InformationBar'
 import Keyboard from './components/Keyboard'
 import TitleBar from './components/TitleBar'
 
@@ -19,6 +20,7 @@ const App = () => {
             }}
         >
             <TitleBar />
+            <InformationBar />
             <GameScreen />
             <Keyboard />
         </Box>

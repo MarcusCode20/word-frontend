@@ -8,7 +8,7 @@ const GameScreen = () => {
             sx={{
                 margin: '0px',
                 width: '100vw',
-                height: '75vh',
+                height: '60%',
                 backgroundColor: 'red',
                 display: 'flex',
                 flexDirection: 'column',
