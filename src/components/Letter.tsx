@@ -13,6 +13,9 @@ const Letter = (prop: PropsWithChildren) => {
                 margin: '0 1%',
                 fontWeight: 'bold',
                 fontSize: '40px',
+                userSelect: 'none',
+                width: '40px',
+                height: '40px',
             }}
         >
             {prop.children}

@@ -7,7 +7,7 @@ const InformationBar = () => {
             sx={{
                 margin: '0px',
                 width: '100vw',
-                height: '5%',
+                height: '10%',
                 backgroundColor: 'pink',
                 display: 'flex',
                 flexDirection: 'row',

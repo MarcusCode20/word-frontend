@@ -36,7 +36,7 @@ const Keyboard = () => {
             sx={{
                 margin: '0px',
                 width: '100vw',
-                height: '25vh',
+                height: '20%',
                 backgroundColor: 'green',
                 display: 'flex',
                 flexDirection: 'column',

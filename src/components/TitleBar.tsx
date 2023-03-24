@@ -4,7 +4,7 @@ import React from 'react'
 
 const TitleBar = () => {
     return (
-        <AppBar position="static" sx={{ height: '6%' }}>
+        <AppBar position="static" sx={{ height: '10%' }}>
             <Toolbar>
                 <IconButton
                     size="large"

@@ -16,11 +16,11 @@ const GameScreen = () => {
                 alignItems: 'stretch',
             }}
         >
-            <Level word="D_G"></Level>
-            <Level word="AP_LE"></Level>
-            <Level word="ABSTRACT"></Level>
-            <Level word="_KAY"></Level>
-            <Level word="D_N_"></Level>
+            <Level hiddenWord="D_G"></Level>
+            <Level hiddenWord="AP_LE"></Level>
+            <Level hiddenWord="ABSTRACT"></Level>
+            <Level hiddenWord="_KAY"></Level>
+            <Level hiddenWord="D_N_"></Level>
         </Box>
     )
 }
