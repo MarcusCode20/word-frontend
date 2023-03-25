@@ -15,9 +15,10 @@ axios
 
             if (isValid(word)) {
                 if (json[length]) {
-                    json[length].add(word)
+                    json[length].add(word.toUpperCase())
                 } else {
                     json[length] = new Set()
+                    json[length].add(word.toUpperCase())
                 }
             }
         })

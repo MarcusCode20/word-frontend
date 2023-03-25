@@ -35,8 +35,9 @@ const GameScreen = () => {
     return (
         <Box
             sx={{
-                margin: '0px',
+                margin: '0 auto 0 auto',
                 width: '100vw',
+                maxWidth: '750px',
                 height: '60%',
                 backgroundColor: 'red',
                 display: 'flex',
