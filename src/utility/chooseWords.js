@@ -1,22 +1,4 @@
-import { readFile } from 'fs'
-
-const levels = {
-    'Level 1': [3, 4],
-    'Level 2': [4, 5],
-    'Level 3': [4, 5],
-    'Level 4': [5, 6],
-    'Level 5': [7, 8, 9],
-}
-
-var dictionary = {}
-
-readFile('structureDict.json', (err, data) => {
-    dictionary = JSON.parse(data.toString())
-
-    const words = getWords()
-
-    console.log(words)
-})
+import { readFileSync } from 'fs'
 
 function getRandomInt(min, max) {
     min = Math.ceil(min)
@@ -53,13 +35,28 @@ function removeLettersFromWords(indexes, words) {
         }
     }
 
-    return Object.keys(wordsWithLettersRemoved).map((key) => {
-        return { [key]: wordsWithLettersRemoved[key] }
+    return Object.keys(wordsWithLettersRemoved).map((missingWord) => {
+        return {
+            missingWord: missingWord,
+            solutions: wordsWithLettersRemoved[missingWord],
+        }
     })
 }
 
-function getWords() {
-    const words = {}
+export default function getWords() {
+    const data = readFileSync('structureDict.json')
+
+    const dictionary = JSON.parse(data.toString())
+
+    const levels = [
+        [3, 4],
+        [4, 5],
+        [4, 5],
+        [5, 6],
+        [7, 8, 9],
+    ]
+
+    const words = []
 
     Object.entries(levels).forEach((level) => {
         const [levelNumber, choices] = level
@@ -73,10 +70,11 @@ function getWords() {
             validWords
         )
 
-        words[levelNumber] =
+        words.push(
             wordsWithLettersRemoved[
                 getRandomInt(0, wordsWithLettersRemoved.length)
             ]
+        )
     })
 
     return words
