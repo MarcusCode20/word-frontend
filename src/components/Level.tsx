@@ -2,13 +2,17 @@ import { Box, Card, CardContent, Paper, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import Letter from './Letter'
 import ScreenLetter from './ScreenLetter'
+import { LevelData, Status } from '../features/levelSlice'
 
 interface LevelProp {
     hiddenWordArray: string[]
     inputArray: string[]
+    reagan: LevelData
 }
 
 const Level = (prop: LevelProp) => {
+    const isCorrect = prop.reagan.status == Status.CORRECT
+
     const generateLetters = (wordArray: string[]) => {
         const letters: JSX.Element[] = []
 
@@ -51,6 +55,7 @@ const Level = (prop: LevelProp) => {
                 margin: '0 2%',
                 padding: '0px',
                 height: '15%',
+                background: isCorrect ? 'green' : 'white',
             }}
             variant="outlined"
         >

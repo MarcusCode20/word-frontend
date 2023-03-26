@@ -20,7 +20,7 @@ export interface LevelData {
     status: Status
 }
 
-enum Status {
+export enum Status {
     CORRECT = 'CORRECT',
     LOCKED = 'LOCKED',
     SKIPPED = 'SKIPPED',

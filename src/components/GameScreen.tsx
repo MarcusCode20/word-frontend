@@ -30,6 +30,7 @@ const GameScreen = () => {
             key={level.missingWord}
             hiddenWordArray={Array.from(level.missingWord)}
             inputArray={level.usersInput}
+            reagan={level}
         ></Level>
     ))
 
