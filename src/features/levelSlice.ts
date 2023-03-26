@@ -82,10 +82,23 @@ export const levelSlice = createSlice({
                 }
             }
         },
+        removeLetter: (state) => {
+            const currentLevelInput =
+                state.levels[state.currentLevelNo].usersInput
+
+            const index = currentLevelInput.indexOf('')
+
+            if (index == -1) {
+                currentLevelInput[currentLevelInput.length - 1] = ''
+            } else if (index - 1 >= 0) {
+                currentLevelInput[index - 1] = ''
+            }
+        },
     },
 })
 
-export const { setLevelState, addLetter, validateInput } = levelSlice.actions
+export const { setLevelState, addLetter, validateInput, removeLetter } =
+    levelSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 
