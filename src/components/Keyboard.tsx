@@ -9,7 +9,7 @@ const Keyboard = () => {
 
     const createRow = (row: string[]) => {
         const rowButtons = row.map((letter) => (
-            <KeyboardButton key={letter}>{letter}</KeyboardButton>
+            <KeyboardButton key={letter} letter={letter} />
         ))
 
         return (

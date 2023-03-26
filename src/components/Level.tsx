@@ -4,35 +4,19 @@ import Letter from './Letter'
 import ScreenLetter from './ScreenLetter'
 
 interface LevelProp {
-    hiddenWord: string
+    hiddenWordArray: string[]
+    inputArray: string[]
 }
 
 const Level = (prop: LevelProp) => {
-    const countMissing = (word: string) => {
-        let count = 0
-        Array.from(word).forEach((letter) => {
-            if (letter == '_') {
-                count++
-            }
-        })
-
-        return count
-    }
-
-    const [inputArray, setInputArray] = useState<String[]>(
-        Array(countMissing(prop.hiddenWord)).fill('')
-    )
-
-    const generateLetters = (word: string) => {
-        const wordArray = Array.from(word)
-
+    const generateLetters = (wordArray: string[]) => {
         const letters: JSX.Element[] = []
 
         for (let i = 0, j = 0; i < wordArray.length; i++) {
             if (wordArray[i] == '_') {
                 letters.push(
                     <ScreenLetter isInput={true}>
-                        {inputArray[j++]}
+                        {prop.inputArray[j++]}
                     </ScreenLetter>
                 )
             } else {
@@ -57,7 +41,7 @@ const Level = (prop: LevelProp) => {
                 columnGap: '3%',
             }}
         >
-            {generateLetters(prop.hiddenWord)}
+            {generateLetters(prop.hiddenWordArray)}
         </Box>
     )
 

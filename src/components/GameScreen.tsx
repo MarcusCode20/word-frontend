@@ -2,20 +2,17 @@ import { Box, Card } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import Level from './Level'
-
-interface Data {
-    missingWord: string
-    solutions: string[]
-}
+import { setLevelState, getLevels } from '../features/levelSlice'
+import { useAppSelector, useAppDispatch } from '../app/hooks'
 
 const GameScreen = () => {
-    const [data, setData] = useState<Data[]>([])
+    const dispatch = useAppDispatch()
 
     const sendRequest = () => {
         axios
             .get('/api/words') //http://localhost:3000/   --In dev mode this runs twice due to React StrictMode https://stackoverflow.com/questions/60618844/react-hooks-useeffect-is-called-twice-even-if-an-empty-array-is-used-as-an-ar
             .then(function (response) {
-                setData(response.data)
+                dispatch(setLevelState(response.data))
             })
             .catch(function (error) {
                 // handle error
@@ -28,8 +25,12 @@ const GameScreen = () => {
 
     useEffect(sendRequest, [])
 
-    const levels = data.map((level) => (
-        <Level key={level.missingWord} hiddenWord={level.missingWord}></Level>
+    const levels = useAppSelector(getLevels).map((level) => (
+        <Level
+            key={level.missingWord}
+            hiddenWordArray={Array.from(level.missingWord)}
+            inputArray={level.usersInput}
+        ></Level>
     ))
 
     return (

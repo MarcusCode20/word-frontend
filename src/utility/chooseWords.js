@@ -39,6 +39,7 @@ function removeLettersFromWords(indexes, words) {
         return {
             missingWord: missingWord,
             solutions: wordsWithLettersRemoved[missingWord],
+            inputLength: indexes.length,
         }
     })
 }
