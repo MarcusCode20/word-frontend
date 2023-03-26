@@ -1,7 +1,7 @@
 import Button from '@mui/material/Button'
 import React, { PropsWithChildren } from 'react'
 import Letter from './Letter'
-import { getCurrentLevel, addLetter } from '../features/levelSlice'
+import { addLetter, validateInput } from '../features/levelSlice'
 import { useAppSelector, useAppDispatch } from '../app/hooks'
 
 interface KeyboardButtonProp {
@@ -12,7 +12,11 @@ const KeyboardButton = (prop: PropsWithChildren<KeyboardButtonProp>) => {
     const dispatch = useAppDispatch()
 
     const sendLetter = () => {
-        dispatch(addLetter(prop.letter))
+        if (prop.letter == '#') {
+            dispatch(validateInput())
+        } else {
+            dispatch(addLetter(prop.letter))
+        }
     }
 
     return (

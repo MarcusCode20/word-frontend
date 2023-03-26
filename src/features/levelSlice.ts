@@ -9,7 +9,7 @@ interface LevelState {
 
 export interface WordData {
     missingWord: string
-    potentialWords: string[]
+    solutions: string[]
     inputLength: number
 }
 
@@ -45,19 +45,27 @@ export const levelSlice = createSlice({
     // `createSlice` will infer the state type from the `initialState` argument
     initialState,
     reducers: {
-        levelSkipped: (state, action: PayloadAction<string>) => {
-            const currentLevel = state.levels[state.currentLevelNo++]
-            currentLevel.status = Status.SKIPPED
-        },
-        levelPassed: (state, action: PayloadAction<string>) => {
-            const currentLevel = state.levels[state.currentLevelNo++]
-            currentLevel.status = Status.CORRECT
+        validateInput: (state) => {
+            const currentLevel = state.levels[state.currentLevelNo]
+
+            const userWord = Array.from(currentLevel.missingWord)
+
+            for (let i = 0, j = 0; i < userWord.length; i++) {
+                if (userWord[i] == '_') {
+                    userWord[i] = currentLevel.usersInput[j++]
+                }
+            }
+
+            if (currentLevel.potentialWords.includes(userWord.join(''))) {
+                currentLevel.status = Status.CORRECT
+                state.currentLevelNo++
+            }
         },
         setLevelState: (state, action: PayloadAction<WordData[]>) => {
             for (let data of action.payload) {
                 state.levels.push({
                     missingWord: data.missingWord,
-                    potentialWords: data.potentialWords,
+                    potentialWords: data.solutions,
                     usersInput: new Array(data.inputLength).fill(''),
                     status: Status.LOCKED,
                 })
@@ -77,12 +85,9 @@ export const levelSlice = createSlice({
     },
 })
 
-export const { levelPassed, levelSkipped, setLevelState, addLetter } =
-    levelSlice.actions
+export const { setLevelState, addLetter, validateInput } = levelSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
-export const getCurrentLevel = (state: RootState) =>
-    state.level.levels[state.level.currentLevelNo]
 
 export const getLevels = (state: RootState) => state.level.levels
 
