@@ -45,16 +45,16 @@ function removeLettersFromWords(indexes, words) {
 }
 
 export default function getWords() {
-    const data = readFileSync('structureDict.json')
+    const data = readFileSync('valid-word-dict.json')
 
     const dictionary = JSON.parse(data.toString())
 
     const levels = [
-        [3, 4],
-        [4, 5],
-        [4, 5],
-        [5, 6],
-        [7, 8, 9],
+        [4],
+        [5],
+        [6],
+        [7],
+        [8],
     ]
 
     const words = []
