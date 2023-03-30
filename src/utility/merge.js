@@ -3,30 +3,52 @@ import * as CSV from 'csv-string'
 
 //Words from that game I stole
 const gameWordsArray = readFileSync('./enable1-172k.txt', 'utf-8').split('\n')
+console.log('Words in my dictionary: ' + gameWordsArray.length)
+
+//Banned words
+const bannedWordsArray = readFileSync('./googleBannedWords.txt', 'utf-8').split(
+    '\r\n'
+)
+const bannedJson = {}
+bannedWordsArray.forEach((word) => {
+    bannedJson[word] = 1
+})
+const validWordArray = []
+gameWordsArray.forEach((word) => {
+    //'constructor' as a key will return a function
+    if (!bannedJson[word] || word == 'constructor') {
+        validWordArray.push(word)
+    }
+})
+console.log(
+    'Words in my dictionary after banned words: ' + validWordArray.length
+)
 
 //Top 1/3 million most frequent words
-const data = readFileSync('./frequency_list.csv', 'utf-8')
-const arr = CSV.parse(data.toString())
-const json = {}
+const frequencyData = readFileSync('./frequency_list.csv', 'utf-8')
+const frequencyArray = CSV.parse(frequencyData.toString())
+const frequencyJson = {}
 
-arr.forEach((wordFreq) => {
-    json[wordFreq[0]] = wordFreq[1]
+frequencyArray.forEach((wordFreq) => {
+    frequencyJson[wordFreq[0]] = wordFreq[1]
 })
 
 const mergeJson = {}
 
-const dictJson = {}
+const finalSortedDictionary = {}
 
-console.log('Words in my dictionary: ' + gameWordsArray.length)
-gameWordsArray.forEach((word) => {
-    if (json[word]) {
-        mergeJson[word] = json[word]
+validWordArray.forEach((word) => {
+    if (frequencyJson[word]) {
+        mergeJson[word] = frequencyJson[word]
 
         const length = word.length
-        if (dictJson[length]) {
-            dictJson[length] = [...dictJson[length], word.toUpperCase()]
+        if (finalSortedDictionary[length]) {
+            finalSortedDictionary[length] = [
+                ...finalSortedDictionary[length],
+                word.toUpperCase(),
+            ]
         } else {
-            dictJson[length] = [word.toUpperCase()]
+            finalSortedDictionary[length] = [word.toUpperCase()]
         }
     } else {
         //console.log(word)
@@ -35,20 +57,6 @@ gameWordsArray.forEach((word) => {
 
 writeFileSync(
     'valid-word-dict.json',
-    JSON.stringify(dictJson, null, 2),
+    JSON.stringify(finalSortedDictionary, null, 2),
     'utf-8'
 )
-
-console.log(
-    'Words in my dictionary that are in the 1/3 million frequent word set: ' +
-        Object.keys(mergeJson).length
-)
-console.log(
-    'Words in my dictionary that dont appear: ' +
-        (gameWordsArray.length - Object.keys(mergeJson).length)
-)
-
-Object.entries(dictJson).forEach((entry) => {
-    const [key, value] = entry
-    console.log(key, value.length)
-})
