@@ -1,17 +1,12 @@
-import { AppBar, Toolbar, IconButton, Typography, Button } from '@mui/material'
-import MenuIcon from '@mui/icons-material/Menu'
-import React from 'react'
+import { AppBar, Toolbar, IconButton, Typography, Button } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import React from 'react';
 
 const TitleBar = () => {
     return (
         <AppBar position="static" sx={{ height: '10%' }}>
             <Toolbar>
-                <IconButton
-                    size="large"
-                    edge="start"
-                    color="inherit"
-                    aria-label="menu"
-                >
+                <IconButton size="large" edge="start" color="inherit" aria-label="menu">
                     <MenuIcon />
                 </IconButton>
                 <Typography
@@ -22,15 +17,15 @@ const TitleBar = () => {
                         flexGrow: 1,
                         fontWeight: 'bold',
                         '@media (max-width:400px) and (max-height:800px)': {
-                            fontSize: '13px',
-                        },
+                            fontSize: '13px'
+                        }
                     }}
                 >
                     InAMinute
                 </Typography>
             </Toolbar>
         </AppBar>
-    )
-}
+    );
+};
 
-export default TitleBar
+export default TitleBar;

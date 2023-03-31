@@ -1,31 +1,31 @@
-import Button from '@mui/material/Button'
-import React, { PropsWithChildren } from 'react'
-import Letter from './Letter'
-import { addLetter, validateInput, removeLetter } from '../features/levelSlice'
-import { useAppSelector, useAppDispatch } from '../app/hooks'
+import Button from '@mui/material/Button';
+import React, { PropsWithChildren } from 'react';
+import Letter from './Letter';
+import { addLetter, validateInput, removeLetter } from '../features/gameSlice';
+import { useAppSelector, useAppDispatch } from '../app/hooks';
 
 interface KeyboardButtonProp {
-    letter: string
+    letter: string;
 }
 
 const KeyboardButton = (prop: PropsWithChildren<KeyboardButtonProp>) => {
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
 
     const sendLetter = () => {
         if (prop.letter == '#') {
-            dispatch(validateInput())
+            dispatch(validateInput());
         } else if (prop.letter == '@') {
-            dispatch(removeLetter())
+            dispatch(removeLetter());
         } else {
-            dispatch(addLetter(prop.letter))
+            dispatch(addLetter(prop.letter));
         }
-    }
+    };
 
     return (
         <Button sx={{ margin: 0 }} variant="outlined" onClick={sendLetter}>
             <Letter>{prop.letter}</Letter>
         </Button>
-    )
-}
+    );
+};
 
-export default KeyboardButton
+export default KeyboardButton;

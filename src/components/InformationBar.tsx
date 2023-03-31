@@ -1,5 +1,5 @@
-import { Box, Typography } from '@mui/material'
-import React from 'react'
+import { Box, Typography } from '@mui/material';
+import React from 'react';
 
 const InformationBar = () => {
     return (
@@ -12,7 +12,7 @@ const InformationBar = () => {
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'center',
-                justifyItems: 'center',
+                justifyItems: 'center'
             }}
         >
             <Typography
@@ -22,14 +22,14 @@ const InformationBar = () => {
                 sx={{
                     fontWeight: 'bold',
                     '@media (max-width:400px) and (max-height:800px)': {
-                        fontSize: '13px',
-                    },
+                        fontSize: '13px'
+                    }
                 }}
             >
                 Display Info
             </Typography>
         </Box>
-    )
-}
+    );
+};
 
-export default InformationBar
+export default InformationBar;

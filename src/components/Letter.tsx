@@ -1,5 +1,5 @@
-import { Typography } from '@mui/material'
-import React, { PropsWithChildren } from 'react'
+import { Typography } from '@mui/material';
+import React, { PropsWithChildren } from 'react';
 
 const Letter = (prop: PropsWithChildren) => {
     return (
@@ -15,12 +15,12 @@ const Letter = (prop: PropsWithChildren) => {
                 fontSize: '40px',
                 userSelect: 'none',
                 width: '40px',
-                height: '40px',
+                height: '40px'
             }}
         >
             {prop.children}
         </Typography>
-    )
-}
+    );
+};
 
-export default Letter
+export default Letter;

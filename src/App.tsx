@@ -1,9 +1,9 @@
-import { Box } from '@mui/material'
-import React from 'react'
-import GameScreen from './components/GameScreen'
-import InformationBar from './components/InformationBar'
-import Keyboard from './components/Keyboard'
-import TitleBar from './components/TitleBar'
+import { Box } from '@mui/material';
+import React from 'react';
+import GameScreen from './components/GameScreen';
+import InformationBar from './components/InformationBar';
+import Keyboard from './components/Keyboard';
+import TitleBar from './components/TitleBar';
 
 const App = () => {
     return (
@@ -16,7 +16,7 @@ const App = () => {
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'flex-start',
-                alignItems: 'stretch',
+                alignItems: 'stretch'
             }}
         >
             <TitleBar />
@@ -24,7 +24,7 @@ const App = () => {
             <GameScreen />
             <Keyboard />
         </Box>
-    )
-}
+    );
+};
 
-export default App
+export default App;

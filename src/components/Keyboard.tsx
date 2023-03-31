@@ -1,16 +1,14 @@
-import { Box } from '@mui/material'
-import React from 'react'
-import KeyboardButton from './KeyboardButton'
+import { Box } from '@mui/material';
+import React from 'react';
+import KeyboardButton from './KeyboardButton';
 
 const Keyboard = () => {
-    const rowOne = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P']
-    const rowTwo = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L']
-    const rowThree = ['#', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '@']
+    const rowOne = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'];
+    const rowTwo = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'];
+    const rowThree = ['#', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '@'];
 
     const createRow = (row: string[]) => {
-        const rowButtons = row.map((letter) => (
-            <KeyboardButton key={letter} letter={letter} />
-        ))
+        const rowButtons = row.map((letter) => <KeyboardButton key={letter} letter={letter} />);
 
         return (
             <Box
@@ -21,15 +19,15 @@ const Keyboard = () => {
                     backgroundColor: 'orange',
                     display: 'flex',
                     flexDirection: 'row',
-                    justifyContent: 'center',
+                    justifyContent: 'center'
                 }}
             >
                 {rowButtons}
             </Box>
-        )
-    }
+        );
+    };
 
-    const rows = [rowOne, rowTwo, rowThree].map((row) => createRow(row))
+    const rows = [rowOne, rowTwo, rowThree].map((row) => createRow(row));
 
     return (
         <Box
@@ -39,12 +37,12 @@ const Keyboard = () => {
                 height: '20%',
                 backgroundColor: 'green',
                 display: 'flex',
-                flexDirection: 'column',
+                flexDirection: 'column'
             }}
         >
             {rows}
         </Box>
-    )
-}
+    );
+};
 
-export default Keyboard
+export default Keyboard;

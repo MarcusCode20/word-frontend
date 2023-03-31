@@ -1,38 +1,29 @@
-import { Box, Card } from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
-import Level from './Level'
-import { setLevelState, getLevels } from '../features/levelSlice'
-import { useAppSelector, useAppDispatch } from '../app/hooks'
+import { Box, Card } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import Level from './Level';
+import { setGameData, getLevels, LevelData } from '../features/gameSlice';
+import { useAppSelector, useAppDispatch } from '../app/hooks';
 
 const GameScreen = () => {
-    const dispatch = useAppDispatch()
-
-    const sendRequest = () => {
+    const dispatch = useAppDispatch();
+    const sendGameRequest = () => {
         axios
-            .get('/api/words') //http://localhost:3000/   --In dev mode this runs twice due to React StrictMode https://stackoverflow.com/questions/60618844/react-hooks-useeffect-is-called-twice-even-if-an-empty-array-is-used-as-an-ar
+            .get('http://localhost:3000/api/words')
             .then(function (response) {
-                dispatch(setLevelState(response.data))
+                dispatch(setGameData(response.data));
             })
             .catch(function (error) {
                 // handle error
-                console.log(error)
+                console.log(error);
             })
             .finally(function () {
                 // always executed
-            })
-    }
-
-    useEffect(sendRequest, [])
-
-    const levels = useAppSelector(getLevels).map((level) => (
-        <Level
-            key={level.missingWord}
-            hiddenWordArray={Array.from(level.missingWord)}
-            inputArray={level.usersInput}
-            reagan={level}
-        ></Level>
-    ))
+            });
+    };
+    //In React StrictMode useEffect is run twice as screen is rendered twice to spot bugs
+    useEffect(sendGameRequest, []);
+    const levels = useAppSelector(getLevels).map((level) => <Level data={level}></Level>);
 
     return (
         <Box
@@ -45,12 +36,12 @@ const GameScreen = () => {
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-evenly',
-                alignItems: 'stretch',
+                alignItems: 'stretch'
             }}
         >
             {levels}
         </Box>
-    )
-}
+    );
+};
 
-export default GameScreen
+export default GameScreen;

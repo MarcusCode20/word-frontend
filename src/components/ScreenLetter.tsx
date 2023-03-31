@@ -1,9 +1,9 @@
-import { Box } from '@mui/material'
-import React, { PropsWithChildren } from 'react'
-import Letter from './Letter'
+import { Box } from '@mui/material';
+import React, { PropsWithChildren } from 'react';
+import Letter from './Letter';
 
 interface ScreenLetterProp {
-    isInput: boolean
+    isInput: boolean;
 }
 
 const ScreenLetter = (prop: PropsWithChildren<ScreenLetterProp>) => {
@@ -14,7 +14,7 @@ const ScreenLetter = (prop: PropsWithChildren<ScreenLetterProp>) => {
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
-                alignItems: 'stretch', // For now
+                alignItems: 'stretch' // For now
             }}
         >
             <Letter>{prop.children}</Letter>
@@ -22,11 +22,11 @@ const ScreenLetter = (prop: PropsWithChildren<ScreenLetterProp>) => {
                 sx={{
                     height: '2px',
                     width: '100%',
-                    background: prop.isInput ? 'black' : 'transparent',
+                    background: prop.isInput ? 'black' : 'transparent'
                 }}
             />
         </Box>
-    )
-}
+    );
+};
 
-export default ScreenLetter
+export default ScreenLetter;
