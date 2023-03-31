@@ -11,11 +11,10 @@ const App = () => {
                 margin: '0px',
                 width: '100vw',
                 height: '100vh',
-                backgroundColor: 'primary.dark',
+                backgroundColor: 'black',
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'flex-start',
-                alignItems: 'stretch'
+                justifyContent: 'flex-start'
             }}
         >
             <TitleBar />

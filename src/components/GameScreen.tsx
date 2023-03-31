@@ -23,15 +23,15 @@ const GameScreen = () => {
     };
     //In React StrictMode useEffect is run twice as screen is rendered twice to spot bugs
     useEffect(sendGameRequest, []);
-    const levels = useAppSelector(getLevels).map((level) => <Level data={level}></Level>);
+    const levels = useAppSelector(getLevels).map((level) => <Level key={level.hiddenWord} data={level}></Level>);
 
     return (
         <Box
             sx={{
                 margin: '0 auto 0 auto',
-                width: '100vw',
+                width: '100%',
                 maxWidth: '750px',
-                height: '60%',
+                height: '70%',
                 backgroundColor: 'red',
                 display: 'flex',
                 flexDirection: 'column',

@@ -41,7 +41,7 @@ export const gameSlice = createSlice({
     // `createSlice` will infer the state type from the `initialState` argument
     initialState,
     reducers: {
-        validateInput: (state) => {
+        checkUserWord: (state) => {
             //Get current level
             const currentLevel = state.levels[state.currentLevelNo];
 
@@ -105,7 +105,7 @@ export const gameSlice = createSlice({
     }
 });
 
-export const { setGameData, addLetter, validateInput, removeLetter, skipLevel } = gameSlice.actions;
+export const { setGameData, addLetter, checkUserWord, removeLetter, skipLevel } = gameSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const getLevels = (state: RootState) => state.game.levels;
