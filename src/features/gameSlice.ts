@@ -98,11 +98,14 @@ export const gameSlice = createSlice({
                 //Since we get the index of the valid input space, remove the one before
                 currentLevelInput[index - 1] = BLANK;
             }
+        },
+        skipLevel: (state) => {
+            state.levels[state.currentLevelNo++].status = Status.SKIPPED;
         }
     }
 });
 
-export const { setGameData, addLetter, validateInput, removeLetter } = gameSlice.actions;
+export const { setGameData, addLetter, validateInput, removeLetter, skipLevel } = gameSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const getLevels = (state: RootState) => state.game.levels;

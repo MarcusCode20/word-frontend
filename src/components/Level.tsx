@@ -1,6 +1,4 @@
-import { Box, Card, CardContent, Paper, Typography } from '@mui/material';
-import React, { useState } from 'react';
-import Letter from './Letter';
+import { Box, Paper } from '@mui/material';
 import ScreenLetter from './ScreenLetter';
 import { API_BLANK, LevelData, Status } from '../features/gameSlice';
 

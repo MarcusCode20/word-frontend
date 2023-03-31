@@ -4,11 +4,11 @@ import Letter from './Letter';
 import { addLetter, validateInput, removeLetter } from '../features/gameSlice';
 import { useAppDispatch } from '../app/hooks';
 
-interface KeyboardButtonProp {
+interface KeyboardGoButtonProp {
     letter: string;
 }
 
-const KeyboardButton = (prop: PropsWithChildren<KeyboardButtonProp>) => {
+const KeyboardGoButton = (prop: PropsWithChildren<KeyboardGoButtonProp>) => {
     const dispatch = useAppDispatch();
 
     const sendLetter = () => {
@@ -28,4 +28,4 @@ const KeyboardButton = (prop: PropsWithChildren<KeyboardButtonProp>) => {
     );
 };
 
-export default KeyboardButton;
+export default KeyboardGoButton;

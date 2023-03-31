@@ -1,8 +1,8 @@
-import { Box, Card } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { Box } from '@mui/material';
+import { useEffect } from 'react';
 import axios from 'axios';
 import Level from './Level';
-import { setGameData, getLevels, LevelData } from '../features/gameSlice';
+import { setGameData, getLevels } from '../features/gameSlice';
 import { useAppSelector, useAppDispatch } from '../app/hooks';
 
 const GameScreen = () => {
