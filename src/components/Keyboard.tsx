@@ -33,6 +33,7 @@ const KeyboardRowCss = {
 const keyboardButtonCss = {
     //CSS for itself
     //CSS for sizing
+    //TODO: Make button size relative
     margin: '0px',
     padding: '0px',
     minWidth: '55px',

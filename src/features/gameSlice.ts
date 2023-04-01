@@ -5,6 +5,8 @@ import type { RootState } from '../app/store';
 interface GameState {
     levels: LevelData[];
     currentLevelNo: number;
+    score: number;
+    alive: boolean;
 }
 
 export interface GameData {
@@ -18,6 +20,7 @@ export interface LevelData {
     solutions: string[];
     userInput: string[];
     status: Status;
+    time: number;
 }
 
 export enum Status {
@@ -29,11 +32,16 @@ export enum Status {
 
 export const API_BLANK = '_';
 export const BLANK = '';
+//5 levels, but indexed from 0 to 4
+export const MAX_LEVEL = 4;
+export const ONE_MINUTE = 60;
 
 // Define the initial state using that type
 const initialState: GameState = {
     levels: [],
-    currentLevelNo: 0
+    currentLevelNo: 0,
+    score: 0,
+    alive: false
 };
 
 export const gameSlice = createSlice({
@@ -58,6 +66,10 @@ export const gameSlice = createSlice({
             const userWord = userWordArray.join(BLANK);
             if (currentLevel.solutions.includes(userWord)) {
                 currentLevel.status = Status.CORRECT;
+
+                if (state.currentLevelNo + 1 <= MAX_LEVEL) {
+                    state.levels[state.currentLevelNo + 1].status = Status.ACTIVE;
+                }
                 state.currentLevelNo++;
             }
         },
@@ -68,7 +80,8 @@ export const gameSlice = createSlice({
                     hiddenWord: data.hiddenWord,
                     solutions: data.solutions,
                     userInput: new Array(data.inputLength).fill(BLANK),
-                    status: Status.LOCKED
+                    status: Status.LOCKED,
+                    time: ONE_MINUTE
                 });
             }
             state.levels = levels;
@@ -100,14 +113,25 @@ export const gameSlice = createSlice({
             }
         },
         skipLevel: (state) => {
-            state.levels[state.currentLevelNo++].status = Status.SKIPPED;
+            state.levels[state.currentLevelNo].status = Status.SKIPPED;
+            if (state.currentLevelNo + 1 <= MAX_LEVEL) {
+                state.levels[state.currentLevelNo + 1].status = Status.ACTIVE;
+            }
+            state.currentLevelNo++;
+        },
+        startGame: (state) => {
+            state.levels[0].status = Status.ACTIVE;
+            state.alive = true;
+        },
+        endGame: (state) => {
+            state.alive = false;
         }
+        //--------------------FIX------------------------//
     }
 });
 
-export const { setGameData, addLetter, checkUserWord, removeLetter, skipLevel } = gameSlice.actions;
+export const { setGameData, addLetter, checkUserWord, removeLetter, skipLevel, startGame, endGame } = gameSlice.actions;
 
-// Other code such as selectors can use the imported `RootState` type
-export const getLevels = (state: RootState) => state.game.levels;
+export const getGameState = (state: RootState) => state.game;
 
 export default gameSlice.reducer;
