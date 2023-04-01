@@ -6,34 +6,41 @@ import BackspaceRoundedIcon from '@mui/icons-material/BackspaceRounded';
 import SkipNextRoundedIcon from '@mui/icons-material/SkipNextRounded';
 
 const KeyboardCss = {
+    //CSS for itself
+    flexGrow: '1',
     margin: '0 auto 0 auto',
     width: '100%',
-    maxWidth: '750px',
-    backgroundColor: 'green',
+    maxWidth: '580px',
+    maxHeight: '200px',
+    backgroundColor: 'blue',
+    //CSS for its children
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'stretch'
 };
 
 const KeyboardRowCss = {
+    //CSS for itself
+    flexGrow: '1',
     margin: '0px',
-    height: '30%',
     backgroundColor: 'orange',
+    //CSS for its children
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center'
 };
 
 const keyboardButtonCss = {
-    textAlign: 'center',
-    lineHeight: '100%',
-    maxHeight: '50px',
+    //CSS for itself
+    //CSS for sizing
     margin: '0px',
+    padding: '0px',
+    minWidth: '55px',
+    lineHeight: '100%',
+    fontSize: '30px',
+    //CSS for styling
     fontWeight: 'bold',
-    fontSize: '40px',
-    userSelect: 'none',
-    width: '40px',
-    height: '40px'
+    textAlign: 'center'
 };
 
 const Keyboard = () => {
@@ -57,27 +64,27 @@ const Keyboard = () => {
     const rowThree = ['Z', 'X', 'C', 'V', 'B', 'N', 'M'];
 
     const goButton = (
-        <Button onClick={checkUserWordCallback}>
-            <DoneOutlineRoundedIcon sx={keyboardButtonCss} />
+        <Button sx={keyboardButtonCss} onClick={checkUserWordCallback}>
+            <DoneOutlineRoundedIcon />
         </Button>
     );
 
     const skipButton = (
-        <Button onClick={skipLevelCallBack}>
-            <SkipNextRoundedIcon sx={keyboardButtonCss} />
+        <Button sx={keyboardButtonCss} onClick={skipLevelCallBack}>
+            <SkipNextRoundedIcon />
         </Button>
     );
 
     const backButton = (
-        <Button onClick={removeLetterCallback}>
-            <BackspaceRoundedIcon sx={keyboardButtonCss} />
+        <Button sx={keyboardButtonCss} onClick={removeLetterCallback}>
+            <BackspaceRoundedIcon />
         </Button>
     );
 
     const groupComps = (row: string[]) => {
         return row.map((letter) => (
-            <Button key={letter} onClick={addLetterCallback(letter)}>
-                <Box sx={keyboardButtonCss}>{letter}</Box>
+            <Button sx={keyboardButtonCss} key={letter} onClick={addLetterCallback(letter)}>
+                {letter}
             </Button>
         ));
     };

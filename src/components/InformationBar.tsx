@@ -1,34 +1,16 @@
-import { Box, Typography } from '@mui/material';
-import React from 'react';
+import { Box } from '@mui/material';
 
 const InformationBar = () => {
     return (
         <Box
             sx={{
-                margin: '0px',
-                width: '100vw',
+                margin: 0,
+                width: '100%',
                 height: '10%',
-                backgroundColor: 'pink',
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                justifyItems: 'center'
+                maxHeight: '55px',
+                backgroundColor: 'pink'
             }}
-        >
-            <Typography
-                variant="h6"
-                component="div"
-                align="center"
-                sx={{
-                    fontWeight: 'bold',
-                    '@media (max-width:400px) and (max-height:800px)': {
-                        fontSize: '13px'
-                    }
-                }}
-            >
-                Display Info
-            </Typography>
-        </Box>
+        />
     );
 };
 

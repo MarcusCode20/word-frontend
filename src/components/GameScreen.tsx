@@ -28,11 +28,15 @@ const GameScreen = () => {
     return (
         <Box
             sx={{
+                //CSS for itself
+                flexGrow: 1,
                 margin: '0 auto 0 auto',
                 width: '100%',
-                maxWidth: '750px',
-                height: '70%',
+                maxWidth: '430px',
+                height: '50%',
+                maxHeight: '400px',
                 backgroundColor: 'red',
+                //CSS for  children
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-evenly',

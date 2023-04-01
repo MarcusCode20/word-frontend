@@ -31,9 +31,11 @@ const Level = (prop: LevelProp) => {
     const display = (
         <Box
             sx={{
+                //CSS for itself
                 height: '100%',
                 margin: '0 2%',
                 display: 'flex',
+                //CSS for children
                 flexDirection: 'row',
                 justifyContent: 'flex-start',
                 alignItems: 'center',
@@ -47,7 +49,7 @@ const Level = (prop: LevelProp) => {
     return (
         <Paper
             sx={{
-                margin: '0 2%',
+                margin: '0px 1%',
                 padding: '0px',
                 height: '15%',
                 background: isCorrect ? 'green' : 'white'
