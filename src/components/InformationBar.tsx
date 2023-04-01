@@ -1,6 +1,10 @@
 import { Box } from '@mui/material';
+import { getGameState } from '../features/gameSlice';
+import { useAppSelector } from '../app/hooks';
 
 const InformationBar = () => {
+    const score = 'Score: ' + useAppSelector(getGameState).score;
+
     return (
         <Box
             sx={{
@@ -16,7 +20,9 @@ const InformationBar = () => {
                 alignItems: 'stretch',
                 justifyContent: 'center'
             }}
-        />
+        >
+            {score}
+        </Box>
     );
 };
 

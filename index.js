@@ -8,6 +8,8 @@ app.use(cors());
 
 app.use(express.static('dist'));
 
+const words = getDataForLevels();
+
 app.get('/api/words', function (req, res) {
     const words = getDataForLevels();
 

@@ -97,7 +97,7 @@ const Keyboard = () => {
     const rows = [
         toRow(groupComps(rowOne)),
         toRow(groupComps(rowTwo)),
-        toRow([goButton, ...groupComps(rowThree), backButton, skipButton])
+        toRow([skipButton, ...groupComps(rowThree), backButton, goButton])
     ];
 
     return <Box sx={KeyboardCss}>{rows}</Box>;

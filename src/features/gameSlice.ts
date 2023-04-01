@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../app/store';
 
 // Define a type for the slice state
-interface GameState {
+export interface GameState {
     levels: LevelData[];
     currentLevelNo: number;
     score: number;
@@ -11,13 +11,19 @@ interface GameState {
 
 export interface GameData {
     hiddenWord: string;
-    solutions: string[];
+    solutions: WordAndScore;
     inputLength: number;
+}
+
+//The the key is the word
+//The value is the score
+export interface WordAndScore {
+    [word: string]: number;
 }
 
 export interface LevelData {
     hiddenWord: string;
-    solutions: string[];
+    solutions: WordAndScore;
     userInput: string[];
     status: Status;
     time: number;
@@ -64,8 +70,9 @@ export const gameSlice = createSlice({
 
             //Now check if the user's word is correct
             const userWord = userWordArray.join(BLANK);
-            if (currentLevel.solutions.includes(userWord)) {
+            if (currentLevel.solutions[userWord]) {
                 currentLevel.status = Status.CORRECT;
+                state.score += currentLevel.solutions[userWord];
 
                 if (state.currentLevelNo + 1 <= MAX_LEVEL) {
                     state.levels[state.currentLevelNo + 1].status = Status.ACTIVE;

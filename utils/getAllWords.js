@@ -1,4 +1,4 @@
-import { readFile, writeFileSync, readFileSync } from 'fs';
+import { writeFileSync, readFileSync } from 'fs';
 import * as CSV from 'csv-string';
 
 //Words from that game I stole
@@ -25,23 +25,19 @@ const frequencyData = readFileSync('public/frequency_list.csv', 'utf-8');
 const frequencyArray = CSV.parse(frequencyData.toString());
 const frequencyJson = {};
 
-frequencyArray.forEach((wordFreq) => {
-    frequencyJson[wordFreq[0]] = wordFreq[1];
-});
-
-const mergeJson = {};
+for (let i = 0; i < frequencyArray.length; i++) {
+    frequencyJson[frequencyArray[i][0]] = i;
+}
 
 const finalSortedDictionary = {};
 
 validWordArray.forEach((word) => {
     if (frequencyJson[word]) {
-        mergeJson[word] = frequencyJson[word];
-
         const length = word.length;
         if (finalSortedDictionary[length]) {
-            finalSortedDictionary[length] = [...finalSortedDictionary[length], word.toUpperCase()];
+            finalSortedDictionary[length][word.toUpperCase()] = frequencyJson[word];
         } else {
-            finalSortedDictionary[length] = [word.toUpperCase()];
+            finalSortedDictionary[length] = { [word.toUpperCase()]: frequencyJson[word] };
         }
     } else {
         //console.log(word)

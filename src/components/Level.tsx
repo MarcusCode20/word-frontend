@@ -88,6 +88,7 @@ const Level = (prop: LevelProp) => {
                 margin: '0px 1%',
                 padding: '0px',
                 height: '15%',
+                borderRadius: '10px',
                 background: backgroundColour
             }}
             variant="outlined"

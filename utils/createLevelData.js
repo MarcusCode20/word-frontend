@@ -24,10 +24,17 @@ function shuffleArray(array) {
     return shuffledArray;
 }
 
-function createLevel(indexes, words) {
+/**
+ *
+ * @param {number[]} indexes - An array containing the indexes to remove
+ * @param {Object} wordsAndScores - Keys are the words, values are the scores
+ * @returns
+ */
+function createLevel(indexes, wordsAndScores) {
     const wordsWithLettersRemoved = {};
 
-    for (let word of words) {
+    for (const wordAndScore of Object.entries(wordsAndScores)) {
+        const [word, score] = wordAndScore;
         //Take a copy of the word in an array format
         const hiddenWordArray = [...word];
         //Remove the required letters
@@ -39,14 +46,14 @@ function createLevel(indexes, words) {
         Now create a object where the key is the word with the letters removed
         and the value is a list of the original word e.g.
             {
-                w_ord:  ["word", "ward"],
-                b__n:   ["bean", "been"]
+                w_ord:  {"word": 100, "ward": 1000},
+                b__n:   {"bean": 72, "been": 324}
             }
         */
         if (wordsWithLettersRemoved[hiddenWord]) {
-            wordsWithLettersRemoved[hiddenWord] = [...wordsWithLettersRemoved[hiddenWord], word];
+            wordsWithLettersRemoved[hiddenWord][word] = score;
         } else {
-            wordsWithLettersRemoved[hiddenWord] = [word];
+            wordsWithLettersRemoved[hiddenWord] = { [word]: score };
         }
     }
 
@@ -54,7 +61,7 @@ function createLevel(indexes, words) {
     An array of where each element is of the form:
         {
             hiddenWord: "w_rd",
-            solutions: ["word", "ward"],
+            solutions: {"word": 100, "ward": 1000},
             inputLength: 1
         }
     */
@@ -71,9 +78,9 @@ function createLevel(indexes, words) {
 }
 
 export default function getDataForLevels() {
-    const data = readFileSync('public/valid_words.json');
+    const data = readFileSync('public/valid-word-dict.json');
 
-    const dictionary = JSON.parse(data.toString());
+    const dictionaryAndScore = JSON.parse(data.toString());
 
     //Five levels with each level incrementing the word length from 4 to 8.
     const lengthOfWordInLevel = [4, 5, 6, 7, 8];
@@ -83,14 +90,14 @@ export default function getDataForLevels() {
     The element is an object:
         {
             hiddenWord: "w_rd",
-            solutions: ["word", "ward"],
+            solutions: [{"word": 100}, {"ward": 1000}],
             inputLength: 1
         }
     */
     const wordLevelsData = [];
 
     lengthOfWordInLevel.forEach((levelLength) => {
-        const allowedWords = dictionary[levelLength];
+        const allowedWordsAndScore = dictionaryAndScore[levelLength];
         //Takes the numbers of letters in a word e.g. n = 5
         //Creates an array: [0, 1, 2, 3, 4]
         //Randomly shuffle the array: [3, 2, 0, 4, 1]
@@ -100,7 +107,7 @@ export default function getDataForLevels() {
             0,
             getRandomInt(1, levelLength) //Will not include the levelLength (exclusive)
         );
-        const levelData = createLevel(lettersOfIndexToRemove, allowedWords);
+        const levelData = createLevel(lettersOfIndexToRemove, allowedWordsAndScore);
 
         wordLevelsData.push(levelData);
     });
