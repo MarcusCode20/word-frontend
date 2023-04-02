@@ -15,7 +15,7 @@ const App = () => {
 
     const sendGameRequest = () => {
         axios
-            .get('/api/words')
+            .get('api/words')
             .then(function (response) {
                 dispatch(setGameData(response.data));
             })
@@ -45,9 +45,10 @@ const App = () => {
     return (
         <Box
             sx={{
+                position: 'fixed',
                 margin: '0px',
-                width: '100vw',
-                height: '100vh',
+                width: '100%',
+                height: '100%',
                 backgroundColor: 'black',
                 display: 'flex',
                 flexDirection: 'column',
