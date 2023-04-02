@@ -1,11 +1,9 @@
 import { Box } from '@mui/material';
 import Level from './Level';
 import { getGameState } from '../features/gameSlice';
-import { useAppSelector, useAppDispatch } from '../app/hooks';
+import { useAppSelector } from '../app/hooks';
 
 const GameScreen = () => {
-    const dispatch = useAppDispatch();
-
     const levels = useAppSelector(getGameState).levels.map((level) => (
         <Level key={level.hiddenWord} data={level}></Level>
     ));
@@ -20,12 +18,15 @@ const GameScreen = () => {
                 maxWidth: '450px',
                 height: '50%',
                 maxHeight: '600px',
-                backgroundColor: 'red',
+                backgroundColor: '#FFFBFB',
                 //CSS for  children
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-evenly',
-                alignItems: 'stretch'
+                alignItems: 'stretch',
+                '& .MuiPaper-root': {
+                    borderColor: '#858786'
+                }
             }}
         >
             {levels}

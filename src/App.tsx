@@ -49,10 +49,16 @@ const App = () => {
                 margin: '0px',
                 width: '100%',
                 height: '100%',
-                backgroundColor: 'black',
+                backgroundColor: '#FFFBFB',
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'flex-start'
+                justifyContent: 'flex-start',
+                '& .MuiPaper-root': {
+                    border: 'solid',
+                    borderWidth: 'thin',
+                    borderRadius: '10px',
+                    borderColor: '#858786'
+                }
             }}
         >
             <WelcomeScreen />

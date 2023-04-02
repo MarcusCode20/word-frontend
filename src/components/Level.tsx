@@ -13,13 +13,13 @@ const Level = (prop: LevelProp) => {
     const backgroundColour = () => {
         switch (prop.data.status) {
             case Status.ACTIVE:
-                return 'white';
+                return '#FFFBFB';
             case Status.CORRECT:
                 return '#4CAF50'; //Green
             case Status.SKIPPED:
                 return '#858786'; //Grey
             case Status.LOCKED:
-                return 'white';
+                return '#FFFBFB';
         }
     };
 
@@ -88,10 +88,9 @@ const Level = (prop: LevelProp) => {
                 margin: '0px 1%',
                 padding: '0px',
                 height: '15%',
-                borderRadius: '10px',
                 background: backgroundColour
             }}
-            variant="outlined"
+            elevation={3}
         >
             {display}
         </Paper>

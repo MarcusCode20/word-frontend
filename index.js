@@ -1,10 +1,10 @@
 import express from 'express';
 import getDataForLevels from './utils/createLevelData.js';
-//import cors from 'cors';
+import cors from 'cors';
 
 const app = express();
 
-//app.use(cors());
+app.use(cors());
 
 app.use(express.static('dist'));
 

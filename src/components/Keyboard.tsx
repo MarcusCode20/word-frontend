@@ -12,7 +12,7 @@ const KeyboardCss = {
     width: '100%',
     maxWidth: '580px',
     maxHeight: '200px',
-    backgroundColor: 'blue',
+    backgroundColor: '#C3BFC7',
     //CSS for its children
     display: 'flex',
     flexDirection: 'column',
@@ -23,7 +23,7 @@ const KeyboardRowCss = {
     //CSS for itself
     flexGrow: '1',
     margin: '0px',
-    backgroundColor: 'orange',
+    backgroundColor: '#C3BFC7',
     //CSS for its children
     display: 'flex',
     flexDirection: 'row',
@@ -41,7 +41,8 @@ const keyboardButtonCss = {
     minWidth: 'calc(100% / 10)',
     //CSS for styling
     fontWeight: 'bold',
-    textAlign: 'center'
+    textAlign: 'center',
+    color: 'black'
 };
 
 const Keyboard = () => {
