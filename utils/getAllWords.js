@@ -25,6 +25,9 @@ const frequencyData = readFileSync('public/frequency_list.csv', 'utf-8');
 const frequencyArray = CSV.parse(frequencyData.toString());
 const frequencyJson = {};
 
+//TODO:
+//Need to merge instead, as the score is based off the length of the frequency list
+//Not the length of the valid dictionary at the end.
 for (let i = 0; i < frequencyArray.length; i++) {
     frequencyJson[frequencyArray[i][0]] = i;
 }
@@ -44,4 +47,4 @@ validWordArray.forEach((word) => {
     }
 });
 
-writeFileSync('valid-word-dict.json', JSON.stringify(finalSortedDictionary, null, 2), 'utf-8');
+writeFileSync('public/valid_words.json', JSON.stringify(finalSortedDictionary, null, 2), 'utf-8');

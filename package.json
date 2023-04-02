@@ -7,6 +7,7 @@
         "dev": "vite",
         "build": "tsc && vite build",
         "preview": "vite preview",
+        "start": "node index.js",
         "format": "prettier --write \"**/*.+(js|jsx|ts|tsx|json|css|md)\""
     },
     "dependencies": {

@@ -78,7 +78,7 @@ function createLevel(indexes, wordsAndScores) {
 }
 
 export default function getDataForLevels() {
-    const data = readFileSync('public/valid-word-dict.json');
+    const data = readFileSync('public/valid_words.json');
 
     const dictionaryAndScore = JSON.parse(data.toString());
 

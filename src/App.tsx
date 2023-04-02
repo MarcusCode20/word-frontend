@@ -15,7 +15,7 @@ const App = () => {
 
     const sendGameRequest = () => {
         axios
-            .get('http://localhost:3000/api/words')
+            .get('/api/words')
             .then(function (response) {
                 dispatch(setGameData(response.data));
             })
