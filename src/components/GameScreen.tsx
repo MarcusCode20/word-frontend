@@ -23,10 +23,7 @@ const GameScreen = () => {
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-evenly',
-                alignItems: 'stretch',
-                '& .MuiPaper-root': {
-                    borderColor: '#858786'
-                }
+                alignItems: 'stretch'
             }}
         >
             {levels}
