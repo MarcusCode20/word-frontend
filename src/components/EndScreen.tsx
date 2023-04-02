@@ -1,6 +1,6 @@
 import { MAX_LEVEL, getGameState } from '../features/gameSlice';
 import { useAppSelector } from '../app/hooks';
-import { Dialog } from '@mui/material';
+import { Box, Dialog } from '@mui/material';
 
 const WelcomeScreen = () => {
     const gameState = useAppSelector(getGameState);
@@ -10,23 +10,27 @@ const WelcomeScreen = () => {
         <Dialog
             open={shouldShow}
             PaperProps={{
-                style: {
+                style: { borderRadius: '15px', background: 'transparent' }
+            }}
+        >
+            <Box
+                sx={{
                     margin: 0,
-                    width: '100%',
-                    maxWidth: '300px',
+                    padding: 0,
+                    width: '300px',
                     height: '100px',
                     fontSize: '40px',
-                    lineHeight: '180%',
+                    lineHeight: '200%',
                     fontWeight: 'bold',
                     textAlign: 'center',
                     background: 'white',
                     border: '7px solid #4CAF50',
                     borderRadius: '15px',
-                    color: '#858786'
-                }
-            }}
-        >
-            Game Ended
+                    color: 'black'
+                }}
+            >
+                Game Ended
+            </Box>
         </Dialog>
     );
 };
