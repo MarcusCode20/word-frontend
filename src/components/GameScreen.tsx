@@ -19,7 +19,7 @@ const GameScreen = () => {
                 width: '100%',
                 maxWidth: '450px',
                 height: '50%',
-                maxHeight: '400px',
+                maxHeight: '600px',
                 backgroundColor: 'red',
                 //CSS for  children
                 display: 'flex',

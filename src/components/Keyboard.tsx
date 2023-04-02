@@ -36,9 +36,9 @@ const keyboardButtonCss = {
     //TODO: Make button size relative
     margin: '0px',
     padding: '0px',
-    minWidth: '55px',
     lineHeight: '100%',
-    fontSize: '30px',
+    fontSize: '20px',
+    minWidth: 'calc(100% / 10)',
     //CSS for styling
     fontWeight: 'bold',
     textAlign: 'center'
