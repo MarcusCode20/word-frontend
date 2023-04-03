@@ -10,7 +10,7 @@ app.use(express.static('dist'));
 
 app.get('/api/words', function (req, res) {
     const words = getGameData();
-    console.log(words);
+    //console.log(words);
     res.send(words);
 });
 
