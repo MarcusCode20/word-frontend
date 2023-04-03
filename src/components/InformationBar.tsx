@@ -2,39 +2,43 @@ import { Box, Paper } from '@mui/material';
 import { getGameState } from '../features/gameSlice';
 import { useAppSelector } from '../app/hooks';
 
-const InformationBar = () => {
-    const score = 'Score: ' + useAppSelector(getGameState).score;
+const infoCss = {
+    flexGrow: 1,
+    margin: '0 1%',
+    width: '100%',
+    height: '60px',
+    maxHeight: '40px',
+    fontSize: '20px',
+    //CSS for styling
+    lineHeight: '160%',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    userSelect: 'none',
+    verticalAlign: 'middle'
+};
 
-    const scoreboard = (
-        <Paper
-            sx={{
-                flexGrow: 1,
-                margin: '0 1%',
-                width: '100%',
-                maxWidth: '450px',
-                height: '60px',
-                maxHeight: '40px',
-                fontSize: '20px',
-                //CSS for styling
-                lineHeight: '160%',
-                fontWeight: 'bold',
-                textAlign: 'center',
-                userSelect: 'none',
-                verticalAlign: 'middle'
-            }}
-        >
-            {score}
-        </Paper>
-    );
+const InformationBar = () => {
+    const gameState = useAppSelector(getGameState);
+
+    const possiblities =
+        gameState.loaded && gameState.started
+            ? 'Possiblities: ' + Object.keys(gameState.levels[gameState.currentLevelNo].solutions).length
+            : 'Possiblities: 0';
+    const score = 'Score: ' + gameState.score;
+
+    const scoreboard = <Paper sx={infoCss}>{score}</Paper>;
+
+    const solutionBoard = <Paper sx={infoCss}>{possiblities}</Paper>;
 
     return (
         <Box
             sx={{
                 //CSS for itself
-                margin: 0,
+                margin: '0 auto 0 auto',
                 width: '100%',
                 height: '10%',
                 maxHeight: '55px',
+                maxWidth: '450px',
                 backgroundColor: '#FFFBFB',
                 //CSS for children
                 display: 'flex',
@@ -43,7 +47,7 @@ const InformationBar = () => {
                 justifyContent: 'center'
             }}
         >
-            {scoreboard}
+            {[scoreboard, solutionBoard]}
         </Box>
     );
 };

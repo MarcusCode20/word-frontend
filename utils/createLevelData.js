@@ -1,5 +1,77 @@
 import { readFileSync } from 'fs';
 
+export default function getGameData() {
+    const data = readFileSync('public/game_words.json');
+
+    const levelMetaData = [];
+    levelMetaData.push(createLevelMetaData(4, 3));
+    levelMetaData.push(createLevelMetaData(5, 3));
+    levelMetaData.push(createLevelMetaData(6, 3));
+    levelMetaData.push(createLevelMetaData(7, 4));
+    levelMetaData.push(createLevelMetaData(8, 5));
+
+    const wordsAndScoresSplit = JSON.parse(data.toString());
+
+    const easyWordsAndScore = wordsAndScoresSplit.first;
+    const hardWordsAndScore = wordsAndScoresSplit.second;
+
+    const levels = [];
+
+    levelMetaData.forEach((levelMetaData) => {
+        const wordLength = levelMetaData.wordLength;
+        const inputLength = levelMetaData.inputLength;
+        const indexesToRemove = shuffleArray([...Array(wordLength).keys()]).slice(0, inputLength);
+        const easyHalf = getLevelData(indexesToRemove, easyWordsAndScore[wordLength]);
+        const hardHalf = getLevelData(indexesToRemove, hardWordsAndScore[wordLength]);
+
+        const easyHiddenWords = Object.keys(easyHalf);
+        const startingHiddenWord = easyHiddenWords[getRandomInt(0, easyHiddenWords.length)];
+
+        let solutions = easyHalf[startingHiddenWord];
+        if (hardHalf[startingHiddenWord]) {
+            solutions = { ...solutions, ...hardHalf[startingHiddenWord] };
+        }
+
+        levels.push({
+            hiddenWord: startingHiddenWord,
+            solutions: solutions,
+            inputLength: inputLength
+        });
+    });
+    return levels;
+}
+
+function getLevelData(indexes, wordsAndScores) {
+    const wordsWithLettersRemoved = {};
+
+    for (const wordAndScore of wordsAndScores) {
+        const word = wordAndScore.word;
+        const score = wordAndScore.score;
+        //Take a copy of the word in an array format
+        const hiddenWordArray = [...word];
+        //Remove the required letters
+        indexes.forEach((index) => (hiddenWordArray[index] = '_'));
+        //Transform the word back to a string
+        const hiddenWord = hiddenWordArray.join('');
+
+        /*
+        Now create a object where the key is the word with the letters removed
+        and the value is a list of the original word e.g.
+            {
+                w_ord:  {"word": 100, "ward": 1000},
+                b__n:   {"bean": 72, "been": 324}
+            }
+        */
+        if (wordsWithLettersRemoved[hiddenWord]) {
+            wordsWithLettersRemoved[hiddenWord][word] = score;
+        } else {
+            wordsWithLettersRemoved[hiddenWord] = { [word]: score };
+        }
+    }
+
+    return wordsWithLettersRemoved;
+}
+
 /**
  * @param {number} min - the minimum number that can be chosen (inclusive)
  * @param {number} max - the maximum number (exclusive)
@@ -24,93 +96,9 @@ function shuffleArray(array) {
     return shuffledArray;
 }
 
-/**
- *
- * @param {number[]} indexes - An array containing the indexes to remove
- * @param {Object} wordsAndScores - Keys are the words, values are the scores
- * @returns
- */
-function createLevel(indexes, wordsAndScores) {
-    const wordsWithLettersRemoved = {};
-
-    for (const wordAndScore of Object.entries(wordsAndScores)) {
-        const [word, score] = wordAndScore;
-        //Take a copy of the word in an array format
-        const hiddenWordArray = [...word];
-        //Remove the required letters
-        indexes.forEach((index) => (hiddenWordArray[index] = '_'));
-        //Transform the word back to a string
-        const hiddenWord = hiddenWordArray.join('');
-
-        /*
-        Now create a object where the key is the word with the letters removed
-        and the value is a list of the original word e.g.
-            {
-                w_ord:  {"word": 100, "ward": 1000},
-                b__n:   {"bean": 72, "been": 324}
-            }
-        */
-        if (wordsWithLettersRemoved[hiddenWord]) {
-            wordsWithLettersRemoved[hiddenWord][word] = score;
-        } else {
-            wordsWithLettersRemoved[hiddenWord] = { [word]: score };
-        }
-    }
-
-    /*
-    An array of where each element is of the form:
-        {
-            hiddenWord: "w_rd",
-            solutions: {"word": 100, "ward": 1000},
-            inputLength: 1
-        }
-    */
-    const possibilties = Object.keys(wordsWithLettersRemoved).map((hiddenWord) => {
-        return {
-            hiddenWord: hiddenWord,
-            solutions: wordsWithLettersRemoved[hiddenWord],
-            inputLength: indexes.length
-        };
-    });
-
-    //Choose a random one
-    return possibilties[getRandomInt(0, possibilties.length)];
-}
-
-export default function getDataForLevels() {
-    const data = readFileSync('public/valid_words.json');
-
-    const dictionaryAndScore = JSON.parse(data.toString());
-
-    //Five levels with each level incrementing the word length from 4 to 8.
-    const lengthOfWordInLevel = [4, 5, 6, 7, 8];
-
-    /*
-    An array where each element holds all the data for a level.
-    The element is an object:
-        {
-            hiddenWord: "w_rd",
-            solutions: [{"word": 100}, {"ward": 1000}],
-            inputLength: 1
-        }
-    */
-    const wordLevelsData = [];
-
-    lengthOfWordInLevel.forEach((levelLength) => {
-        const allowedWordsAndScore = dictionaryAndScore[levelLength];
-        //Takes the numbers of letters in a word e.g. n = 5
-        //Creates an array: [0, 1, 2, 3, 4]
-        //Randomly shuffle the array: [3, 2, 0, 4, 1]
-        //Choose a random between 1 and n - 1, say 3.
-        //Now take the first 3 numbers from the array: [3, 2, 0]
-        const lettersOfIndexToRemove = shuffleArray([...Array(levelLength).keys()]).slice(
-            0,
-            getRandomInt(1, levelLength) //Will not include the levelLength (exclusive)
-        );
-        const levelData = createLevel(lettersOfIndexToRemove, allowedWordsAndScore);
-
-        wordLevelsData.push(levelData);
-    });
-
-    return wordLevelsData;
+function createLevelMetaData(wordLength, inputLength) {
+    return {
+        wordLength: wordLength,
+        inputLength: inputLength
+    };
 }

@@ -7,6 +7,8 @@ export interface GameState {
     currentLevelNo: number;
     score: number;
     alive: boolean;
+    loaded: boolean;
+    started: boolean;
 }
 
 export interface GameData {
@@ -47,7 +49,9 @@ const initialState: GameState = {
     levels: [],
     currentLevelNo: 0,
     score: 0,
-    alive: false
+    alive: false,
+    loaded: false,
+    started: false
 };
 
 export const gameSlice = createSlice({
@@ -76,8 +80,10 @@ export const gameSlice = createSlice({
 
                 if (state.currentLevelNo + 1 <= MAX_LEVEL) {
                     state.levels[state.currentLevelNo + 1].status = Status.ACTIVE;
+                    state.currentLevelNo++;
+                } else {
+                    state.alive = false;
                 }
-                state.currentLevelNo++;
             }
         },
         setGameData: (state, action: PayloadAction<GameData[]>) => {
@@ -92,6 +98,7 @@ export const gameSlice = createSlice({
                 });
             }
             state.levels = levels;
+            state.loaded = true;
         },
         addLetter: (state, action: PayloadAction<string>) => {
             const currentLevelInput = state.levels[state.currentLevelNo].userInput;
@@ -123,21 +130,21 @@ export const gameSlice = createSlice({
             state.levels[state.currentLevelNo].status = Status.SKIPPED;
             if (state.currentLevelNo + 1 <= MAX_LEVEL) {
                 state.levels[state.currentLevelNo + 1].status = Status.ACTIVE;
+                state.currentLevelNo++;
+            } else {
+                state.alive = false;
             }
-            state.currentLevelNo++;
         },
         startGame: (state) => {
             state.levels[0].status = Status.ACTIVE;
             state.alive = true;
-        },
-        endGame: (state) => {
-            state.alive = false;
+            state.started = true;
         }
         //--------------------FIX------------------------//
     }
 });
 
-export const { setGameData, addLetter, checkUserWord, removeLetter, skipLevel, startGame, endGame } = gameSlice.actions;
+export const { setGameData, addLetter, checkUserWord, removeLetter, skipLevel, startGame } = gameSlice.actions;
 
 export const getGameState = (state: RootState) => state.game;
 

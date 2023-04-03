@@ -4,7 +4,7 @@ import { Box, Dialog } from '@mui/material';
 
 const WelcomeScreen = () => {
     const gameState = useAppSelector(getGameState);
-    const shouldShow = !gameState.alive && gameState.currentLevelNo > MAX_LEVEL;
+    const shouldShow = !gameState.alive && gameState.started;
 
     return (
         <Dialog
