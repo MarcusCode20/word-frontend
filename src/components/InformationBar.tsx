@@ -22,8 +22,8 @@ const InformationBar = () => {
 
     const possiblities =
         gameState.loaded && gameState.started
-            ? 'Possiblities: ' + Object.keys(gameState.levels[gameState.currentLevelNo].solutions).length
-            : 'Possiblities: 0';
+            ? 'Possibilities: ' + Object.keys(gameState.levels[gameState.currentLevelNo].solutions).length
+            : 'Possibilities: 0';
     const score = 'Score: ' + gameState.score;
 
     const scoreboard = <Paper sx={infoCss}>{score}</Paper>;

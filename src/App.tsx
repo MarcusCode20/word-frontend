@@ -9,6 +9,10 @@ import { setGameData } from './features/gameSlice';
 import { useAppDispatch } from './app/hooks';
 import { useEffect } from 'react';
 import axios from 'axios';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Zoom } from 'react-toastify';
+import './toastify.css';
 
 const App = () => {
     const dispatch = useAppDispatch();
@@ -55,6 +59,41 @@ const App = () => {
             <InformationBar />
             <GameScreen />
             <Keyboard />
+            <ToastContainer
+                position="top-center"
+                autoClose={2000}
+                hideProgressBar={true}
+                newestOnTop={false}
+                closeButton={false}
+                rtl={false}
+                pauseOnFocusLoss={false}
+                draggable={false}
+                pauseOnHover={false}
+                transition={Zoom}
+                className="alert"
+                style={{
+                    width: '100%',
+                    maxWidth: '200px',
+                    backgroundColor: 'transparent'
+                }}
+                toastStyle={{
+                    margin: '4px',
+                    padding: 0,
+                    width: '100%',
+                    background: '#FFFBFB',
+                    fontSize: '15px',
+                    lineHeight: '160%',
+                    fontWeight: 'bold',
+                    color: 'black',
+                    textAlign: 'center',
+                    userSelect: 'none',
+                    verticalAlign: 'middle',
+                    border: 'solid',
+                    borderWidth: 'thin',
+                    borderRadius: '10px',
+                    borderColor: '#858786'
+                }}
+            />
         </Box>
     );
 };

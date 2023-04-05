@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../app/store';
+import { toast } from 'react-toastify';
 
 // Define a type for the slice state
 export interface GameState {
@@ -84,6 +85,8 @@ export const gameSlice = createSlice({
                 } else {
                     state.alive = false;
                 }
+            } else {
+                toast('Not a valid word!');
             }
         },
         setGameData: (state, action: PayloadAction<GameData[]>) => {
