@@ -26,9 +26,17 @@ const InformationBar = () => {
             : 'Possibilities: 0';
     const score = 'Score: ' + gameState.score;
 
-    const scoreboard = <Paper sx={infoCss}>{score}</Paper>;
+    const scoreboard = (
+        <Paper key="scoreComp" sx={infoCss}>
+            {score}
+        </Paper>
+    );
 
-    const solutionBoard = <Paper sx={infoCss}>{possiblities}</Paper>;
+    const solutionBoard = (
+        <Paper key="solutionComp" sx={infoCss}>
+            {possiblities}
+        </Paper>
+    );
 
     return (
         <Box

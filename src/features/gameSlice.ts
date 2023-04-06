@@ -10,6 +10,7 @@ export interface GameState {
     alive: boolean;
     loaded: boolean;
     started: boolean;
+    mode: Mode;
 }
 
 export interface GameData {
@@ -34,6 +35,11 @@ export interface LevelData {
     score: number;
 }
 
+export enum Mode {
+    DAILY = 'DAILY',
+    PRACTICE = 'PRACTICE'
+}
+
 export enum Status {
     CORRECT = 'CORRECT',
     LOCKED = 'LOCKED',
@@ -54,7 +60,8 @@ const initialState: GameState = {
     score: 0,
     alive: false,
     loaded: false,
-    started: false
+    started: false,
+    mode: Mode.DAILY
 };
 
 export const gameSlice = createSlice({
@@ -154,12 +161,15 @@ export const gameSlice = createSlice({
             state.levels[0].status = Status.ACTIVE;
             state.alive = true;
             state.started = true;
+        },
+        setMode: (state, action: PayloadAction<Mode>) => {
+            state.mode = action.payload;
         }
         //--------------------FIX------------------------//
     }
 });
 
-export const { setGameData, addLetter, checkUserWord, removeLetter, skipLevel, startGame } = gameSlice.actions;
+export const { setGameData, addLetter, checkUserWord, removeLetter, skipLevel, startGame, setMode } = gameSlice.actions;
 
 export const getGameState = (state: RootState) => state.game;
 

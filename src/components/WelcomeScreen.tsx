@@ -1,15 +1,13 @@
-import { startGame } from '../features/gameSlice';
-import { useAppDispatch } from '../app/hooks';
-import { useState } from 'react';
+import { startGame, getGameState } from '../features/gameSlice';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { Button, Dialog } from '@mui/material';
 
 const WelcomeScreen = () => {
     const dispatch = useAppDispatch();
 
-    const [started, setStarted] = useState(false); //Set to false to show
+    const started = useAppSelector(getGameState).started;
 
     const onClose = () => {
-        setStarted(true);
         dispatch(startGame());
     };
 

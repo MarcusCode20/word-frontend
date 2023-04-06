@@ -5,23 +5,29 @@ import Keyboard from './components/Keyboard';
 import TitleBar from './components/TitleBar';
 import WelcomeScreen from './components/WelcomeScreen';
 import EndScreen from './components/StatScreen';
-import { setGameData } from './features/gameSlice';
-import { useAppDispatch } from './app/hooks';
+import { setGameData, getGameState, Mode } from './features/gameSlice';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Zoom } from 'react-toastify';
 import './toastify.css';
+import CryptoJS from 'crypto-js';
 
 const App = () => {
+    const mode = useAppSelector(getGameState).mode;
     const dispatch = useAppDispatch();
 
     const sendGameRequest = () => {
+        const request = mode == Mode.DAILY ? 'api/words/daily' : 'api/words/practice';
+
         axios
-            .get('api/words')
+            .get('http://localhost:3000/' + request)
             .then(function (response) {
-                dispatch(setGameData(response.data));
+                const decrypt = CryptoJS.AES.decrypt(response.data, 'super secure secret key');
+                const decryptedData = JSON.parse(decrypt.toString(CryptoJS.enc.Utf8));
+                dispatch(setGameData(decryptedData));
             })
             .catch(function (error) {
                 // handle error
@@ -32,7 +38,7 @@ const App = () => {
             });
     };
     //In React StrictMode useEffect is run twice as screen is rendered twice to spot bugs
-    useEffect(sendGameRequest, []);
+    useEffect(sendGameRequest, [mode]);
 
     return (
         <Box
