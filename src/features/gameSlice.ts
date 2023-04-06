@@ -30,6 +30,8 @@ export interface LevelData {
     userInput: string[];
     status: Status;
     time: number;
+    usersWord: string;
+    score: number;
 }
 
 export enum Status {
@@ -63,30 +65,33 @@ export const gameSlice = createSlice({
         checkUserWord: (state) => {
             //Get current level
             const currentLevel = state.levels[state.currentLevelNo];
+            if (currentLevel.status == Status.ACTIVE) {
+                //Generate the user's word from the hidden word and the user's input as an array
+                const userWordArray = Array.from(currentLevel.hiddenWord);
 
-            //Generate the user's word from the hidden word and the user's input as an array
-            const userWordArray = Array.from(currentLevel.hiddenWord);
-
-            for (let i = 0, j = 0; i < userWordArray.length; i++) {
-                if (userWordArray[i] == API_BLANK) {
-                    userWordArray[i] = currentLevel.userInput[j++];
+                for (let i = 0, j = 0; i < userWordArray.length; i++) {
+                    if (userWordArray[i] == API_BLANK) {
+                        userWordArray[i] = currentLevel.userInput[j++];
+                    }
                 }
-            }
 
-            //Now check if the user's word is correct
-            const userWord = userWordArray.join(BLANK);
-            if (currentLevel.solutions[userWord]) {
-                currentLevel.status = Status.CORRECT;
-                state.score += currentLevel.solutions[userWord];
+                //Now check if the user's word is correct
+                const userWord = userWordArray.join(BLANK);
+                if (currentLevel.solutions[userWord]) {
+                    currentLevel.status = Status.CORRECT;
+                    state.score += currentLevel.solutions[userWord];
+                    currentLevel.score = currentLevel.solutions[userWord];
+                    currentLevel.usersWord = userWord;
 
-                if (state.currentLevelNo + 1 <= MAX_LEVEL) {
-                    state.levels[state.currentLevelNo + 1].status = Status.ACTIVE;
-                    state.currentLevelNo++;
+                    if (state.currentLevelNo + 1 <= MAX_LEVEL) {
+                        state.levels[state.currentLevelNo + 1].status = Status.ACTIVE;
+                        state.currentLevelNo++;
+                    } else {
+                        state.alive = false;
+                    }
                 } else {
-                    state.alive = false;
+                    toast('Not a valid word!');
                 }
-            } else {
-                toast('Not a valid word!');
             }
         },
         setGameData: (state, action: PayloadAction<GameData[]>) => {
@@ -97,36 +102,43 @@ export const gameSlice = createSlice({
                     solutions: data.solutions,
                     userInput: new Array(data.inputLength).fill(BLANK),
                     status: Status.LOCKED,
-                    time: ONE_MINUTE
+                    time: ONE_MINUTE,
+                    usersWord: BLANK,
+                    score: 0
                 });
             }
             state.levels = levels;
             state.loaded = true;
         },
         addLetter: (state, action: PayloadAction<string>) => {
-            const currentLevelInput = state.levels[state.currentLevelNo].userInput;
-
-            for (let index in currentLevelInput) {
-                //Reach the first blank space and replace with the typed letter
-                //No effect takes places if the user runs out of blank spaces.
-                if (currentLevelInput[index] == BLANK) {
-                    currentLevelInput[index] = action.payload;
-                    break;
+            const currentLevel = state.levels[state.currentLevelNo];
+            if (currentLevel.status == Status.ACTIVE) {
+                const currentLevelInput = currentLevel.userInput;
+                for (let index in currentLevelInput) {
+                    //Reach the first blank space and replace with the typed letter
+                    //No effect takes places if the user runs out of blank spaces.
+                    if (currentLevelInput[index] == BLANK) {
+                        currentLevelInput[index] = action.payload;
+                        break;
+                    }
                 }
             }
         },
         removeLetter: (state) => {
-            const currentLevelInput = state.levels[state.currentLevelNo].userInput;
+            const currentLevel = state.levels[state.currentLevelNo];
+            if (currentLevel.status == Status.ACTIVE) {
+                const currentLevelInput = currentLevel.userInput;
 
-            const index = currentLevelInput.indexOf(BLANK);
+                const index = currentLevelInput.indexOf(BLANK);
 
-            if (index == -1) {
-                //When the user has filled up all his inputs so remove the last one
-                currentLevelInput[currentLevelInput.length - 1] = BLANK;
-            } else if (index - 1 >= 0) {
-                //When the user has at least one letter filled in his inputs
-                //Since we get the index of the valid input space, remove the one before
-                currentLevelInput[index - 1] = BLANK;
+                if (index == -1) {
+                    //When the user has filled up all his inputs so remove the last one
+                    currentLevelInput[currentLevelInput.length - 1] = BLANK;
+                } else if (index - 1 >= 0) {
+                    //When the user has at least one letter filled in his inputs
+                    //Since we get the index of the valid input space, remove the one before
+                    currentLevelInput[index - 1] = BLANK;
+                }
             }
         },
         skipLevel: (state) => {

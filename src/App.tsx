@@ -4,7 +4,7 @@ import InformationBar from './components/InformationBar';
 import Keyboard from './components/Keyboard';
 import TitleBar from './components/TitleBar';
 import WelcomeScreen from './components/WelcomeScreen';
-import EndScreen from './components/EndScreen';
+import EndScreen from './components/StatScreen';
 import { setGameData } from './features/gameSlice';
 import { useAppDispatch } from './app/hooks';
 import { useEffect } from 'react';
@@ -61,7 +61,7 @@ const App = () => {
             <Keyboard />
             <ToastContainer
                 position="top-center"
-                autoClose={2000}
+                autoClose={1000}
                 hideProgressBar={true}
                 newestOnTop={false}
                 closeButton={false}
