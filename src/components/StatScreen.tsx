@@ -8,6 +8,24 @@ const WelcomeScreen = () => {
     const gameState = useAppSelector(getGameState);
     const shouldShow = !gameState.alive && gameState.started && open;
 
+    const format = (header: string) => (
+        <Box
+            sx={{
+                margin: '0 0 0 8px',
+                padding: 0,
+                width: '100%',
+                fontSize: '13px',
+                lineHeight: '200%',
+                fontWeight: 'bold',
+                //textAlign: 'center',
+                background: 'white',
+                color: 'black'
+            }}
+        >
+            {header}
+        </Box>
+    );
+
     const title = (
         <Box
             sx={{
@@ -51,11 +69,14 @@ const WelcomeScreen = () => {
     };
 
     const levelStats = gameState.levels.map((level) => (
-        <TableBody>
-            {createRow('Easiest', getWordByRank(Object.keys(level.solutions).length - 1, level), level)}
-            {level.usersWord == BLANK && createRow('Yours', level.usersWord, level)}
-            {createRow('Best', getWordByRank(0, level), level)}
-        </TableBody>
+        <>
+            {format('Level ' + (gameState.levels.indexOf(level) + 1))}
+            <TableBody>
+                {createRow('Easiest', getWordByRank(Object.keys(level.solutions).length - 1, level), level)}
+                {createRow('Yours', level.usersWord, level)}
+                {createRow('Best', getWordByRank(0, level), level)}
+            </TableBody>
+        </>
     ));
 
     const table = (
