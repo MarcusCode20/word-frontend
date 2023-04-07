@@ -1,11 +1,11 @@
-import { startGame, getGameState } from '../features/gameSlice';
+import { startGame, getCurrentGame } from '../features/gameSlice';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { Button, Dialog } from '@mui/material';
 
 const WelcomeScreen = () => {
     const dispatch = useAppDispatch();
 
-    const started = useAppSelector(getGameState).started;
+    const started = useAppSelector(getCurrentGame).started;
 
     const onClose = () => {
         dispatch(startGame());

@@ -4,41 +4,72 @@ import InformationBar from './components/InformationBar';
 import Keyboard from './components/Keyboard';
 import TitleBar from './components/TitleBar';
 import WelcomeScreen from './components/WelcomeScreen';
-import EndScreen from './components/StatScreen';
-import { setGameData, getGameState, Mode } from './features/gameSlice';
+import StatScreen from './components/StatScreen';
+import {
+    setGameData,
+    getCurrentGame,
+    Mode,
+    getCurrentMode,
+    startGame,
+    getDailyGame,
+    loadCachedDaily
+} from './features/gameSlice';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { useEffect } from 'react';
-import axios from 'axios';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Zoom } from 'react-toastify';
 import './toastify.css';
-import CryptoJS from 'crypto-js';
+import { getGameDataRequest, postDailyScoreRequest } from './requests/Requests';
+
+enum StorageKey {
+    GAME_SAVED = 'word.game.guess.daily.data.game',
+    SCORE_SAVED = 'word.game.guess.daily.data.score',
+    DATE_SAVED = 'word.game.guess.daily.data.date'
+}
 
 const App = () => {
-    const mode = useAppSelector(getGameState).mode;
+    const game = useAppSelector(getCurrentGame);
+    const mode = useAppSelector(getCurrentMode);
+    const dailyGame = useAppSelector(getDailyGame);
+    const dailyGameEnded = !dailyGame.alive && dailyGame.started && dailyGame.loaded;
     const dispatch = useAppDispatch();
 
-    const sendGameRequest = () => {
-        const request = mode == Mode.DAILY ? 'api/words/daily' : 'api/words/practice';
+    const getGameData = () => {
+        if (!game.loaded) {
+            const cachedDaily = localStorage.getItem(StorageKey.GAME_SAVED);
+            if (cachedDaily && mode == Mode.DAILY) {
+                dispatch(loadCachedDaily(JSON.parse(cachedDaily)));
+            } else {
+                getGameDataRequest(mode).then((data: any) => {
+                    dispatch(setGameData(data));
+                    dispatch(startGame());
+                });
+            }
+        }
+    };
 
-        axios
-            .get(request)
-            .then(function (response) {
-                const decrypt = CryptoJS.AES.decrypt(response.data, 'super secure secret key');
-                const decryptedData = JSON.parse(decrypt.toString(CryptoJS.enc.Utf8));
-                dispatch(setGameData(decryptedData));
-            })
-            .catch(function (error) {
-                // handle error
-                console.log(error);
-            })
-            .finally(function () {
-                // always executed
+    const saveDailyGame = () => {
+        if (dailyGame.loaded) {
+            localStorage.setItem(StorageKey.GAME_SAVED, JSON.stringify(dailyGame));
+        }
+    };
+
+    const sendDailyScore = () => {
+        const alreadySent = localStorage.getItem(StorageKey.SCORE_SAVED);
+        if (dailyGameEnded && !alreadySent) {
+            const score = dailyGame.levels.reduce((partialSum, level) => partialSum + level.score, 0);
+            postDailyScoreRequest('Marcus', score).then((status: any) => {
+                if (status == 200) {
+                    localStorage.setItem(StorageKey.SCORE_SAVED, 'true');
+                }
             });
+        }
     };
     //In React StrictMode useEffect is run twice as screen is rendered twice to spot bugs
-    useEffect(sendGameRequest, [mode]);
+    useEffect(getGameData, [mode]);
+    useEffect(saveDailyGame, [dailyGame]);
+    useEffect(sendDailyScore, [dailyGameEnded]);
 
     return (
         <Box
@@ -59,8 +90,7 @@ const App = () => {
                 }
             }}
         >
-            <WelcomeScreen />
-            <EndScreen />
+            <StatScreen />
             <TitleBar />
             <InformationBar />
             <GameScreen />

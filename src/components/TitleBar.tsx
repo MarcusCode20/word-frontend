@@ -1,10 +1,13 @@
-import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
-import { getGameState, Mode, setMode } from '../features/gameSlice';
+import { Box, Button, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { getCurrentMode, Mode, setMode } from '../features/gameSlice';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { useState } from 'react';
+import Leaderboard from './Leaderboard';
 
 const TitleBar = () => {
     const dispatch = useAppDispatch();
-    const mode = useAppSelector(getGameState).mode;
+    const mode = useAppSelector(getCurrentMode);
+    const [showLeaderboard, setShowLeaderboard] = useState(false);
 
     const handleChange = (event: React.MouseEvent<HTMLElement>, newMode: Mode) => {
         if (newMode != null) {
@@ -25,9 +28,21 @@ const TitleBar = () => {
                 borderWidth: 'thin',
                 display: 'flex',
                 flexDirection: 'row',
-                justifyContent: 'flex-end'
+                justifyContent: 'space-between'
             }}
         >
+            <Button
+                sx={{
+                    background: '#FFFBFB',
+                    fontFamily: 'Times New Roman',
+                    fontWeight: 'bold',
+                    color: 'black'
+                }}
+                onClick={() => setShowLeaderboard(true)}
+            >
+                Leaderboard
+            </Button>
+            <Leaderboard show={showLeaderboard} onclose={() => setShowLeaderboard(false)} />
             <ToggleButtonGroup
                 size="small"
                 value={mode}

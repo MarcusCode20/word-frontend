@@ -2,18 +2,20 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../app/store';
 import { toast } from 'react-toastify';
 
-// Define a type for the slice state
 export interface GameState {
-    levels: LevelData[];
-    currentLevelNo: number;
-    score: number;
-    alive: boolean;
-    loaded: boolean;
-    started: boolean;
-    mode: Mode;
+    games: Record<Mode, GameData>;
+    currentMode: Mode;
 }
 
 export interface GameData {
+    levels: LevelData[];
+    currentLevelNo: number;
+    alive: boolean;
+    loaded: boolean;
+    started: boolean;
+}
+
+export interface RawData {
     hiddenWord: string;
     solutions: WordAndScore;
     inputLength: number;
@@ -54,14 +56,20 @@ export const MAX_LEVEL = 4;
 export const ONE_MINUTE = 60;
 
 // Define the initial state using that type
-const initialState: GameState = {
+const intitalGameData: GameData = {
     levels: [],
     currentLevelNo: 0,
-    score: 0,
     alive: false,
     loaded: false,
-    started: false,
-    mode: Mode.DAILY
+    started: false
+};
+
+const initialState: GameState = {
+    games: {
+        [Mode.DAILY]: intitalGameData,
+        [Mode.PRACTICE]: intitalGameData
+    },
+    currentMode: Mode.DAILY
 };
 
 export const gameSlice = createSlice({
@@ -70,8 +78,9 @@ export const gameSlice = createSlice({
     initialState,
     reducers: {
         checkUserWord: (state) => {
+            const currentGame = state.games[state.currentMode];
             //Get current level
-            const currentLevel = state.levels[state.currentLevelNo];
+            const currentLevel = currentGame.levels[currentGame.currentLevelNo];
             if (currentLevel.status == Status.ACTIVE) {
                 //Generate the user's word from the hidden word and the user's input as an array
                 const userWordArray = Array.from(currentLevel.hiddenWord);
@@ -86,22 +95,22 @@ export const gameSlice = createSlice({
                 const userWord = userWordArray.join(BLANK);
                 if (currentLevel.solutions[userWord]) {
                     currentLevel.status = Status.CORRECT;
-                    state.score += currentLevel.solutions[userWord];
                     currentLevel.score = currentLevel.solutions[userWord];
                     currentLevel.usersWord = userWord;
 
-                    if (state.currentLevelNo + 1 <= MAX_LEVEL) {
-                        state.levels[state.currentLevelNo + 1].status = Status.ACTIVE;
-                        state.currentLevelNo++;
+                    if (currentGame.currentLevelNo + 1 <= MAX_LEVEL) {
+                        currentGame.levels[currentGame.currentLevelNo + 1].status = Status.ACTIVE;
+                        currentGame.currentLevelNo++;
                     } else {
-                        state.alive = false;
+                        currentGame.alive = false;
                     }
                 } else {
                     toast('Not a valid word!');
                 }
             }
         },
-        setGameData: (state, action: PayloadAction<GameData[]>) => {
+        setGameData: (state, action: PayloadAction<RawData[]>) => {
+            const currentGame = state.games[state.currentMode];
             const levels: LevelData[] = [];
             for (let data of action.payload) {
                 levels.push({
@@ -114,11 +123,15 @@ export const gameSlice = createSlice({
                     score: 0
                 });
             }
-            state.levels = levels;
-            state.loaded = true;
+            currentGame.levels = levels;
+            currentGame.currentLevelNo = 0;
+            currentGame.alive = false;
+            currentGame.started = false;
+            currentGame.loaded = true;
         },
         addLetter: (state, action: PayloadAction<string>) => {
-            const currentLevel = state.levels[state.currentLevelNo];
+            const currentGame = state.games[state.currentMode];
+            const currentLevel = currentGame.levels[currentGame.currentLevelNo];
             if (currentLevel.status == Status.ACTIVE) {
                 const currentLevelInput = currentLevel.userInput;
                 for (let index in currentLevelInput) {
@@ -132,7 +145,8 @@ export const gameSlice = createSlice({
             }
         },
         removeLetter: (state) => {
-            const currentLevel = state.levels[state.currentLevelNo];
+            const currentGame = state.games[state.currentMode];
+            const currentLevel = currentGame.levels[currentGame.currentLevelNo];
             if (currentLevel.status == Status.ACTIVE) {
                 const currentLevelInput = currentLevel.userInput;
 
@@ -149,28 +163,38 @@ export const gameSlice = createSlice({
             }
         },
         skipLevel: (state) => {
-            state.levels[state.currentLevelNo].status = Status.SKIPPED;
-            if (state.currentLevelNo + 1 <= MAX_LEVEL) {
-                state.levels[state.currentLevelNo + 1].status = Status.ACTIVE;
-                state.currentLevelNo++;
+            const currentGame = state.games[state.currentMode];
+            currentGame.levels[currentGame.currentLevelNo].status = Status.SKIPPED;
+            if (currentGame.currentLevelNo + 1 <= MAX_LEVEL) {
+                currentGame.levels[currentGame.currentLevelNo + 1].status = Status.ACTIVE;
+                currentGame.currentLevelNo++;
             } else {
-                state.alive = false;
+                currentGame.alive = false;
             }
         },
         startGame: (state) => {
-            state.levels[0].status = Status.ACTIVE;
-            state.alive = true;
-            state.started = true;
+            const currentGame = state.games[state.currentMode];
+            currentGame.levels[0].status = Status.ACTIVE;
+            currentGame.alive = true;
+            currentGame.started = true;
         },
         setMode: (state, action: PayloadAction<Mode>) => {
-            state.mode = action.payload;
+            state.currentMode = action.payload;
+        },
+        loadCachedDaily: (state, action: PayloadAction<GameData>) => {
+            state.games[Mode.DAILY] = action.payload;
         }
         //--------------------FIX------------------------//
     }
 });
 
-export const { setGameData, addLetter, checkUserWord, removeLetter, skipLevel, startGame, setMode } = gameSlice.actions;
+export const { setGameData, addLetter, checkUserWord, removeLetter, skipLevel, startGame, setMode, loadCachedDaily } =
+    gameSlice.actions;
 
-export const getGameState = (state: RootState) => state.game;
+export const getCurrentGame = (state: RootState) => state.game.games[state.game.currentMode];
+
+export const getCurrentMode = (state: RootState) => state.game.currentMode;
+
+export const getDailyGame = (state: RootState) => state.game.games[Mode.DAILY];
 
 export default gameSlice.reducer;

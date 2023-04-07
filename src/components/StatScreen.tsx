@@ -1,11 +1,11 @@
-import { BLANK, LevelData, getGameState } from '../features/gameSlice';
+import { LevelData, getCurrentGame } from '../features/gameSlice';
 import { useAppSelector } from '../app/hooks';
 import { Box, Dialog, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { useState } from 'react';
 
-const WelcomeScreen = () => {
+const StatScreen = () => {
     const [open, setOpen] = useState(true);
-    const gameState = useAppSelector(getGameState);
+    const gameState = useAppSelector(getCurrentGame);
     const shouldShow = !gameState.alive && gameState.started && open;
 
     const format = (header: string) => (
@@ -142,4 +142,4 @@ const WelcomeScreen = () => {
     );
 };
 
-export default WelcomeScreen;
+export default StatScreen;

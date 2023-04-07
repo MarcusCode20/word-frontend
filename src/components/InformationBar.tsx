@@ -1,5 +1,5 @@
 import { Box, Paper } from '@mui/material';
-import { getGameState } from '../features/gameSlice';
+import { getCurrentGame } from '../features/gameSlice';
 import { useAppSelector } from '../app/hooks';
 
 const infoCss = {
@@ -18,13 +18,13 @@ const infoCss = {
 };
 
 const InformationBar = () => {
-    const gameState = useAppSelector(getGameState);
+    const game = useAppSelector(getCurrentGame);
 
     const possiblities =
-        gameState.loaded && gameState.started
-            ? 'Possibilities: ' + Object.keys(gameState.levels[gameState.currentLevelNo].solutions).length
+        game.loaded && game.started
+            ? 'Possibilities: ' + Object.keys(game.levels[game.currentLevelNo].solutions).length
             : 'Possibilities: 0';
-    const score = 'Score: ' + gameState.score;
+    const score = 'Score: ' + game.levels.reduce((partialSum, level) => partialSum + level.score, 0);
 
     const scoreboard = (
         <Paper key="scoreComp" sx={infoCss}>

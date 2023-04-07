@@ -1,10 +1,10 @@
 import { Box } from '@mui/material';
 import Level from './Level';
-import { getGameState } from '../features/gameSlice';
+import { getCurrentGame } from '../features/gameSlice';
 import { useAppSelector } from '../app/hooks';
 
 const GameScreen = () => {
-    const levels = useAppSelector(getGameState).levels.map((level) => (
+    const levels = useAppSelector(getCurrentGame).levels.map((level) => (
         <Level key={level.hiddenWord} data={level}></Level>
     ));
 
