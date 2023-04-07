@@ -23,7 +23,7 @@ const App = () => {
         const request = mode == Mode.DAILY ? 'api/words/daily' : 'api/words/practice';
 
         axios
-            .get('http://localhost:3000/' + request)
+            .get(request)
             .then(function (response) {
                 const decrypt = CryptoJS.AES.decrypt(response.data, 'super secure secret key');
                 const decryptedData = JSON.parse(decrypt.toString(CryptoJS.enc.Utf8));
