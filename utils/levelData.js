@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 
-export default function getGameData() {
+export function getGameData() {
     const data = readFileSync('public/game_words.json');
 
     const levelMetaData = [];

@@ -3,6 +3,7 @@ import { getCurrentMode, Mode, setMode } from '../features/gameSlice';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { useState } from 'react';
 import Leaderboard from './Leaderboard';
+import LeaderboardIcon from '@mui/icons-material/Leaderboard';
 
 const TitleBar = () => {
     const dispatch = useAppDispatch();
@@ -34,13 +35,11 @@ const TitleBar = () => {
             <Button
                 sx={{
                     background: '#FFFBFB',
-                    fontFamily: 'Times New Roman',
-                    fontWeight: 'bold',
                     color: 'black'
                 }}
                 onClick={() => setShowLeaderboard(true)}
             >
-                Leaderboard
+                <LeaderboardIcon sx={{ width: '100%', height: '100%' }} />
             </Button>
             <Leaderboard show={showLeaderboard} onclose={() => setShowLeaderboard(false)} />
             <ToggleButtonGroup

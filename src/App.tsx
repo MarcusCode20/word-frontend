@@ -12,7 +12,8 @@ import {
     getCurrentMode,
     startGame,
     getDailyGame,
-    loadCachedDaily
+    loadCachedDaily,
+    getLastUpdated
 } from './features/gameSlice';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { useEffect } from 'react';
@@ -28,12 +29,27 @@ enum StorageKey {
     DATE_SAVED = 'word.game.guess.daily.data.date'
 }
 
+function getCurrentDay() {
+    const date = new Date();
+    //Month is indexed from zero...
+    return [date.getUTCDate(), date.getUTCMonth() + 1, date.getUTCFullYear()].toString();
+}
+
 const App = () => {
     const game = useAppSelector(getCurrentGame);
     const mode = useAppSelector(getCurrentMode);
     const dailyGame = useAppSelector(getDailyGame);
+    const lastUpdated = useAppSelector(getLastUpdated);
     const dailyGameEnded = !dailyGame.alive && dailyGame.started && dailyGame.loaded;
     const dispatch = useAppDispatch();
+
+    const resetDailyData = () => {
+        const currentDay = getCurrentDay();
+        const lastSavedDay = localStorage.getItem(StorageKey.DATE_SAVED);
+        if (lastSavedDay != currentDay) {
+            localStorage.clear();
+        }
+    };
 
     const getGameData = () => {
         if (!game.loaded) {
@@ -50,14 +66,16 @@ const App = () => {
     };
 
     const saveDailyGame = () => {
-        if (dailyGame.loaded) {
+        const currentDay = getCurrentDay();
+        if (dailyGame.loaded && lastUpdated == currentDay) {
             localStorage.setItem(StorageKey.GAME_SAVED, JSON.stringify(dailyGame));
+            localStorage.setItem(StorageKey.DATE_SAVED, currentDay);
         }
     };
 
     const sendDailyScore = () => {
         const alreadySent = localStorage.getItem(StorageKey.SCORE_SAVED);
-        if (dailyGameEnded && !alreadySent) {
+        if (dailyGameEnded && !alreadySent && lastUpdated == getCurrentDay()) {
             const score = dailyGame.levels.reduce((partialSum, level) => partialSum + level.score, 0);
             postDailyScoreRequest('Marcus', score).then((status: any) => {
                 if (status == 200) {
@@ -67,6 +85,7 @@ const App = () => {
         }
     };
     //In React StrictMode useEffect is run twice as screen is rendered twice to spot bugs
+    useEffect(resetDailyData, []);
     useEffect(getGameData, [mode]);
     useEffect(saveDailyGame, [dailyGame]);
     useEffect(sendDailyScore, [dailyGameEnded]);

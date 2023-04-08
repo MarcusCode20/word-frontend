@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 export interface GameState {
     games: Record<Mode, GameData>;
     currentMode: Mode;
+    date: string;
 }
 
 export interface GameData {
@@ -19,6 +20,12 @@ export interface RawData {
     hiddenWord: string;
     solutions: WordAndScore;
     inputLength: number;
+}
+
+export interface RawDataPayload {
+    data: RawData[];
+    date?: number[];
+    mode: Mode;
 }
 
 //The the key is the word
@@ -69,7 +76,8 @@ const initialState: GameState = {
         [Mode.DAILY]: intitalGameData,
         [Mode.PRACTICE]: intitalGameData
     },
-    currentMode: Mode.DAILY
+    currentMode: Mode.DAILY,
+    date: ''
 };
 
 export const gameSlice = createSlice({
@@ -109,10 +117,10 @@ export const gameSlice = createSlice({
                 }
             }
         },
-        setGameData: (state, action: PayloadAction<RawData[]>) => {
+        setGameData: (state, action: PayloadAction<RawDataPayload>) => {
             const currentGame = state.games[state.currentMode];
             const levels: LevelData[] = [];
-            for (let data of action.payload) {
+            for (let data of action.payload.data) {
                 levels.push({
                     hiddenWord: data.hiddenWord,
                     solutions: data.solutions,
@@ -122,6 +130,9 @@ export const gameSlice = createSlice({
                     usersWord: BLANK,
                     score: 0
                 });
+            }
+            if (action.payload.mode == Mode.DAILY) {
+                state.date = (action.payload.date as number[]).toString();
             }
             currentGame.levels = levels;
             currentGame.currentLevelNo = 0;
@@ -196,5 +207,7 @@ export const getCurrentGame = (state: RootState) => state.game.games[state.game.
 export const getCurrentMode = (state: RootState) => state.game.currentMode;
 
 export const getDailyGame = (state: RootState) => state.game.games[Mode.DAILY];
+
+export const getLastUpdated = (state: RootState) => state.game.date;
 
 export default gameSlice.reducer;

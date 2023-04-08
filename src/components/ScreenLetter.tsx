@@ -30,7 +30,7 @@ const ScreenLetter = (prop: PropsWithChildren<ScreenLetterProp>) => {
                     maxWidth: '40px',
                     height: '40px',
                     maxHeight: '40px',
-                    fontSize: '40px',
+                    fontSize: '34px',
                     //CSS for styling
                     lineHeight: '100%',
                     fontWeight: 'bold',

@@ -24,7 +24,7 @@ const Leaderboard = (props: LeaderboardProps) => {
             getLeaderboardRequest().then((data: any) => {
                 const sortedData: UserScore[] = [];
                 const rawData = data as RawUserScore[];
-                rawData.sort((a, b) => a.score - b.score);
+                rawData.sort((a, b) => b.score - a.score);
 
                 for (let i = 0; i < rawData.length; i++) {
                     const data = rawData[i];
