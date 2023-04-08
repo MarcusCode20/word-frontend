@@ -5,7 +5,6 @@ import { toast } from 'react-toastify';
 export interface GameState {
     games: Record<Mode, GameData>;
     currentMode: Mode;
-    date: string;
 }
 
 export interface GameData {
@@ -14,6 +13,7 @@ export interface GameData {
     alive: boolean;
     loaded: boolean;
     started: boolean;
+    date?: string;
 }
 
 export interface RawData {
@@ -76,8 +76,7 @@ const initialState: GameState = {
         [Mode.DAILY]: intitalGameData,
         [Mode.PRACTICE]: intitalGameData
     },
-    currentMode: Mode.DAILY,
-    date: ''
+    currentMode: Mode.DAILY
 };
 
 export const gameSlice = createSlice({
@@ -132,7 +131,7 @@ export const gameSlice = createSlice({
                 });
             }
             if (action.payload.mode == Mode.DAILY) {
-                state.date = (action.payload.date as number[]).toString();
+                currentGame.date = (action.payload.date as number[]).toString();
             }
             currentGame.levels = levels;
             currentGame.currentLevelNo = 0;
@@ -207,7 +206,5 @@ export const getCurrentGame = (state: RootState) => state.game.games[state.game.
 export const getCurrentMode = (state: RootState) => state.game.currentMode;
 
 export const getDailyGame = (state: RootState) => state.game.games[Mode.DAILY];
-
-export const getLastUpdated = (state: RootState) => state.game.date;
 
 export default gameSlice.reducer;

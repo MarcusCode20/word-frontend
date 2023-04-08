@@ -1,11 +1,7 @@
-import { Dialog, Box, Table, TableCell, TableContainer, TableHead, TableRow, TableBody } from '@mui/material';
+import { Dialog, Box, Table, TableCell, TableContainer, TableHead, TableRow, TableBody, Button } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { getLeaderboardRequest } from '../requests/Requests';
-
-interface LeaderboardProps {
-    show: boolean;
-    onclose: () => void;
-}
+import LeaderboardIcon from '@mui/icons-material/Leaderboard';
 
 interface UserScore extends RawUserScore {
     rank: number;
@@ -16,11 +12,12 @@ interface RawUserScore {
     score: number;
 }
 
-const Leaderboard = (props: LeaderboardProps) => {
+const Leaderboard = () => {
     const [leaderboardData, setLeaderboardData] = useState<UserScore[]>([]);
+    const [showLeaderboard, setShowLeaderboard] = useState(false);
 
     const getLeaderboardData = () => {
-        if (props.show) {
+        if (showLeaderboard) {
             getLeaderboardRequest().then((data: any) => {
                 const sortedData: UserScore[] = [];
                 const rawData = data as RawUserScore[];
@@ -39,7 +36,7 @@ const Leaderboard = (props: LeaderboardProps) => {
         }
     };
 
-    useEffect(getLeaderboardData, [props.show]);
+    useEffect(getLeaderboardData, [showLeaderboard]);
 
     const title = (
         <Box
@@ -90,42 +87,53 @@ const Leaderboard = (props: LeaderboardProps) => {
     );
 
     return (
-        <Dialog
-            onClose={props.onclose}
-            open={props.show}
-            PaperProps={{
-                style: {
-                    border: 'solid',
-                    borderWidth: '2px',
-                    borderRadius: '10px',
-                    borderColor: '#858786',
-                    background: 'transparent',
-                    width: '100%',
-                    height: '60%',
-                    overflow: 'hidden'
-                }
-            }}
-        >
-            <Box
+        <>
+            <Button
                 sx={{
-                    margin: 0,
-                    padding: 0,
-                    width: '100%',
-                    height: '100%',
-                    fontWeight: 'bold',
-                    background: 'white',
-                    color: 'black',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'flex-start',
-                    justifyItems: 'flex-start',
-                    fontSize: '10px'
+                    background: '#FFFBFB',
+                    color: 'black'
+                }}
+                onClick={() => setShowLeaderboard(true)}
+            >
+                <LeaderboardIcon sx={{ width: '100%', height: '100%' }} />
+            </Button>
+            <Dialog
+                onClose={() => setShowLeaderboard(false)}
+                open={showLeaderboard}
+                PaperProps={{
+                    style: {
+                        border: 'solid',
+                        borderWidth: '2px',
+                        borderRadius: '10px',
+                        borderColor: '#858786',
+                        background: 'transparent',
+                        width: '100%',
+                        height: '60%',
+                        overflow: 'hidden'
+                    }
                 }}
             >
-                {title}
-                {table}
-            </Box>
-        </Dialog>
+                <Box
+                    sx={{
+                        margin: 0,
+                        padding: 0,
+                        width: '100%',
+                        height: '100%',
+                        fontWeight: 'bold',
+                        background: 'white',
+                        color: 'black',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'flex-start',
+                        justifyItems: 'flex-start',
+                        fontSize: '10px'
+                    }}
+                >
+                    {title}
+                    {table}
+                </Box>
+            </Dialog>
+        </>
     );
 };
 

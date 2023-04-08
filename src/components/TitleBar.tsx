@@ -32,16 +32,7 @@ const TitleBar = () => {
                 justifyContent: 'space-between'
             }}
         >
-            <Button
-                sx={{
-                    background: '#FFFBFB',
-                    color: 'black'
-                }}
-                onClick={() => setShowLeaderboard(true)}
-            >
-                <LeaderboardIcon sx={{ width: '100%', height: '100%' }} />
-            </Button>
-            <Leaderboard show={showLeaderboard} onclose={() => setShowLeaderboard(false)} />
+            <Leaderboard />
             <ToggleButtonGroup
                 size="small"
                 value={mode}

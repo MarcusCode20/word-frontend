@@ -12,8 +12,7 @@ import {
     getCurrentMode,
     startGame,
     getDailyGame,
-    loadCachedDaily,
-    getLastUpdated
+    loadCachedDaily
 } from './features/gameSlice';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { useEffect } from 'react';
@@ -22,11 +21,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Zoom } from 'react-toastify';
 import './toastify.css';
 import { getGameDataRequest, postDailyScoreRequest } from './requests/Requests';
+import NameScreen from './components/NameScreen';
 
-enum StorageKey {
-    GAME_SAVED = 'word.game.guess.daily.data.game',
-    SCORE_SAVED = 'word.game.guess.daily.data.score',
-    DATE_SAVED = 'word.game.guess.daily.data.date'
+export enum StorageKey {
+    GAME_SAVED = 'game',
+    SCORE_SAVED = 'score',
+    DATE_SAVED = 'date',
+    USERNAME = 'username'
 }
 
 function getCurrentDay() {
@@ -39,7 +40,7 @@ const App = () => {
     const game = useAppSelector(getCurrentGame);
     const mode = useAppSelector(getCurrentMode);
     const dailyGame = useAppSelector(getDailyGame);
-    const lastUpdated = useAppSelector(getLastUpdated);
+    const lastUpdated = dailyGame.date;
     const dailyGameEnded = !dailyGame.alive && dailyGame.started && dailyGame.loaded;
     const dispatch = useAppDispatch();
 
@@ -75,9 +76,10 @@ const App = () => {
 
     const sendDailyScore = () => {
         const alreadySent = localStorage.getItem(StorageKey.SCORE_SAVED);
-        if (dailyGameEnded && !alreadySent && lastUpdated == getCurrentDay()) {
+        const username = localStorage.getItem(StorageKey.USERNAME);
+        if (dailyGameEnded && !alreadySent && lastUpdated == getCurrentDay() && username) {
             const score = dailyGame.levels.reduce((partialSum, level) => partialSum + level.score, 0);
-            postDailyScoreRequest('Marcus', score).then((status: any) => {
+            postDailyScoreRequest(username, score).then((status: any) => {
                 if (status == 200) {
                     localStorage.setItem(StorageKey.SCORE_SAVED, 'true');
                 }
@@ -109,6 +111,7 @@ const App = () => {
                 }
             }}
         >
+            <NameScreen />
             <StatScreen />
             <TitleBar />
             <InformationBar />
