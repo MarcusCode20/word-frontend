@@ -12,7 +12,7 @@ app.use(express.json());
 app.use('/api/words/practice', practiceRouter);
 app.use('/api/words/daily', dailyRouter);
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`App is running on port ${PORT}`);
+const port = process.env.PORT || 8080;
+app.listen(port, () => {
+    console.log('App is listening on port', port);
 });
