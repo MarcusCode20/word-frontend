@@ -4,6 +4,8 @@ gcloud builds submit --tag europe-west2-docker.pkg.dev/word-game-383622/word-gam
 
 gcloud container clusters create-auto word-game-cluster --region europe-west2
 
+kubectl describe managedcertificate managed-cert
+
 C:\Users\marcu\AppData\Roaming\gcloud\logs\2023.04.13\23.47.06.779811.log
 
 PS C:\Projects\word-frontend> gcloud artifacts repositories create word-game-repo --project=word-game-383622 --repository-format=docker  --location=europe-west2 --description="Docker repository"
