@@ -19,7 +19,8 @@ import { useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Zoom } from 'react-toastify';
-import './toastify.css';
+import './styles/Toast.css';
+import './styles/App.css';
 import { getGameDataRequest, postDailyScoreRequest } from './requests/Requests';
 import NameScreen from './components/NameScreen';
 
@@ -94,15 +95,8 @@ const App = () => {
 
     return (
         <Box
+            className="app-container"
             sx={{
-                position: 'fixed',
-                margin: '0px',
-                width: '100%',
-                height: '100%',
-                backgroundColor: '#FFFBFB',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'flex-start',
                 '& .MuiPaper-root': {
                     border: 'solid',
                     borderWidth: 'thin',
@@ -128,29 +122,8 @@ const App = () => {
                 draggable={false}
                 pauseOnHover={false}
                 transition={Zoom}
-                className="alert"
-                style={{
-                    width: '100%',
-                    maxWidth: '200px',
-                    backgroundColor: 'transparent'
-                }}
-                toastStyle={{
-                    margin: '4px',
-                    padding: 0,
-                    width: '100%',
-                    background: '#FFFBFB',
-                    fontSize: '15px',
-                    lineHeight: '160%',
-                    fontWeight: 'bold',
-                    color: 'black',
-                    textAlign: 'center',
-                    userSelect: 'none',
-                    verticalAlign: 'middle',
-                    border: 'solid',
-                    borderWidth: 'thin',
-                    borderRadius: '10px',
-                    borderColor: '#858786'
-                }}
+                className="container"
+                toastClassName="toast"
             />
         </Box>
     );

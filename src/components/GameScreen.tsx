@@ -2,33 +2,14 @@ import { Box } from '@mui/material';
 import Level from './Level';
 import { getCurrentGame } from '../features/gameSlice';
 import { useAppSelector } from '../app/hooks';
+import '../styles/GameScreen.css';
 
 const GameScreen = () => {
     const levels = useAppSelector(getCurrentGame).levels.map((level) => (
         <Level key={level.hiddenWord} data={level}></Level>
     ));
 
-    return (
-        <Box
-            sx={{
-                //CSS for itself
-                flexGrow: 1,
-                margin: '0 auto 0 auto',
-                width: '100%',
-                maxWidth: '450px',
-                height: '50%',
-                maxHeight: '600px',
-                backgroundColor: '#FFFBFB',
-                //CSS for  children
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-evenly',
-                alignItems: 'stretch'
-            }}
-        >
-            {levels}
-        </Box>
-    );
+    return <Box className="gameScreen-container">{levels}</Box>;
 };
 
 export default GameScreen;

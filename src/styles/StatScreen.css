@@ -1,0 +1,41 @@
+.statScreen-container {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-weight: bold;
+    background: white;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    justify-items: flex-start;
+    font-size: 10px;
+}
+
+.statScreen-table.MuiTable-root .MuiTableCell-root {
+    padding: 3px 8px;
+}
+
+.statScreen-title {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    font-size: 20px;
+    line-height: 200%;
+    font-weight: bold;
+    text-align: center;
+    background: white;
+    color: black;
+}
+
+.statScreen-level-title {
+    margin: 0 0 0 8px;
+    padding: 0;
+    width: 100%;
+    font-size: 13px;
+    line-height: 200%;
+    font-weight: bold;
+    background: white;
+    color: black;
+}

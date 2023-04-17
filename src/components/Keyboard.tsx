@@ -4,46 +4,7 @@ import { useAppDispatch } from '../app/hooks';
 import DoneOutlineRoundedIcon from '@mui/icons-material/DoneOutlineRounded';
 import BackspaceRoundedIcon from '@mui/icons-material/BackspaceRounded';
 import SkipNextRoundedIcon from '@mui/icons-material/SkipNextRounded';
-
-const KeyboardCss = {
-    //CSS for itself
-    flexGrow: '1',
-    margin: '0 auto 0 auto',
-    width: '100%',
-    maxWidth: '580px',
-    maxHeight: '200px',
-    backgroundColor: '#C3BFC7',
-    //CSS for its children
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'stretch'
-};
-
-const KeyboardRowCss = {
-    //CSS for itself
-    flexGrow: '1',
-    margin: '0px',
-    backgroundColor: '#C3BFC7',
-    //CSS for its children
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center'
-};
-
-const keyboardButtonCss = {
-    //CSS for itself
-    //CSS for sizing
-    //TODO: Make button size relative
-    margin: '0px',
-    padding: '0px',
-    lineHeight: '100%',
-    fontSize: '20px',
-    minWidth: 'calc(100% / 10)',
-    //CSS for styling
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: 'black'
-};
+import '../styles/Keyboard.css';
 
 const Keyboard = () => {
     const dispatch = useAppDispatch();
@@ -66,33 +27,33 @@ const Keyboard = () => {
     const rowThree = ['Z', 'X', 'C', 'V', 'B', 'N', 'M'];
 
     const goButton = (
-        <Button sx={keyboardButtonCss} onClick={checkUserWordCallback}>
+        <Button className="keyboard-button" onClick={checkUserWordCallback}>
             <DoneOutlineRoundedIcon />
         </Button>
     );
 
     const skipButton = (
-        <Button sx={keyboardButtonCss} onClick={skipLevelCallBack}>
+        <Button className="keyboard-button" onClick={skipLevelCallBack}>
             <SkipNextRoundedIcon />
         </Button>
     );
 
     const backButton = (
-        <Button sx={keyboardButtonCss} onClick={removeLetterCallback}>
+        <Button className="keyboard-button" onClick={removeLetterCallback}>
             <BackspaceRoundedIcon />
         </Button>
     );
 
     const groupComps = (row: string[]) => {
         return row.map((letter) => (
-            <Button sx={keyboardButtonCss} key={letter} onClick={addLetterCallback(letter)}>
+            <Button className="keyboard-button" key={letter} onClick={addLetterCallback(letter)}>
                 {letter}
             </Button>
         ));
     };
 
     const toRow = (comps: JSX.Element[]) => {
-        return <Box sx={KeyboardRowCss}>{comps}</Box>;
+        return <Box className="keyboard-row">{comps}</Box>;
     };
 
     const rows = [
@@ -101,7 +62,7 @@ const Keyboard = () => {
         toRow([skipButton, ...groupComps(rowThree), backButton, goButton])
     ];
 
-    return <Box sx={KeyboardCss}>{rows}</Box>;
+    return <Box className="keyboard-container">{rows}</Box>;
 };
 
 export default Keyboard;

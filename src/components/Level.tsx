@@ -2,6 +2,7 @@ import { Box, Paper } from '@mui/material';
 import ScreenLetter from './ScreenLetter';
 import { API_BLANK, LevelData, Status } from '../features/gameSlice';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import '../styles/Level.css';
 
 interface LevelProp {
     data: LevelData;
@@ -50,44 +51,18 @@ const Level = (prop: LevelProp) => {
 
     const display =
         prop.data.status == Status.LOCKED ? (
-            <Box
-                sx={{
-                    //CSS for itself
-                    height: '100%',
-                    margin: '0 2%',
-                    display: 'flex',
-                    //CSS for children
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                }}
-            >
+            <Box className="level-locked">
                 <LockOutlinedIcon></LockOutlinedIcon>
             </Box>
         ) : (
-            <Box
-                sx={{
-                    //CSS for itself
-                    height: '100%',
-                    margin: '0 2%',
-                    display: 'flex',
-                    //CSS for children
-                    flexDirection: 'row',
-                    justifyContent: 'flex-start',
-                    alignItems: 'center',
-                    columnGap: '3%'
-                }}
-            >
-                {generateLetters(hiddenWordArray)}
-            </Box>
+            <Box className="level-unlocked">{generateLetters(hiddenWordArray)}</Box>
         );
 
     return (
         <Paper
+            //Can't use class names on Paper...only Box...
+            className="level-container"
             sx={{
-                margin: '0px 1%',
-                padding: '0px',
-                height: '15%',
                 background: backgroundColour
             }}
             elevation={3}

@@ -2,6 +2,7 @@ import { Dialog, Box, Table, TableCell, TableContainer, TableHead, TableRow, Tab
 import { useEffect, useState } from 'react';
 import { getLeaderboardRequest } from '../requests/Requests';
 import LeaderboardIcon from '@mui/icons-material/Leaderboard';
+import '../styles/Leaderboard.css';
 
 interface UserScore extends RawUserScore {
     rank: number;
@@ -38,23 +39,7 @@ const Leaderboard = () => {
 
     useEffect(getLeaderboardData, [showLeaderboard]);
 
-    const title = (
-        <Box
-            sx={{
-                margin: 0,
-                padding: 0,
-                width: '100%',
-                fontSize: '20px',
-                lineHeight: '200%',
-                fontWeight: 'bold',
-                textAlign: 'center',
-                background: 'white',
-                color: 'black'
-            }}
-        >
-            Daily Leaderboard
-        </Box>
-    );
+    const title = <Box className="leaderboard-title">Daily Leaderboard</Box>;
 
     const leaderboard = leaderboardData.map((data) => (
         <TableRow>
@@ -66,14 +51,7 @@ const Leaderboard = () => {
 
     const table = (
         <TableContainer>
-            <Table
-                size="small"
-                sx={{
-                    '& .MuiTableCell-root': {
-                        padding: '3px 8px'
-                    }
-                }}
-            >
+            <Table size="small" className="leaderboard-table">
                 <TableHead>
                     <TableRow>
                         <TableCell></TableCell>
@@ -88,14 +66,8 @@ const Leaderboard = () => {
 
     return (
         <>
-            <Button
-                sx={{
-                    background: '#FFFBFB',
-                    color: 'black'
-                }}
-                onClick={() => setShowLeaderboard(true)}
-            >
-                <LeaderboardIcon sx={{ width: '100%', height: '100%' }} />
+            <Button className="leaderboard-button" onClick={() => setShowLeaderboard(true)}>
+                <LeaderboardIcon className="leaderboard-icon" />
             </Button>
             <Dialog
                 onClose={() => setShowLeaderboard(false)}
@@ -113,22 +85,7 @@ const Leaderboard = () => {
                     }
                 }}
             >
-                <Box
-                    sx={{
-                        margin: 0,
-                        padding: 0,
-                        width: '100%',
-                        height: '100%',
-                        fontWeight: 'bold',
-                        background: 'white',
-                        color: 'black',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'flex-start',
-                        justifyItems: 'flex-start',
-                        fontSize: '10px'
-                    }}
-                >
+                <Box className="leaderboard-container">
                     {title}
                     {table}
                 </Box>

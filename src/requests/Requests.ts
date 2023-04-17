@@ -4,7 +4,7 @@ import CryptoJS from 'crypto-js';
 
 const key = 'super secure secret key';
 
-const prefix = ''; //http://localhost:3000/
+const prefix = ''; //http://localhost:8080/
 
 function encrypt(data: any) {
     return CryptoJS.AES.encrypt(JSON.stringify(data), key).toString();

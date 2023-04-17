@@ -1,0 +1,13 @@
+.gameScreen-container {
+    flex-grow: 1;
+    margin: 0 auto 0 auto;
+    width: 100%;
+    max-width: 450px;
+    height: 50%;
+    max-height: 600px;
+    background-color: #fffbfb;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: stretch;
+}

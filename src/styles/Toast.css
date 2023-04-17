@@ -1,0 +1,23 @@
+.toast-container {
+    --toastify-toast-min-height: 0px;
+    width: 100%;
+    max-width: 200px;
+    background-color: transparent;
+}
+.toast-toast {
+    margin: 4px;
+    padding: 0;
+    width: 100%;
+    background: #fffbfb;
+    font-size: 15px;
+    line-height: 160%;
+    font-weight: bold;
+    color: black;
+    text-align: center;
+    user-select: none;
+    vertical-align: middle;
+    border: solid;
+    border-width: thin;
+    border-radius: 10px;
+    border-color: #858786;
+}

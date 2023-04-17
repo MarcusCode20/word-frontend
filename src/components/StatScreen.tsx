@@ -2,47 +2,16 @@ import { LevelData, getCurrentGame } from '../features/gameSlice';
 import { useAppSelector } from '../app/hooks';
 import { Box, Dialog, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { useState } from 'react';
+import '../styles/StatScreen.css';
 
 const StatScreen = () => {
     const [open, setOpen] = useState(true);
     const gameState = useAppSelector(getCurrentGame);
     const shouldShow = !gameState.alive && gameState.started && open;
 
-    const format = (header: string) => (
-        <Box
-            sx={{
-                margin: '0 0 0 8px',
-                padding: 0,
-                width: '100%',
-                fontSize: '13px',
-                lineHeight: '200%',
-                fontWeight: 'bold',
-                //textAlign: 'center',
-                background: 'white',
-                color: 'black'
-            }}
-        >
-            {header}
-        </Box>
-    );
+    const format = (header: string) => <Box className="statScreen-level-title">{header}</Box>;
 
-    const title = (
-        <Box
-            sx={{
-                margin: 0,
-                padding: 0,
-                width: '100%',
-                fontSize: '20px',
-                lineHeight: '200%',
-                fontWeight: 'bold',
-                textAlign: 'center',
-                background: 'white',
-                color: 'black'
-            }}
-        >
-            Game Breakdown
-        </Box>
-    );
+    const title = <Box className="statScreen-title">Game Breakdown</Box>;
 
     const getRank = (word: string, level: LevelData) => {
         const unordered = Object.entries(level.solutions);
@@ -81,14 +50,7 @@ const StatScreen = () => {
 
     const table = (
         <TableContainer>
-            <Table
-                size="small"
-                sx={{
-                    '& .MuiTableCell-root': {
-                        padding: '3px 8px'
-                    }
-                }}
-            >
+            <Table size="small" className="statScreen-table">
                 <TableHead>
                     <TableRow>
                         <TableCell></TableCell>
@@ -119,22 +81,7 @@ const StatScreen = () => {
                 }
             }}
         >
-            <Box
-                sx={{
-                    margin: 0,
-                    padding: 0,
-                    width: '100%',
-                    height: '100%',
-                    fontWeight: 'bold',
-                    background: 'white',
-                    color: 'black',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'flex-start',
-                    justifyItems: 'flex-start',
-                    fontSize: '10px'
-                }}
-            >
+            <Box className="statScreen-container">
                 {title}
                 {table}
             </Box>

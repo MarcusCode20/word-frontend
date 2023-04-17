@@ -1,0 +1,24 @@
+.level-locked {
+    height: 100%;
+    margin: 0 2%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.level-unlocked {
+    height: 100%;
+    margin: 0 2%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    column-gap: 3%;
+}
+
+.level-container.MuiPaper-root {
+    margin: 0px 1%;
+    padding: 0px;
+    height: 15%;
+}
