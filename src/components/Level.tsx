@@ -1,6 +1,6 @@
 import { Box, Paper } from '@mui/material';
 import ScreenLetter from './ScreenLetter';
-import { API_BLANK, LevelData, Status } from '../features/gameSlice';
+import { API_BLANK, LevelData, Status } from '../app/gameSlice';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import '../styles/Level.css';
 

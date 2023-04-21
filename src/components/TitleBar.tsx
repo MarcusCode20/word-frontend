@@ -1,8 +1,10 @@
 import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
-import { getCurrentMode, Mode, setMode } from '../features/gameSlice';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { getCurrentMode, Mode, setMode } from '../app/gameSlice';
+import { useAppDispatch, useAppSelector } from '../app/Hooks';
 import Leaderboard from './Leaderboard';
 import '../styles/TitleBar.css';
+import StatScreen from './StatScreen';
+import RestartButton from './RestartButton';
 
 const TitleBar = () => {
     const dispatch = useAppDispatch();
@@ -15,7 +17,11 @@ const TitleBar = () => {
 
     return (
         <Box className="titleBar-container">
-            <Leaderboard />
+            <Box className="titleBar-groupLeft">
+                <Leaderboard />
+                <StatScreen />
+                <RestartButton />
+            </Box>
             <ToggleButtonGroup
                 size="small"
                 value={mode}
@@ -24,8 +30,8 @@ const TitleBar = () => {
                 aria-label="Platform"
                 className="titleBar-toggleGroup"
             >
-                <ToggleButton value={Mode.DAILY}>Daily Mode</ToggleButton>
-                <ToggleButton value={Mode.PRACTICE}>Practice Mode</ToggleButton>
+                <ToggleButton value={Mode.DAILY}>Daily</ToggleButton>
+                <ToggleButton value={Mode.PRACTICE}>Practice</ToggleButton>
             </ToggleButtonGroup>
         </Box>
     );

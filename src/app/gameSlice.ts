@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import type { RootState } from '../app/store';
+import type { RootState } from './store';
 import { toast } from 'react-toastify';
 
 export interface GameState {
@@ -24,6 +24,7 @@ export interface RawData {
 
 export interface RawDataPayload {
     data: RawData[];
+    //Daily mode will supply the date to which is it valid for
     date?: number[];
     mode: Mode;
 }
@@ -116,10 +117,13 @@ export const gameSlice = createSlice({
                 }
             }
         },
-        setGameData: (state, action: PayloadAction<RawDataPayload>) => {
-            const currentGame = state.games[state.currentMode];
+        setGameData: (state, action: PayloadAction<[RawDataPayload, Mode]>) => {
+            const gameData = action.payload[0];
+            const mode = action.payload[1];
+
+            const game = state.games[mode];
             const levels: LevelData[] = [];
-            for (let data of action.payload.data) {
+            for (let data of gameData.data) {
                 levels.push({
                     hiddenWord: data.hiddenWord,
                     solutions: data.solutions,
@@ -130,14 +134,14 @@ export const gameSlice = createSlice({
                     score: 0
                 });
             }
-            if (action.payload.mode == Mode.DAILY) {
-                currentGame.date = (action.payload.date as number[]).toString();
+            if (mode == Mode.DAILY && gameData.mode == Mode.DAILY) {
+                game.date = (gameData.date as number[]).toString();
             }
-            currentGame.levels = levels;
-            currentGame.currentLevelNo = 0;
-            currentGame.alive = false;
-            currentGame.started = false;
-            currentGame.loaded = true;
+            game.levels = levels;
+            game.currentLevelNo = 0;
+            game.alive = false;
+            game.started = false;
+            game.loaded = true;
         },
         addLetter: (state, action: PayloadAction<string>) => {
             const currentGame = state.games[state.currentMode];

@@ -21,8 +21,20 @@ dailyRouter.get('/leaderboard', function (req, res) {
 });
 
 dailyRouter.post('/leaderboard', function (req, res) {
-    const score = decrypt(req.body.payload);
-    leaderboard.push(score);
+    const userAndAnswers = decrypt(req.body.payload);
+    const answers = userAndAnswers.answers;
+    let score = 0;
+    for (let i = 0; i < dailyProblem.length; i++) {
+        const level = dailyProblem[i];
+        const answer = answers[i];
+        if (level.solutions[answer]) {
+            score += level.solutions[answer];
+        }
+    }
+    leaderboard.push({
+        user: userAndAnswers.user,
+        score: score
+    });
     res.status(200).send();
 });
 

@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import Level from './Level';
-import { getCurrentGame } from '../features/gameSlice';
-import { useAppSelector } from '../app/hooks';
+import { getCurrentGame } from '../app/gameSlice';
+import { useAppSelector } from '../app/Hooks';
 import '../styles/GameScreen.css';
 
 const GameScreen = () => {

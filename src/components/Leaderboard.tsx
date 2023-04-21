@@ -1,8 +1,9 @@
 import { Dialog, Box, Table, TableCell, TableContainer, TableHead, TableRow, TableBody, Button } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { getLeaderboardRequest } from '../requests/Requests';
+import { getLeaderboardRequest } from '../app/Requests';
 import LeaderboardIcon from '@mui/icons-material/Leaderboard';
 import '../styles/Leaderboard.css';
+import '../styles/Common.css';
 
 interface UserScore extends RawUserScore {
     rank: number;
@@ -66,8 +67,8 @@ const Leaderboard = () => {
 
     return (
         <>
-            <Button className="leaderboard-button" onClick={() => setShowLeaderboard(true)}>
-                <LeaderboardIcon className="leaderboard-icon" />
+            <Button className="icon-button" onClick={() => setShowLeaderboard(true)}>
+                <LeaderboardIcon className="icon-icon" />
             </Button>
             <Dialog
                 onClose={() => setShowLeaderboard(false)}

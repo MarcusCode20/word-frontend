@@ -1,19 +1,8 @@
 import axios from 'axios';
-import { Mode } from '../features/gameSlice';
-import CryptoJS from 'crypto-js';
+import { Mode } from './gameSlice';
+import { decrypt, encrypt } from './Security';
 
-const key = 'super secure secret key';
-
-const prefix = ''; //http://localhost:8080/
-
-function encrypt(data: any) {
-    return CryptoJS.AES.encrypt(JSON.stringify(data), key).toString();
-}
-
-function decrypt(data: any) {
-    const decrypt = CryptoJS.AES.decrypt(data, key);
-    return JSON.parse(decrypt.toString(CryptoJS.enc.Utf8));
-}
+const prefix = 'http://localhost:8080/'; //http://localhost:8080/
 
 export const getGameDataRequest = (mode: Mode) =>
     new Promise((resolve) => {
@@ -27,11 +16,11 @@ export const getGameDataRequest = (mode: Mode) =>
             .finally(() => ({}));
     });
 
-export const postDailyScoreRequest = (user: string, score: number) =>
+export const postDailyScoreRequest = (user: string, answers: string[]) =>
     new Promise((resolve) => {
         axios
             .post(prefix + 'api/words/daily/leaderboard', {
-                payload: encrypt({ user: user, score: score })
+                payload: encrypt({ user: user, answers: answers })
             })
             .then((response) => resolve(response.status));
     });

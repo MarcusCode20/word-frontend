@@ -28,13 +28,3 @@
     justify-items: flex-start;
     font-size: 10px;
 }
-
-.leaderboard-button {
-    background: #fffbfb;
-}
-
-.leaderboard-icon.MuiSvgIcon-root {
-    color: black;
-    height: 100%;
-    width: 100%;
-}

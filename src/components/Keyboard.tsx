@@ -1,6 +1,6 @@
 import { Box, Button } from '@mui/material';
-import { checkUserWord, skipLevel, addLetter, removeLetter } from '../features/gameSlice';
-import { useAppDispatch } from '../app/hooks';
+import { checkUserWord, skipLevel, addLetter, removeLetter } from '../app/gameSlice';
+import { useAppDispatch } from '../app/Hooks';
 import DoneOutlineRoundedIcon from '@mui/icons-material/DoneOutlineRounded';
 import BackspaceRoundedIcon from '@mui/icons-material/BackspaceRounded';
 import SkipNextRoundedIcon from '@mui/icons-material/SkipNextRounded';

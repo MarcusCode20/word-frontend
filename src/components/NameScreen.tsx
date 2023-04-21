@@ -1,15 +1,15 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material';
 import { useState } from 'react';
-import { StorageKey } from '../App';
-import { BLANK } from '../features/gameSlice';
+import { BLANK } from '../app/gameSlice';
+import { StorageKey, StorageWrapper } from '../app/StorageWrapper';
 
 const NameScreen = () => {
     const [text, setText] = useState('');
     const [initOpen, setInitOpen] = useState(true);
-    const open = !localStorage.getItem(StorageKey.USERNAME) && initOpen;
+    const open = !StorageWrapper.getItem(StorageKey.USERNAME) && initOpen;
     const handleClose = () => {
         if (!(text.trim() == BLANK)) {
-            localStorage.setItem(StorageKey.USERNAME, text);
+            StorageWrapper.setItem(StorageKey.USERNAME, text);
             setInitOpen(false);
         }
     };

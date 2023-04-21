@@ -1,5 +1,5 @@
-import { startGame, getCurrentGame } from '../features/gameSlice';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { startGame, getCurrentGame } from '../app/gameSlice';
+import { useAppDispatch, useAppSelector } from '../app/Hooks';
 import { Button, Dialog } from '@mui/material';
 
 const WelcomeScreen = () => {

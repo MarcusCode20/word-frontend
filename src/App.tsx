@@ -3,8 +3,7 @@ import GameScreen from './components/GameScreen';
 import InformationBar from './components/InformationBar';
 import Keyboard from './components/Keyboard';
 import TitleBar from './components/TitleBar';
-import WelcomeScreen from './components/WelcomeScreen';
-import StatScreen from './components/StatScreen';
+import './styles/App.css';
 import {
     setGameData,
     getCurrentGame,
@@ -13,23 +12,16 @@ import {
     startGame,
     getDailyGame,
     loadCachedDaily
-} from './features/gameSlice';
-import { useAppDispatch, useAppSelector } from './app/hooks';
+} from './app/gameSlice';
+import { useAppDispatch, useAppSelector } from './app/Hooks';
 import { useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Zoom } from 'react-toastify';
 import './styles/Toast.css';
-import './styles/App.css';
-import { getGameDataRequest, postDailyScoreRequest } from './requests/Requests';
+import { getGameDataRequest, postDailyScoreRequest } from './app/Requests';
 import NameScreen from './components/NameScreen';
-
-export enum StorageKey {
-    GAME_SAVED = 'game',
-    SCORE_SAVED = 'score',
-    DATE_SAVED = 'date',
-    USERNAME = 'username'
-}
+import { StorageKey, StorageWrapper } from './app/StorageWrapper';
 
 function getCurrentDay() {
     const date = new Date();
@@ -47,49 +39,63 @@ const App = () => {
 
     const resetDailyData = () => {
         const currentDay = getCurrentDay();
-        const lastSavedDay = localStorage.getItem(StorageKey.DATE_SAVED);
+        const lastSavedDay = StorageWrapper.getItem(StorageKey.DATE_SAVED);
         if (lastSavedDay != currentDay) {
-            localStorage.clear();
+            StorageWrapper.clear();
         }
     };
 
-    const getGameData = () => {
-        if (!game.loaded) {
-            const cachedDaily = localStorage.getItem(StorageKey.GAME_SAVED);
-            if (cachedDaily && mode == Mode.DAILY) {
-                dispatch(loadCachedDaily(JSON.parse(cachedDaily)));
-            } else {
-                getGameDataRequest(mode).then((data: any) => {
-                    dispatch(setGameData(data));
-                    dispatch(startGame());
-                });
-            }
+    const intialGameLoad = () => {
+        getGameDataRequest(Mode.PRACTICE).then((data: any) => {
+            dispatch(setGameData([data, Mode.PRACTICE]));
+        });
+        const cachedDaily = StorageWrapper.getItem(StorageKey.GAME_SAVED);
+        if (cachedDaily) {
+            dispatch(loadCachedDaily(JSON.parse(cachedDaily)));
+        } else {
+            getGameDataRequest(Mode.DAILY).then((data: any) => {
+                dispatch(setGameData([data, Mode.DAILY]));
+                //On first load (not from cache) start the game
+                //This will start the current game, which is daily mode by default.
+                //Look to clean this up...
+                dispatch(startGame());
+            });
+        }
+    };
+
+    const startCurrentGame = () => {
+        if (!game.started && game.loaded && !game.alive) {
+            dispatch(startGame());
         }
     };
 
     const saveDailyGame = () => {
         const currentDay = getCurrentDay();
         if (dailyGame.loaded && lastUpdated == currentDay) {
-            localStorage.setItem(StorageKey.GAME_SAVED, JSON.stringify(dailyGame));
-            localStorage.setItem(StorageKey.DATE_SAVED, currentDay);
+            StorageWrapper.setItem(StorageKey.GAME_SAVED, JSON.stringify(dailyGame));
+            StorageWrapper.setItem(StorageKey.DATE_SAVED, currentDay);
         }
     };
 
     const sendDailyScore = () => {
-        const alreadySent = localStorage.getItem(StorageKey.SCORE_SAVED);
-        const username = localStorage.getItem(StorageKey.USERNAME);
+        const alreadySent = StorageWrapper.getItem(StorageKey.SCORE_SAVED);
+        const username = StorageWrapper.getItem(StorageKey.USERNAME);
         if (dailyGameEnded && !alreadySent && lastUpdated == getCurrentDay() && username) {
-            const score = dailyGame.levels.reduce((partialSum, level) => partialSum + level.score, 0);
-            postDailyScoreRequest(username, score).then((status: any) => {
+            const usersAnswers = dailyGame.levels.map((level) => level.usersWord);
+            postDailyScoreRequest(username, usersAnswers).then((status: any) => {
+                //Status of 200 is successful.
                 if (status == 200) {
-                    localStorage.setItem(StorageKey.SCORE_SAVED, 'true');
+                    StorageWrapper.setItem(StorageKey.SCORE_SAVED, 'true');
                 }
             });
         }
     };
     //In React StrictMode useEffect is run twice as screen is rendered twice to spot bugs
+    //Reset cached daily data first if needs the data is old.
     useEffect(resetDailyData, []);
-    useEffect(getGameData, [mode]);
+    //Now request new data for both daily and practice.
+    useEffect(intialGameLoad, []);
+    useEffect(startCurrentGame, [mode]);
     useEffect(saveDailyGame, [dailyGame]);
     useEffect(sendDailyScore, [dailyGameEnded]);
 
@@ -106,7 +112,6 @@ const App = () => {
             }}
         >
             <NameScreen />
-            <StatScreen />
             <TitleBar />
             <InformationBar />
             <GameScreen />
@@ -122,8 +127,8 @@ const App = () => {
                 draggable={false}
                 pauseOnHover={false}
                 transition={Zoom}
-                className="container"
-                toastClassName="toast"
+                className="toast-container"
+                toastClassName="toast-toast"
             />
         </Box>
     );

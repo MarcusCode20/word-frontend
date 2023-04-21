@@ -1,13 +1,15 @@
-import { LevelData, getCurrentGame } from '../features/gameSlice';
-import { useAppSelector } from '../app/hooks';
-import { Box, Dialog, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { LevelData, getCurrentGame } from '../app/gameSlice';
+import { useAppSelector } from '../app/Hooks';
+import { Box, Button, Dialog, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { useState } from 'react';
+import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import '../styles/StatScreen.css';
+import '../styles/Common.css';
 
 const StatScreen = () => {
-    const [open, setOpen] = useState(true);
+    const [showStatScreen, setShowStatScreen] = useState(false);
     const gameState = useAppSelector(getCurrentGame);
-    const shouldShow = !gameState.alive && gameState.started && open;
+    const showStatInfo = !gameState.alive && gameState.started;
 
     const format = (header: string) => <Box className="statScreen-level-title">{header}</Box>;
 
@@ -65,27 +67,32 @@ const StatScreen = () => {
     );
 
     return (
-        <Dialog
-            onClose={() => setOpen(false)}
-            open={shouldShow}
-            PaperProps={{
-                style: {
-                    border: 'solid',
-                    borderWidth: '2px',
-                    borderRadius: '10px',
-                    borderColor: '#858786',
-                    background: 'transparent',
-                    width: '100%',
-                    height: '60%',
-                    overflow: 'hidden'
-                }
-            }}
-        >
-            <Box className="statScreen-container">
-                {title}
-                {table}
-            </Box>
-        </Dialog>
+        <>
+            <Button className="icon-button" onClick={() => setShowStatScreen(true)}>
+                <QueryStatsIcon className="icon-icon" />
+            </Button>
+            <Dialog
+                onClose={() => setShowStatScreen(false)}
+                open={showStatScreen}
+                PaperProps={{
+                    style: {
+                        border: 'solid',
+                        borderWidth: '2px',
+                        borderRadius: '10px',
+                        borderColor: '#858786',
+                        background: 'transparent',
+                        width: '100%',
+                        height: '60%',
+                        overflow: 'hidden'
+                    }
+                }}
+            >
+                <Box className="statScreen-container">
+                    {title}
+                    {showStatInfo ? table : <></>}
+                </Box>
+            </Dialog>
+        </>
     );
 };
 
