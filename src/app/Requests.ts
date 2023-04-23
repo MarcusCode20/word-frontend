@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Mode } from './gameSlice';
 import { decrypt, encrypt } from './Security';
 
-const prefix = 'http://localhost:8080/'; //http://localhost:8080/
+const prefix = ''; //http://localhost:8080/
 
 export const getGameDataRequest = (mode: Mode) =>
     new Promise((resolve) => {
@@ -40,6 +40,17 @@ export const getCountRequest = () =>
     new Promise((resolve) => {
         axios
             .get(prefix + 'api/words/daily/count')
+            .then((response) => {
+                resolve(decrypt(response.data));
+            })
+            .catch((error) => console.log(error))
+            .finally(() => ({}));
+    });
+
+export const getTokenRequest = () =>
+    new Promise((resolve) => {
+        axios
+            .get(prefix + 'api/token')
             .then((response) => {
                 resolve(decrypt(response.data));
             })

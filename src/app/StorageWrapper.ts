@@ -4,7 +4,8 @@ export enum StorageKey {
     GAME_SAVED = 'game',
     SCORE_SAVED = 'score',
     DATE_SAVED = 'date',
-    USERNAME = 'username'
+    USERNAME = 'username',
+    TOKEN = 'token'
 }
 
 export class StorageWrapper {
@@ -21,6 +22,10 @@ export class StorageWrapper {
     }
 
     static clear() {
-        localStorage.clear();
+        //Don't clear the token
+        localStorage.removeItem(StorageKey.GAME_SAVED);
+        localStorage.removeItem(StorageKey.SCORE_SAVED);
+        localStorage.removeItem(StorageKey.DATE_SAVED);
+        localStorage.removeItem(StorageKey.USERNAME);
     }
 }
