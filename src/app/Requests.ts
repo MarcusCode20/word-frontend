@@ -35,3 +35,14 @@ export const getLeaderboardRequest = () =>
             .catch((error) => console.log(error))
             .finally(() => ({}));
     });
+
+export const getCountRequest = () =>
+    new Promise((resolve) => {
+        axios
+            .get(prefix + 'api/words/daily/count')
+            .then((response) => {
+                resolve(decrypt(response.data));
+            })
+            .catch((error) => console.log(error))
+            .finally(() => ({}));
+    });

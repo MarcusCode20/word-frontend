@@ -1,70 +1,48 @@
-import { LevelData, getCurrentGame } from '../app/gameSlice';
+import { Mode, getCurrentGame, getCurrentMode } from '../app/gameSlice';
 import { useAppSelector } from '../app/Hooks';
-import { Box, Button, Dialog, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { useState } from 'react';
+import { Box, Button, Dialog, Tab, Tabs } from '@mui/material';
+import { SyntheticEvent, useEffect, useState } from 'react';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import '../styles/StatScreen.css';
 import '../styles/Common.css';
+import StatsOverview from './StatsOverview';
+import { TabPanel, a11yProps } from './Tabbing';
+import StatsDetailed from './StatsDetailed';
+import { getCountRequest } from '../app/Requests';
+
+export interface ScoreAndCount {
+    score: number;
+    count: number;
+}
+
+export interface WordAndCountAndScore {
+    [word: string]: ScoreAndCount;
+}
 
 const StatScreen = () => {
     const [showStatScreen, setShowStatScreen] = useState(false);
     const gameState = useAppSelector(getCurrentGame);
+    const mode = useAppSelector(getCurrentMode);
     const showStatInfo = !gameState.alive && gameState.started;
 
-    const format = (header: string) => <Box className="statScreen-level-title">{header}</Box>;
+    const [value, setValue] = useState(0);
+
+    const handleChange = (event: SyntheticEvent, newValue: number) => {
+        setValue(newValue);
+    };
 
     const title = <Box className="statScreen-title">Game Breakdown</Box>;
 
-    const getRank = (word: string, level: LevelData) => {
-        const unordered = Object.entries(level.solutions);
-        const sorted = unordered.sort((a, b) => b[1] - a[1]).map((entry) => entry[0]);
-        const rank = sorted.indexOf(word) + 1;
-        return rank == 0 ? '-' : rank + '/' + sorted.length;
+    const [totalCount, setTotalCount] = useState<WordAndCountAndScore[]>([]);
+
+    const getTotalCount = () => {
+        if (showStatInfo && showStatScreen && mode == Mode.DAILY) {
+            getCountRequest().then((data: any) => {
+                setTotalCount(data as WordAndCountAndScore[]);
+            });
+        }
     };
-
-    const createRow = (prefix: string, word: string, level: LevelData) => {
-        return (
-            <TableRow>
-                <TableCell>{prefix}</TableCell>
-                <TableCell>{word}</TableCell>
-                <TableCell align="right">{level.solutions[word] ? level.solutions[word] : '-'}</TableCell>
-                <TableCell align="right">{getRank(word, level)}</TableCell>
-            </TableRow>
-        );
-    };
-
-    const getWordByRank = (index: number, level: LevelData) => {
-        const unordered = Object.entries(level.solutions);
-        const sorted = unordered.sort((a, b) => b[1] - a[1]).map((entry) => entry[0]);
-        return sorted[index];
-    };
-
-    const levelStats = gameState.levels.map((level) => (
-        <>
-            {format('Level ' + (gameState.levels.indexOf(level) + 1))}
-            <TableBody>
-                {createRow('Easiest', getWordByRank(Object.keys(level.solutions).length - 1, level), level)}
-                {createRow('Yours', level.usersWord, level)}
-                {createRow('Best', getWordByRank(0, level), level)}
-            </TableBody>
-        </>
-    ));
-
-    const table = (
-        <TableContainer>
-            <Table size="small" className="statScreen-table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell></TableCell>
-                        <TableCell>Word</TableCell>
-                        <TableCell align="right">Score</TableCell>
-                        <TableCell align="right">Ranking</TableCell>
-                    </TableRow>
-                </TableHead>
-                {levelStats}
-            </Table>
-        </TableContainer>
-    );
+    useEffect(getTotalCount, [showStatScreen]);
 
     return (
         <>
@@ -89,7 +67,16 @@ const StatScreen = () => {
             >
                 <Box className="statScreen-container">
                     {title}
-                    {showStatInfo ? table : <></>}
+                    <Tabs value={value} onChange={handleChange} variant="fullWidth">
+                        <Tab label="Overview" {...a11yProps(0)} />
+                        <Tab label="Detailed" {...a11yProps(1)} />
+                    </Tabs>
+                    <TabPanel value={value} index={0}>
+                        {showStatInfo ? <StatsOverview /> : <></>}
+                    </TabPanel>
+                    <TabPanel value={value} index={1}>
+                        {showStatInfo ? <StatsDetailed totalCount={totalCount} /> : <></>}
+                    </TabPanel>
                 </Box>
             </Dialog>
         </>

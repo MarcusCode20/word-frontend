@@ -39,3 +39,16 @@
     background: white;
     color: black;
 }
+
+.statScreen-detailed-select {
+    padding: 2px;
+    margin: 2px;
+}
+
+.statScreen-detailed-select .MuiSelect-select {
+    padding: 1px 1px 1px 10px;
+}
+
+.statScreen-detailed-select .MuiButtonBase-root {
+    padding: 1px 1px 1px 10px;
+}

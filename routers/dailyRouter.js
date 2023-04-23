@@ -5,15 +5,21 @@ import moment from 'moment';
 
 export const dailyRouter = express.Router();
 
-let leaderboard = [];
-
+//The order of this matters
+//Must intialize the game before creating the answer store.
 let dailyProblem = getGameData();
 let currentDate = getCurrentDay();
+let leaderboard = [];
+let allUserAnswers = createAnswerStore();
 
 changeDailyProblem();
 
 dailyRouter.get('/', function (req, res) {
     res.send(encrypt({ data: dailyProblem, date: currentDate, mode: 'DAILY' }));
+});
+
+dailyRouter.get('/count', function (req, res) {
+    res.send(encrypt(allUserAnswers));
 });
 
 dailyRouter.get('/leaderboard', function (req, res) {
@@ -29,6 +35,7 @@ dailyRouter.post('/leaderboard', function (req, res) {
         const answer = answers[i];
         if (level.solutions[answer]) {
             score += level.solutions[answer];
+            allUserAnswers[i][answer].count++;
         }
     }
     leaderboard.push({
@@ -38,15 +45,35 @@ dailyRouter.post('/leaderboard', function (req, res) {
     res.status(200).send();
 });
 
-export function getCurrentDay() {
+function getCurrentDay() {
     const date = new Date();
     //Month is indexed from zero...
     return [date.getUTCDate(), date.getUTCMonth() + 1, date.getUTCFullYear()];
 }
 
+function createAnswerStore() {
+    const totalCount = [];
+    for (let i = 0; i < dailyProblem.length; i++) {
+        const level = dailyProblem[i];
+        const solutions = level.solutions;
+        const data = {};
+        Object.keys(solutions).forEach((word) => {
+            const score = solutions[word];
+            data[word] = {
+                score: score,
+                count: 0
+            };
+        });
+        totalCount.push(data);
+    }
+
+    return totalCount;
+}
+
 function updateValues() {
     dailyProblem = getGameData();
     currentDate = getCurrentDay();
+    allUserAnswers = createAnswerStore();
     leaderboard = [];
 }
 
