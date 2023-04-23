@@ -1,5 +1,6 @@
-import { readFileSync } from 'fs';
+import { readFileSync, writeFileSync, createReadStream } from 'fs';
 import * as CSV from 'csv-string';
+import lineByLine from 'n-readlines';
 
 /**
  * @returns A list of all the words, around 170k.
@@ -16,12 +17,12 @@ export function getBannedWords() {
 }
 
 /**
- * @returns the most frequent 1/3 millions words (not necessarily a real word)
- * Format, [["the", 1000], ["name", 135], ...]
+ * @returns the most frequent words (merge between two data sets)
+ * //Format: {"there": 100, "name": 135}
  */
-export function getMostFrequentWords() {
-    const frequencyData = readFileSync('public/frequency_list.csv', 'utf-8');
-    return CSV.parse(frequencyData.toString());
+export function getAllFrequencyWords() {
+    const frequencyData = readFileSync('public/freq_complete_rank.json', 'utf-8');
+    return JSON.parse(frequencyData.toString());
 }
 
 /**
@@ -38,21 +39,16 @@ export function getValidWordsAndFrequency() {
 
     //Just convert to an onbject for quick key lookup
     arrayBanned.forEach((word) => {
-        jsonBanned[word] = 1;
+        jsonBanned[word.toLowerCase()] = 1;
     });
 
-    const arrayFrequent = getMostFrequentWords();
-    const jsonFrequent = {};
-
-    //Format is now: {"the": 1000, "name": 135}
-    arrayFrequent.forEach((wordAndFreq) => {
-        jsonFrequent[wordAndFreq[0]] = wordAndFreq[1];
-    });
+    const jsonFrequent = getAllFrequencyWords();
 
     const jsonValid = {};
     const arrayAll = getAllWords();
 
-    arrayAll.forEach((word) => {
+    arrayAll.forEach((word_upper) => {
+        const word = word_upper.toLowerCase();
         if (!jsonBanned[word] && jsonFrequent[word] && 4 <= word.length && word.length <= 8) {
             jsonValid[word] = jsonFrequent[word];
         }
@@ -63,37 +59,37 @@ export function getValidWordsAndFrequency() {
 }
 
 //Sorts and groups them by length of the word as well
-//Format is now: {4: [{word: "name", freq: 135}, {word: "blue", freq: 99}], 5: [{word: "there", freq: 200}, ...], ...}
-export function getValidWordsAndFrequencyByLength() {
+//Format is now: {4: [{word: "name", rank: 135}, {word: "blue", rank: 99}], 5: [{word: "there", rank: 200}, ...], ...}
+export function getValidWordsAndRankByLength() {
     const jsonUnsorted = getValidWordsAndFrequency();
     const jsonSorted = {};
 
     Object.entries(jsonUnsorted).forEach((wordAndFreq) => {
-        const [word, freq] = wordAndFreq;
+        const [word, rank] = wordAndFreq;
 
         if (jsonSorted[word.length]) {
-            jsonSorted[word.length].push({ word: word.toUpperCase(), freq: freq });
+            jsonSorted[word.length].push({ word: word.toUpperCase(), rank: rank });
         } else {
-            jsonSorted[word.length] = [{ word: word.toUpperCase(), freq: freq }];
+            jsonSorted[word.length] = [{ word: word.toUpperCase(), rank: rank }];
         }
     });
 
     return jsonSorted;
 }
 
-//For each grouping of word length, sort those by score based off inverse frequency:
-//So: {4: [{word: "name", freq: 135}, {word: "blue", freq: 99}], 5: [{word: "there", freq: 200}, ...], ...}
+//For each grouping of word length, sort those by score based off their rank:
+//So: {4: [{word: "name", rank: 5}, {word: "blue", rank: 99}], 5: [{word: "there", rank: 200}, ...], ...}
 //Becomes: {4: [{word: "name", score: 1}, {word: "blue", score: 2}], 5: [{word: "there", score: 4}, ...], ...}
 export function getValidsAndScoreByLength() {
-    const jsonByLength = getValidWordsAndFrequencyByLength();
+    const jsonByLength = getValidWordsAndRankByLength();
     const jsonByScore = {};
 
     Object.entries(jsonByLength).forEach((lengthAndWords) => {
         const [length, words] = lengthAndWords;
 
-        //First sort the array in descending order of frequency
+        //First sort the array in ascending order of rank
         //So the first word will be the most frequent
-        const arrayByFreq = words.slice().sort((a, b) => b.freq - a.freq);
+        const arrayByFreq = words.slice().sort((a, b) => a.rank - b.rank);
         const arrayByScore = [];
 
         //Now iterating from the first word, assign the index number as it's score
@@ -104,6 +100,8 @@ export function getValidsAndScoreByLength() {
 
         jsonByScore[length] = arrayByScore;
     });
+
+    //writeFileSync('public/valid_words.json', JSON.stringify(jsonByScore, null, 2), 'utf-8');
 
     return jsonByScore;
 }
@@ -128,7 +126,7 @@ export function splitOut(size) {
     jsonSplit.first = firstHalf;
     jsonSplit.second = secondHalf;
 
+    writeFileSync('public/game_words.json', JSON.stringify(jsonSplit, null, 2), 'utf-8');
+
     return jsonSplit;
 }
-
-// writeFileSync('public/valid_words.json', JSON.stringify(finalSortedDictionary, null, 2), 'utf-8');

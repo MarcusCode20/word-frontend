@@ -17,9 +17,15 @@ const RestartButton = () => {
     };
 
     return (
-        <Button disabled={disable} className="icon-button" onClick={onClick}>
-            <RestartAltIcon className="icon-icon" />
-        </Button>
+        <>
+            {disable ? (
+                <></>
+            ) : (
+                <Button disabled={disable} className="icon-button" onClick={onClick}>
+                    <RestartAltIcon className="icon-icon" />
+                </Button>
+            )}
+        </>
     );
 };
 
