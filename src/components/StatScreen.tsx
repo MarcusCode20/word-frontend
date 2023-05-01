@@ -1,6 +1,6 @@
 import { Mode, getCurrentGame, getCurrentMode } from '../app/gameSlice';
 import { useAppSelector } from '../app/Hooks';
-import { Box, Button, Dialog, Tab, Tabs } from '@mui/material';
+import { Box, Dialog, IconButton, Tab, Tabs } from '@mui/material';
 import { SyntheticEvent, useEffect, useState } from 'react';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import '../styles/StatScreen.css';
@@ -46,9 +46,9 @@ const StatScreen = () => {
 
     return (
         <>
-            <Button className="icon-button" onClick={() => setShowStatScreen(true)}>
+            <IconButton className="icon-button" onClick={() => setShowStatScreen(true)}>
                 <QueryStatsIcon className="icon-icon" />
-            </Button>
+            </IconButton>
             <Dialog
                 onClose={() => setShowStatScreen(false)}
                 open={showStatScreen}

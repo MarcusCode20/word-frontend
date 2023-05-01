@@ -14,7 +14,7 @@ spec:
         spec:
             containers:
                 - name: word-game-app
-                  image: europe-west2-docker.pkg.dev/word-game-383622/word-game-repo/word-game-v1:latest
+                  image: europe-west2-docker.pkg.dev/word-game-383622/word-game-repo/word-game-v2:latest
                   imagePullPolicy: Always
                   # This app listens on port 8080 for web traffic by default.
                   ports:

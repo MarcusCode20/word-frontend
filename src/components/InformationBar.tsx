@@ -1,4 +1,4 @@
-import { Box, Paper } from '@mui/material';
+import { Box } from '@mui/material';
 import { getCurrentGame } from '../app/gameSlice';
 import { useAppSelector } from '../app/Hooks';
 import '../styles/InformationBar.css';
@@ -13,15 +13,15 @@ const InformationBar = () => {
     const score = 'Score: ' + game.levels.reduce((partialSum, level) => partialSum + level.score, 0);
 
     const scoreboard = (
-        <Paper key="scoreComp" className="informationBar-info">
+        <Box key="scoreComp" className="informationBar-info informationBar-info-left">
             {score}
-        </Paper>
+        </Box>
     );
 
     const solutionBoard = (
-        <Paper key="solutionComp" className="informationBar-info">
+        <Box key="solutionComp" className="informationBar-info informationBar-info-right">
             {possiblities}
-        </Paper>
+        </Box>
     );
 
     return <Box className="informationBar-container">{[scoreboard, solutionBoard]}</Box>;

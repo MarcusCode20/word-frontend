@@ -2,7 +2,7 @@
     margin: 0;
     width: 100%;
     height: 10%;
-    max-height: 55px;
+    max-height: 45px;
     background-color: #fffbfb;
     border-bottom: solid;
     border-color: #858786;
@@ -12,17 +12,24 @@
     justify-content: space-between;
 }
 
-.titleBar-toggleGroup.MuiToggleButtonGroup-root .MuiToggleButtonGroup-grouped {
+.titleBar-toggleGroup.MuiToggleButtonGroup-root {
+    margin: 5px;
     background: #fffbfb;
-    font-family: 'Times New Roman';
-    font-weight: bold;
-    border: none;
-    border-radius: 0px;
 }
 
-.titleBar-toggleGroup.MuiToggleButtonGroup-root .MuiToggleButtonGroup-grouped.selected {
-    background: #c3bfc7;
+.titleBar-toggleGroup-button.MuiToggleButton-root.Mui-selected {
+    background-color: #3590f3;
+    color: white;
 }
+
+.titleBar-toggleGroup-button.MuiToggleButton-root.Mui-selected:hover {
+    background-color: #3590f3;
+}
+
+.titleBar-toggleGroup-button.MuiToggleButton-root:hover {
+    background-color: #3590f3;
+}
+
 .titleBar-groupLeft {
     margin: 0;
     padding: 0;

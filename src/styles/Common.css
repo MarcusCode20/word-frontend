@@ -1,5 +1,6 @@
-.icon-button {
+.icon-button.MuiButtonBase-root {
     background: #fffbfb;
+    margin: 2px 0;
 }
 
 .icon-icon.MuiSvgIcon-root {

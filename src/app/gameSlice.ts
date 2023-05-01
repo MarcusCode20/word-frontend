@@ -186,24 +186,36 @@ export const gameSlice = createSlice({
                 currentGame.alive = false;
             }
         },
-        startGame: (state) => {
-            const currentGame = state.games[state.currentMode];
-            currentGame.levels[0].status = Status.ACTIVE;
-            currentGame.alive = true;
-            currentGame.started = true;
+        startGame: (state, action: PayloadAction<Mode>) => {
+            const game = state.games[action.payload];
+            game.levels[0].status = Status.ACTIVE;
+            game.alive = true;
+            game.started = true;
         },
         setMode: (state, action: PayloadAction<Mode>) => {
             state.currentMode = action.payload;
         },
         loadCachedDaily: (state, action: PayloadAction<GameData>) => {
             state.games[Mode.DAILY] = action.payload;
+        },
+        setLoading: (state, action: PayloadAction<[boolean, Mode]>) => {
+            state.games[action.payload[1]].loaded = !action.payload[0];
         }
         //--------------------FIX------------------------//
     }
 });
 
-export const { setGameData, addLetter, checkUserWord, removeLetter, skipLevel, startGame, setMode, loadCachedDaily } =
-    gameSlice.actions;
+export const {
+    setGameData,
+    addLetter,
+    checkUserWord,
+    removeLetter,
+    skipLevel,
+    startGame,
+    setMode,
+    loadCachedDaily,
+    setLoading
+} = gameSlice.actions;
 
 export const getCurrentGame = (state: RootState) => state.game.games[state.game.currentMode];
 

@@ -1,29 +1,31 @@
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
-import { getCurrentMode, Mode, setGameData, setMode, startGame } from '../app/gameSlice';
+import { getCurrentGame, getCurrentMode, Mode, setGameData, setLoading, setMode, startGame } from '../app/gameSlice';
 import { useAppDispatch, useAppSelector } from '../app/Hooks';
-import { Button } from '@mui/material';
+import { IconButton } from '@mui/material';
 import { getGameDataRequest } from '../app/Requests';
 import '../styles/Common.css';
 
 const RestartButton = () => {
     const dispatch = useAppDispatch();
+    const game = useAppSelector(getCurrentGame);
     const mode = useAppSelector(getCurrentMode);
-    const disable = mode == Mode.DAILY;
     const onClick = () => {
+        dispatch(setLoading([true, Mode.PRACTICE]));
         getGameDataRequest(Mode.PRACTICE).then((data: any) => {
             dispatch(setGameData([data, Mode.PRACTICE]));
-            dispatch(startGame());
+            dispatch(startGame(Mode.PRACTICE));
+            dispatch(setLoading([false, Mode.PRACTICE]));
         });
     };
 
     return (
         <>
-            {disable ? (
+            {mode == Mode.DAILY ? (
                 <></>
             ) : (
-                <Button disabled={disable} className="icon-button" onClick={onClick}>
+                <IconButton disabled={!game.loaded} className="icon-button" onClick={onClick}>
                     <RestartAltIcon className="icon-icon" />
-                </Button>
+                </IconButton>
             )}
         </>
     );

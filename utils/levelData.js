@@ -1,19 +1,18 @@
 import { readFileSync } from 'fs';
 
-export function getGameData() {
-    const data = readFileSync('public/game_words.json');
+const data = readFileSync('public/game_words.json');
+const wordsAndScoresSplit = JSON.parse(data.toString());
 
+const easyWordsAndScore = wordsAndScoresSplit.first;
+const hardWordsAndScore = wordsAndScoresSplit.second;
+
+export function getGameData() {
     const levelMetaData = [];
     levelMetaData.push(createLevelMetaData(4, 3));
     levelMetaData.push(createLevelMetaData(5, 3));
     levelMetaData.push(createLevelMetaData(6, 3));
     levelMetaData.push(createLevelMetaData(7, 4));
     levelMetaData.push(createLevelMetaData(8, 5));
-
-    const wordsAndScoresSplit = JSON.parse(data.toString());
-
-    const easyWordsAndScore = wordsAndScoresSplit.first;
-    const hardWordsAndScore = wordsAndScoresSplit.second;
 
     const levels = [];
 

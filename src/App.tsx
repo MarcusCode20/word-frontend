@@ -4,15 +4,7 @@ import InformationBar from './components/InformationBar';
 import Keyboard from './components/Keyboard';
 import TitleBar from './components/TitleBar';
 import './styles/App.css';
-import {
-    setGameData,
-    getCurrentGame,
-    Mode,
-    getCurrentMode,
-    startGame,
-    getDailyGame,
-    loadCachedDaily
-} from './app/gameSlice';
+import { setGameData, Mode, startGame, getDailyGame, loadCachedDaily } from './app/gameSlice';
 import { useAppDispatch, useAppSelector } from './app/Hooks';
 import { useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
@@ -30,8 +22,6 @@ function getCurrentDay() {
 }
 
 const App = () => {
-    const game = useAppSelector(getCurrentGame);
-    const mode = useAppSelector(getCurrentMode);
     const dailyGame = useAppSelector(getDailyGame);
     const lastUpdated = dailyGame.date;
     const dailyGameEnded = !dailyGame.alive && dailyGame.started && dailyGame.loaded;
@@ -48,6 +38,7 @@ const App = () => {
     const intialGameLoad = () => {
         getGameDataRequest(Mode.PRACTICE).then((data: any) => {
             dispatch(setGameData([data, Mode.PRACTICE]));
+            dispatch(startGame(Mode.PRACTICE));
         });
         const cachedDaily = StorageWrapper.getItem(StorageKey.GAME_SAVED);
         if (cachedDaily) {
@@ -55,17 +46,8 @@ const App = () => {
         } else {
             getGameDataRequest(Mode.DAILY).then((data: any) => {
                 dispatch(setGameData([data, Mode.DAILY]));
-                //On first load (not from cache) start the game
-                //This will start the current game, which is daily mode by default.
-                //Look to clean this up...
-                dispatch(startGame());
+                dispatch(startGame(Mode.DAILY));
             });
-        }
-    };
-
-    const startCurrentGame = () => {
-        if (!game.started && game.loaded && !game.alive) {
-            dispatch(startGame());
         }
     };
 
@@ -95,22 +77,11 @@ const App = () => {
     useEffect(resetDailyData, []);
     //Now request new data for both daily and practice.
     useEffect(intialGameLoad, []);
-    useEffect(startCurrentGame, [mode]);
     useEffect(saveDailyGame, [dailyGame]);
     useEffect(sendDailyScore, [dailyGameEnded]);
 
     return (
-        <Box
-            className="app-container"
-            sx={{
-                '& .MuiPaper-root': {
-                    border: 'solid',
-                    borderWidth: 'thin',
-                    borderRadius: '10px',
-                    borderColor: '#858786'
-                }
-            }}
-        >
+        <Box className="app-container">
             <NameScreen />
             <TitleBar />
             <InformationBar />

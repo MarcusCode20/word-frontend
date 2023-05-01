@@ -27,11 +27,14 @@ const TitleBar = () => {
                 value={mode}
                 exclusive
                 onChange={handleChange}
-                aria-label="Platform"
                 className="titleBar-toggleGroup"
             >
-                <ToggleButton value={Mode.DAILY}>Daily</ToggleButton>
-                <ToggleButton value={Mode.PRACTICE}>Practice</ToggleButton>
+                <ToggleButton className="titleBar-toggleGroup-button" value={Mode.DAILY}>
+                    Daily
+                </ToggleButton>
+                <ToggleButton className="titleBar-toggleGroup-button" value={Mode.PRACTICE}>
+                    Practice
+                </ToggleButton>
             </ToggleButtonGroup>
         </Box>
     );

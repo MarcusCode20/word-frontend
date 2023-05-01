@@ -14,16 +14,15 @@ const Level = (prop: LevelProp) => {
     const backgroundColour = () => {
         switch (prop.data.status) {
             case Status.ACTIVE:
-                return '#FFFBFB';
+                return '#FFFBFB'; //Grey
             case Status.CORRECT:
                 return '#4CAF50'; //Green
             case Status.SKIPPED:
-                return '#858786'; //Grey
+                return '#D7263D'; //Red
             case Status.LOCKED:
-                return '#FFFBFB';
+                return '#DDDDDD'; //Grey
         }
     };
-
     //Generate the letters to be shown on screen
     const generateLetters = (wordArray: string[]) => {
         const letters: JSX.Element[] = [];
@@ -63,9 +62,15 @@ const Level = (prop: LevelProp) => {
             //Can't use class names on Paper...only Box...
             className="level-container"
             sx={{
-                background: backgroundColour
+                background: backgroundColour,
+                '&.MuiPaper-root': {
+                    border: 'solid',
+                    borderWidth: 'thin',
+                    borderRadius: '10px',
+                    borderColor: '#858786'
+                }
             }}
-            elevation={3}
+            elevation={0}
         >
             {display}
         </Paper>

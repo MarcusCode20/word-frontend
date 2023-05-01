@@ -1,6 +1,7 @@
 .gameScreen-container {
     flex-grow: 1;
     margin: 0 auto 0 auto;
+    padding: 5px 0 20px 0;
     width: 100%;
     max-width: 450px;
     height: 50%;
@@ -8,6 +9,6 @@
     background-color: #fffbfb;
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: stretch;
 }

@@ -1,4 +1,14 @@
-import { Dialog, Box, Table, TableCell, TableContainer, TableHead, TableRow, TableBody, Button } from '@mui/material';
+import {
+    Dialog,
+    Box,
+    Table,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    TableBody,
+    IconButton
+} from '@mui/material';
 import { useEffect, useState } from 'react';
 import { getLeaderboardRequest } from '../app/Requests';
 import LeaderboardIcon from '@mui/icons-material/Leaderboard';
@@ -67,9 +77,9 @@ const Leaderboard = () => {
 
     return (
         <>
-            <Button className="icon-button" onClick={() => setShowLeaderboard(true)}>
+            <IconButton className="icon-button" onClick={() => setShowLeaderboard(true)}>
                 <LeaderboardIcon className="icon-icon" />
-            </Button>
+            </IconButton>
             <Dialog
                 onClose={() => setShowLeaderboard(false)}
                 open={showLeaderboard}
