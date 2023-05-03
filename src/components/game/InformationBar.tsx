@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
-import { getCurrentGame } from '../app/gameSlice';
-import { useAppSelector } from '../app/Hooks';
-import '../styles/InformationBar.css';
+import { getCurrentGame } from '../../app/gameSlice';
+import { useAppSelector } from '../../app/Hooks';
+import '../../styles/InformationBar.css';
 
 const InformationBar = () => {
     const game = useAppSelector(getCurrentGame);

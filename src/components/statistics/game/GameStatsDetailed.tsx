@@ -10,17 +10,17 @@ import {
     TableHead,
     TableRow
 } from '@mui/material';
-import { Mode, getCurrentGame, getCurrentMode } from '../app/gameSlice';
-import { useAppSelector } from '../app/Hooks';
-import '../styles/StatScreen.css';
-import { WordAndCountAndScore } from './StatScreen';
+import { Mode, getCurrentGame, getCurrentMode } from '../../../app/gameSlice';
+import { useAppSelector } from '../../../app/Hooks';
+import '../../../styles/GameStatScreen.css';
+import { WordAndCountAndScore } from './GameStatScreen';
 import { useState } from 'react';
 
 interface StatsDetailedProp {
     totalCount: WordAndCountAndScore[];
 }
 
-const StatsDetailed = (prop: StatsDetailedProp) => {
+const GameStatsDetailed = (prop: StatsDetailedProp) => {
     const [levelNumber, setLevelNumber] = useState(0);
     const currentGame = useAppSelector(getCurrentGame);
     const levelSolutionData = currentGame.levels[levelNumber].solutions;
@@ -60,7 +60,7 @@ const StatsDetailed = (prop: StatsDetailedProp) => {
 
     const table = (
         <TableContainer>
-            <Table size="small" className="statScreen-table">
+            <Table size="small" className="gameStatScreen-table">
                 <TableHead>
                     <TableRow>
                         <TableCell></TableCell>
@@ -77,7 +77,7 @@ const StatsDetailed = (prop: StatsDetailedProp) => {
     return (
         <>
             <FormControl fullWidth>
-                <Select className="statScreen-detailed-select" value={levelNumber + ''} onChange={handleChange}>
+                <Select className="gameStatScreen-detailed-select" value={levelNumber + ''} onChange={handleChange}>
                     {menuItems()}
                 </Select>
             </FormControl>
@@ -86,4 +86,4 @@ const StatsDetailed = (prop: StatsDetailedProp) => {
     );
 };
 
-export default StatsDetailed;
+export default GameStatsDetailed;

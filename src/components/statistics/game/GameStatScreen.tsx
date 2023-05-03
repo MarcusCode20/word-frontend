@@ -1,14 +1,14 @@
-import { Mode, getCurrentGame, getCurrentMode } from '../app/gameSlice';
-import { useAppSelector } from '../app/Hooks';
+import { Mode, getCurrentGame, getCurrentMode } from '../../../app/gameSlice';
+import { useAppSelector } from '../../../app/Hooks';
 import { Box, Dialog, IconButton, Tab, Tabs } from '@mui/material';
 import { SyntheticEvent, useEffect, useState } from 'react';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
-import '../styles/StatScreen.css';
-import '../styles/Common.css';
-import StatsOverview from './StatsOverview';
-import { TabPanel, a11yProps } from './Tabbing';
-import StatsDetailed from './StatsDetailed';
-import { getCountRequest } from '../app/Requests';
+import '../../../styles/GameStatScreen.css';
+import '../../../styles/Common.css';
+import GameStatsOverview from './GameStatsOverview';
+import { TabPanel, a11yProps } from '../../Tabbing';
+import GameStatsDetailed from './GameStatsDetailed';
+import { getCountRequest } from '../../../app/Requests';
 
 export interface ScoreAndCount {
     score: number;
@@ -19,8 +19,8 @@ export interface WordAndCountAndScore {
     [word: string]: ScoreAndCount;
 }
 
-const StatScreen = () => {
-    const [showStatScreen, setShowStatScreen] = useState(false);
+const GameStatScreen = () => {
+    const [showScreen, setShowScreen] = useState(false);
     const gameState = useAppSelector(getCurrentGame);
     const mode = useAppSelector(getCurrentMode);
     const showStatInfo = !gameState.alive && gameState.started;
@@ -31,27 +31,27 @@ const StatScreen = () => {
         setValue(newValue);
     };
 
-    const title = <Box className="statScreen-title">Game Breakdown</Box>;
+    const title = <Box className="gameStatScreen-title">Game Breakdown</Box>;
 
     const [totalCount, setTotalCount] = useState<WordAndCountAndScore[]>([]);
 
     const getTotalCount = () => {
-        if (showStatInfo && showStatScreen && mode == Mode.DAILY) {
+        if (showStatInfo && showScreen && mode == Mode.DAILY) {
             getCountRequest().then((data: any) => {
                 setTotalCount(data as WordAndCountAndScore[]);
             });
         }
     };
-    useEffect(getTotalCount, [showStatScreen]);
+    useEffect(getTotalCount, [showScreen]);
 
     return (
         <>
-            <IconButton className="icon-button" onClick={() => setShowStatScreen(true)}>
+            <IconButton className="icon-button" onClick={() => setShowScreen(true)}>
                 <QueryStatsIcon className="icon-icon" />
             </IconButton>
             <Dialog
-                onClose={() => setShowStatScreen(false)}
-                open={showStatScreen}
+                onClose={() => setShowScreen(false)}
+                open={showScreen}
                 PaperProps={{
                     style: {
                         border: 'solid',
@@ -65,17 +65,17 @@ const StatScreen = () => {
                     }
                 }}
             >
-                <Box className="statScreen-container">
+                <Box className="gameStatScreen-container">
                     {title}
                     <Tabs value={value} onChange={handleChange} variant="fullWidth">
                         <Tab label="Overview" {...a11yProps(0)} />
                         <Tab label="Detailed" {...a11yProps(1)} />
                     </Tabs>
                     <TabPanel value={value} index={0}>
-                        {showStatInfo ? <StatsOverview /> : <></>}
+                        {showStatInfo ? <GameStatsOverview /> : <></>}
                     </TabPanel>
                     <TabPanel value={value} index={1}>
-                        {showStatInfo ? <StatsDetailed totalCount={totalCount} /> : <></>}
+                        {showStatInfo ? <GameStatsDetailed totalCount={totalCount} /> : <></>}
                     </TabPanel>
                 </Box>
             </Dialog>
@@ -83,4 +83,4 @@ const StatScreen = () => {
     );
 };
 
-export default StatScreen;
+export default GameStatScreen;

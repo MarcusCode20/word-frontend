@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
-import GameScreen from './components/GameScreen';
-import InformationBar from './components/InformationBar';
-import Keyboard from './components/Keyboard';
+import GameScreen from './components/game/GameScreen';
+import InformationBar from './components/game/InformationBar';
+import Keyboard from './components/keyboard/Keyboard';
 import TitleBar from './components/TitleBar';
 import './styles/App.css';
 import { setGameData, Mode, startGame, getDailyGame, loadCachedDaily } from './app/gameSlice';

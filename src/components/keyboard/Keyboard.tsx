@@ -1,10 +1,10 @@
 import { Box, Button } from '@mui/material';
-import { checkUserWord, skipLevel, addLetter, removeLetter } from '../app/gameSlice';
-import { useAppDispatch } from '../app/Hooks';
+import { checkUserWord, skipLevel, addLetter, removeLetter } from '../../app/gameSlice';
+import { useAppDispatch } from '../../app/Hooks';
 import DoneOutlineRoundedIcon from '@mui/icons-material/DoneOutlineRounded';
 import BackspaceRoundedIcon from '@mui/icons-material/BackspaceRounded';
 import SkipNextRoundedIcon from '@mui/icons-material/SkipNextRounded';
-import '../styles/Keyboard.css';
+import '../../styles/Keyboard.css';
 
 const Keyboard = () => {
     const dispatch = useAppDispatch();

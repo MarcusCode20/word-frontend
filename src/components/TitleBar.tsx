@@ -1,10 +1,10 @@
 import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { getCurrentMode, Mode, setMode } from '../app/gameSlice';
 import { useAppDispatch, useAppSelector } from '../app/Hooks';
-import Leaderboard from './Leaderboard';
 import '../styles/TitleBar.css';
-import StatScreen from './StatScreen';
-import RestartButton from './RestartButton';
+import GameStatScreen from './statistics/game/GameStatScreen';
+import RestartButton from './game/RestartButton';
+import DailyStatScreen from './statistics/daily/DailyStatScreen';
 
 const TitleBar = () => {
     const dispatch = useAppDispatch();
@@ -18,8 +18,8 @@ const TitleBar = () => {
     return (
         <Box className="titleBar-container">
             <Box className="titleBar-groupLeft">
-                <Leaderboard />
-                <StatScreen />
+                <DailyStatScreen />
+                <GameStatScreen />
                 <RestartButton />
             </Box>
             <ToggleButtonGroup

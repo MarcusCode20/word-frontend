@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { PropsWithChildren } from 'react';
-import '../styles/ScreenLetter.css';
+import '../../styles/ScreenLetter.css';
 
 interface ScreenLetterProp {
     isInput: boolean;

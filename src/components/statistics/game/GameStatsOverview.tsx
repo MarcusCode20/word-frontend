@@ -1,12 +1,12 @@
-import { LevelData, getCurrentGame } from '../app/gameSlice';
-import { useAppSelector } from '../app/Hooks';
+import { LevelData, getCurrentGame } from '../../../app/gameSlice';
+import { useAppSelector } from '../../../app/Hooks';
 import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import '../styles/StatScreen.css';
+import '../../../styles/GameStatScreen.css';
 
-const StatsOverview = () => {
+const GameStatsOverview = () => {
     const gameState = useAppSelector(getCurrentGame);
 
-    const format = (header: string) => <Box className="statScreen-level-title">{header}</Box>;
+    const format = (header: string) => <Box className="gameStatScreen-level-title">{header}</Box>;
 
     const getRank = (word: string, level: LevelData) => {
         const unordered = Object.entries(level.solutions);
@@ -45,7 +45,7 @@ const StatsOverview = () => {
 
     return (
         <TableContainer>
-            <Table size="small" className="statScreen-table">
+            <Table size="small" className="gameStatScreen-table">
                 <TableHead>
                     <TableRow>
                         <TableCell></TableCell>
@@ -60,4 +60,4 @@ const StatsOverview = () => {
     );
 };
 
-export default StatsOverview;
+export default GameStatsOverview;
