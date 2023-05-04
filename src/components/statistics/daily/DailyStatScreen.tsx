@@ -5,6 +5,7 @@ import '../../../styles/DailyStatScreen.css';
 import '../../../styles/Common.css';
 import { a11yProps, TabPanel } from '../../common/Tabbing';
 import Leaderboard from './Leaderboard';
+import DailyStatsInfo from './DailyStatsInfo';
 
 const DailyStatScreen = () => {
     const [showScreen, setShowScreen] = useState(false);
@@ -44,7 +45,7 @@ const DailyStatScreen = () => {
                         <Tab label="Leaderboard" {...a11yProps(1)} />
                     </Tabs>
                     <TabPanel value={value} index={0}>
-                        <></>
+                        <DailyStatsInfo />
                     </TabPanel>
                     <TabPanel value={value} index={1}>
                         <Leaderboard />

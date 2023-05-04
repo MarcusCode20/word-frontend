@@ -90,7 +90,7 @@ const GameStatsOverview = () => {
     const metaTable = () => {
         const score = game.levels.reduce((partialSum, level) => partialSum + level.score, 0);
         const maxScore = gameStatsData.reduce((partialSum, levelStats) => partialSum + levelStats.Best.score, 0);
-        const percentage = Math.floor((score * 100) / maxScore) + '%';
+        const percentage = Math.floor((score * 100) / maxScore);
 
         return (
             <MetaTable

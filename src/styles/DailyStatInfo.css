@@ -1,0 +1,45 @@
+.dailyStatInfo-container {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-weight: bold;
+    background: white;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.dailyStatInfo-info {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    font-family: Helvetica;
+}
+
+.dailyStatInfo-info-key {
+    font-size: small;
+    font-weight: lighter;
+    margin: 0 0 1% 5%;
+    padding: 0;
+    width: 100%;
+    position: relative;
+}
+
+.dailyStatInfo-info-key span {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.dailyStatInfo-info-value {
+    font-size: xx-large;
+    color: #3590f3;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
