@@ -3,7 +3,7 @@ import { SyntheticEvent, useState } from 'react';
 import LeaderboardIcon from '@mui/icons-material/Leaderboard';
 import '../../../styles/DailyStatScreen.css';
 import '../../../styles/Common.css';
-import { a11yProps, TabPanel } from '../../Tabbing';
+import { a11yProps, TabPanel } from '../../common/Tabbing';
 import Leaderboard from './Leaderboard';
 
 const DailyStatScreen = () => {

@@ -6,7 +6,7 @@ import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import '../../../styles/GameStatScreen.css';
 import '../../../styles/Common.css';
 import GameStatsOverview from './GameStatsOverview';
-import { TabPanel, a11yProps } from '../../Tabbing';
+import { TabPanel, a11yProps } from '../../common/Tabbing';
 import GameStatsDetailed from './GameStatsDetailed';
 import { getCountRequest } from '../../../app/Requests';
 

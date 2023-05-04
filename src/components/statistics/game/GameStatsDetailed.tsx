@@ -15,6 +15,7 @@ import { useAppSelector } from '../../../app/Hooks';
 import '../../../styles/GameStatScreen.css';
 import { WordAndCountAndScore } from './GameStatScreen';
 import { useState } from 'react';
+import MetaTable from '../../common/MetaTable';
 
 interface StatsDetailedProp {
     totalCount: WordAndCountAndScore[];
@@ -74,6 +75,17 @@ const GameStatsDetailed = (prop: StatsDetailedProp) => {
         </TableContainer>
     );
 
+    const metaTable = () => {
+        if (mode == Mode.DAILY && prop.totalCount[levelNumber]) {
+            const solutions = prop.totalCount[levelNumber];
+            const mostChosen = [...Object.entries(solutions)];
+            mostChosen.sort((a, b) => b[1].count - a[1].count);
+            if (mostChosen[0][0] && mostChosen[0][1].count > 0)
+                return <MetaTable data={[{ key: 'Most Used:', value: mostChosen[0][0] }]}></MetaTable>;
+        }
+        return <></>;
+    };
+
     return (
         <>
             <FormControl fullWidth>
@@ -81,6 +93,7 @@ const GameStatsDetailed = (prop: StatsDetailedProp) => {
                     {menuItems()}
                 </Select>
             </FormControl>
+            {metaTable()}
             {table}
         </>
     );

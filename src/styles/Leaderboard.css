@@ -21,3 +21,22 @@
 .leaderboard-table.MuiTable-root .MuiTableCell-root {
     padding: 3px 8px;
 }
+
+.leaderboard-metatable.MuiTableBody-root {
+    border-top: 1px solid rgba(128, 128, 128);
+    border-bottom: 1px solid rgba(128, 128, 128);
+    background-color: #3590f3;
+}
+
+.leaderboard-metatable .MuiTableCell-root {
+    padding: 3px 20px;
+    border: none;
+    color: white;
+}
+
+.leaderboard-info {
+    margin: 0 0 0 2%;
+    font-weight: bold;
+    font-size: small;
+    font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+}

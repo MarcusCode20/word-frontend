@@ -1,5 +1,4 @@
 import {
-    Box,
     Table,
     TableCell,
     TableContainer,
@@ -15,6 +14,7 @@ import { useEffect, useState } from 'react';
 import { getLeaderboardRequest } from '../../../app/Requests';
 import '../../../styles/Leaderboard.css';
 import '../../../styles/Common.css';
+import MetaTable from '../../common/MetaTable';
 
 interface UserScore {
     user: string;
@@ -38,6 +38,7 @@ const initialLeaderboards: Leaderboards = {
 const Leaderboard = () => {
     const [leaderboards, setLeaderboards] = useState<Leaderboards>(initialLeaderboards);
     const [day, setDay] = useState(DAY.TODAY);
+    const leaderboard = leaderboards[day];
 
     const getLeaderboards = () => {
         getLeaderboardRequest().then((data: any) => {
@@ -67,7 +68,23 @@ const Leaderboard = () => {
         return leaderboard;
     };
 
-    const leaderboard = createLeaderboard(leaderboards[day]);
+    const data = createLeaderboard(leaderboard);
+    const metaTable =
+        leaderboard.length > 0 ? (
+            <MetaTable
+                data={[
+                    {
+                        key: 'Mean Score:',
+                        value: Math.floor(
+                            leaderboard.reduce((total, user) => total + user.score, 0) / leaderboard.length
+                        )
+                    },
+                    { key: 'Median Score:', value: leaderboard[Math.floor(leaderboard.length / 2)].score }
+                ]}
+            ></MetaTable>
+        ) : (
+            <></>
+        );
 
     const table = (
         <TableContainer>
@@ -79,7 +96,7 @@ const Leaderboard = () => {
                         <TableCell sx={{ width: '40%' }}>Score</TableCell>
                     </TableRow>
                 </TableHead>
-                <TableBody>{leaderboard}</TableBody>
+                <TableBody>{data}</TableBody>
             </Table>
         </TableContainer>
     );
@@ -108,6 +125,7 @@ const Leaderboard = () => {
                     />
                 </RadioGroup>
             </FormControl>
+            {metaTable}
             {table}
         </>
     );

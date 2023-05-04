@@ -1,62 +1,128 @@
-import { LevelData, getCurrentGame } from '../../../app/gameSlice';
+import { getCurrentGame } from '../../../app/gameSlice';
 import { useAppSelector } from '../../../app/Hooks';
 import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import '../../../styles/GameStatScreen.css';
+import MetaTable from '../../common/MetaTable';
+
+enum Option {
+    EASIEST = 'Easist',
+    YOURS = 'Yours',
+    BEST = 'Best'
+}
+
+interface StatsData {
+    word: string;
+    score: number;
+    rank: number;
+    totalRank: number;
+}
+
+type LevelStatsData = {
+    [key in Option]: StatsData;
+};
+
+function createStatsData(word: string, score: number, rank: number, totalRank: number) {
+    return {
+        word: word,
+        score: score,
+        rank: rank,
+        totalRank: totalRank
+    };
+}
 
 const GameStatsOverview = () => {
-    const gameState = useAppSelector(getCurrentGame);
+    const game = useAppSelector(getCurrentGame);
+
+    const getStatsFromGame = () => {
+        const data: LevelStatsData[] = [];
+        game.levels.forEach((level) => {
+            //This is resolves to [["word", 10], ["apple", 6], ..., ["great, 1"]]
+            //Descending order of points
+            const sortedSolutions = Object.entries(level.solutions).sort((a, b) => b[1] - a[1]);
+            //This resolves to ["word", "apple", "great"]
+            const wordRank = sortedSolutions.map((solution) => solution[0]);
+            data.push({
+                [Option.EASIEST]: createStatsData(
+                    sortedSolutions[sortedSolutions.length - 1][0],
+                    sortedSolutions[sortedSolutions.length - 1][1],
+                    sortedSolutions.length,
+                    sortedSolutions.length
+                ),
+                [Option.YOURS]: createStatsData(
+                    level.usersWord,
+                    level.score,
+                    wordRank.indexOf(level.usersWord) + 1,
+                    sortedSolutions.length
+                ),
+                [Option.BEST]: createStatsData(sortedSolutions[0][0], sortedSolutions[0][1], 1, sortedSolutions.length)
+            });
+        });
+        return data;
+    };
+
+    const gameStatsData = getStatsFromGame();
 
     const format = (header: string) => <Box className="gameStatScreen-level-title">{header}</Box>;
 
-    const getRank = (word: string, level: LevelData) => {
-        const unordered = Object.entries(level.solutions);
-        const sorted = unordered.sort((a, b) => b[1] - a[1]).map((entry) => entry[0]);
-        const rank = sorted.indexOf(word) + 1;
-        return rank == 0 ? '-' : rank + '/' + sorted.length;
+    const createRows = (levelStats: LevelStatsData) => {
+        return Object.entries(levelStats).map((entry) => {
+            const [option, stats] = entry;
+            return (
+                <TableRow>
+                    <TableCell>{option}</TableCell>
+                    <TableCell>{stats.word ? stats.word : '-'}</TableCell>
+                    <TableCell align="right">{stats.score ? stats.score : '-'}</TableCell>
+                    <TableCell align="right">{stats.rank == 0 ? '-' : stats.rank + '/' + stats.totalRank}</TableCell>
+                </TableRow>
+            );
+        });
     };
 
-    const createRow = (prefix: string, word: string, level: LevelData) => {
+    const table = gameStatsData.map((levelStats) => {
         return (
-            <TableRow>
-                <TableCell>{prefix}</TableCell>
-                <TableCell>{word}</TableCell>
-                <TableCell align="right">{level.solutions[word] ? level.solutions[word] : '-'}</TableCell>
-                <TableCell align="right">{getRank(word, level)}</TableCell>
-            </TableRow>
+            <>
+                {format('Level ' + (gameStatsData.indexOf(levelStats) + 1))}
+                <TableBody>{createRows(levelStats)}</TableBody>
+            </>
+        );
+    });
+
+    const metaTable = () => {
+        const score = game.levels.reduce((partialSum, level) => partialSum + level.score, 0);
+        const maxScore = gameStatsData.reduce((partialSum, levelStats) => partialSum + levelStats.Best.score, 0);
+        const percentage = Math.floor((score * 100) / maxScore) + '%';
+
+        return (
+            <MetaTable
+                data={[
+                    { key: 'Score:', value: score },
+                    {
+                        key: 'Max Score:',
+                        value: maxScore
+                    },
+                    { key: '% of Max Score:', value: percentage }
+                ]}
+            ></MetaTable>
         );
     };
 
-    const getWordByRank = (index: number, level: LevelData) => {
-        const unordered = Object.entries(level.solutions);
-        const sorted = unordered.sort((a, b) => b[1] - a[1]).map((entry) => entry[0]);
-        return sorted[index];
-    };
-
-    const levelStats = gameState.levels.map((level) => (
-        <>
-            {format('Level ' + (gameState.levels.indexOf(level) + 1))}
-            <TableBody>
-                {createRow('Easiest', getWordByRank(Object.keys(level.solutions).length - 1, level), level)}
-                {createRow('Yours', level.usersWord, level)}
-                {createRow('Best', getWordByRank(0, level), level)}
-            </TableBody>
-        </>
-    ));
-
     return (
-        <TableContainer>
-            <Table size="small" className="gameStatScreen-table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell></TableCell>
-                        <TableCell>Word</TableCell>
-                        <TableCell align="right">Score</TableCell>
-                        <TableCell align="right">Ranking</TableCell>
-                    </TableRow>
-                </TableHead>
-                {levelStats}
-            </Table>
-        </TableContainer>
+        <>
+            {metaTable()}
+            <TableContainer>
+                <Table size="small" className="gameStatScreen-table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell></TableCell>
+                            <TableCell>Word</TableCell>
+                            <TableCell align="right">Score</TableCell>
+                            <TableCell align="right">Ranking</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    {table}
+                </Table>
+            </TableContainer>
+        </>
     );
 };
 
