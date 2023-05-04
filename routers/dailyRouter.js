@@ -2,6 +2,7 @@ import express from 'express';
 import { encrypt, decrypt } from '../utils/security.js';
 import { getGameData } from '../utils/levelData.js';
 import moment from 'moment';
+import { sortedInsert } from '../utils/dataManipulation.js';
 
 export const dailyRouter = express.Router();
 
@@ -9,7 +10,10 @@ export const dailyRouter = express.Router();
 //Must intialize the game before creating the answer store.
 let dailyProblem = getGameData();
 let currentDate = getCurrentDay();
-let leaderboard = [];
+let leaderboard = {
+    TODAY: [],
+    YESTERDAY: []
+};
 let allUserAnswers = createAnswerStore();
 
 changeDailyProblem();
@@ -30,6 +34,7 @@ dailyRouter.post('/leaderboard', function (req, res) {
     const userAndAnswers = decrypt(req.body.payload);
     const answers = userAndAnswers.answers;
     let score = 0;
+    //Recalculate the score to prevent anyone cheating...
     for (let i = 0; i < dailyProblem.length; i++) {
         const level = dailyProblem[i];
         const answer = answers[i];
@@ -38,10 +43,15 @@ dailyRouter.post('/leaderboard', function (req, res) {
             allUserAnswers[i][answer].count++;
         }
     }
-    leaderboard.push({
-        user: userAndAnswers.user,
-        score: score
-    });
+    leaderboard.TODAY = sortedInsert(
+        leaderboard.TODAY,
+        {
+            user: userAndAnswers.user,
+            score: score
+        },
+        //For the first element to be the highest (Descending)
+        (a, b) => b.score - a.score
+    );
     res.status(200).send();
 });
 
@@ -74,7 +84,8 @@ function updateValues() {
     dailyProblem = getGameData();
     currentDate = getCurrentDay();
     allUserAnswers = createAnswerStore();
-    leaderboard = [];
+    leaderboard.YESTERDAY = leaderboard.TODAY;
+    leaderboard.TODAY = [];
 }
 
 function changeDailyProblem() {

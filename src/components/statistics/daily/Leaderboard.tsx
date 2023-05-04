@@ -8,7 +8,6 @@ import {
     TableBody,
     FormControl,
     FormControlLabel,
-    FormLabel,
     Radio,
     RadioGroup
 } from '@mui/material';
@@ -17,11 +16,7 @@ import { getLeaderboardRequest } from '../../../app/Requests';
 import '../../../styles/Leaderboard.css';
 import '../../../styles/Common.css';
 
-interface UserScore extends RawUserScore {
-    rank: number;
-}
-
-interface RawUserScore {
+interface UserScore {
     user: string;
     score: number;
 }
@@ -31,50 +26,57 @@ enum DAY {
     YESTERDAY = 'YESTERDAY'
 }
 
+type Leaderboards = {
+    [key in DAY]: UserScore[];
+};
+
+const initialLeaderboards: Leaderboards = {
+    [DAY.TODAY]: [],
+    [DAY.YESTERDAY]: []
+};
+
 const Leaderboard = () => {
-    const [leaderboardData, setLeaderboardData] = useState<UserScore[]>([]);
-    const [day, setDay] = useState(DAY.TODAY as string);
+    const [leaderboards, setLeaderboards] = useState<Leaderboards>(initialLeaderboards);
+    const [day, setDay] = useState(DAY.TODAY);
 
-    const getLeaderboardData = () => {
+    const getLeaderboards = () => {
         getLeaderboardRequest().then((data: any) => {
-            const sortedData: UserScore[] = [];
-            const rawData = data as RawUserScore[];
-            rawData.sort((a, b) => b.score - a.score);
-
-            for (let i = 0; i < rawData.length; i++) {
-                const data = rawData[i];
-                sortedData.push({
-                    ...data,
-                    rank: i + 1
-                });
-            }
-
-            setLeaderboardData(sortedData);
+            setLeaderboards(data as Leaderboards);
         });
     };
 
-    useEffect(getLeaderboardData, []);
+    useEffect(getLeaderboards, []);
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setDay((event.target as HTMLInputElement).value);
+    //RadioGroup callback only allows string for the value...
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>, newDay: string) => {
+        setDay(newDay as DAY);
     };
 
-    const leaderboard = leaderboardData.map((data) => (
-        <TableRow>
-            <TableCell align="right">{data.rank}.</TableCell>
-            <TableCell>{data.user}</TableCell>
-            <TableCell>{data.score}</TableCell>
-        </TableRow>
-    ));
+    const createLeaderboard = (scores: UserScore[]) => {
+        const leaderboard: JSX.Element[] = [];
+        for (let i = 0; i < scores.length; i++) {
+            const userAndScore = scores[i];
+            leaderboard.push(
+                <TableRow>
+                    <TableCell align="right">{i + 1}.</TableCell>
+                    <TableCell>{userAndScore.user}</TableCell>
+                    <TableCell>{userAndScore.score}</TableCell>
+                </TableRow>
+            );
+        }
+        return leaderboard;
+    };
+
+    const leaderboard = createLeaderboard(leaderboards[day]);
 
     const table = (
         <TableContainer>
             <Table size="small" className="leaderboard-table">
                 <TableHead>
                     <TableRow>
-                        <TableCell></TableCell>
-                        <TableCell>User</TableCell>
-                        <TableCell>Score</TableCell>
+                        <TableCell sx={{ width: '20%' }}></TableCell>
+                        <TableCell sx={{ width: '40%' }}>User</TableCell>
+                        <TableCell sx={{ width: '40%' }}>Score</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>{leaderboard}</TableBody>

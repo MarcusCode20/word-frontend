@@ -93,6 +93,7 @@ export function getValidsAndScoreByLength() {
         const arrayByScore = [];
 
         //Now iterating from the first word, assign the index number as it's score
+
         //So the most common word will have a score of 1 and the least common a score of arrayByScore.length
         for (let i = 0; i < arrayByFreq.length; i++) {
             arrayByScore.push({ word: arrayByFreq[i].word, score: i + 1 });
@@ -129,4 +130,32 @@ export function splitOut(size) {
     writeFileSync('public/game_words.json', JSON.stringify(jsonSplit, null, 2), 'utf-8');
 
     return jsonSplit;
+}
+
+export function sortedInsert(array, element, compare) {
+    array.splice(indexToInsertAt(array, element, compare), 0, element);
+    return array;
+}
+
+export function indexToInsertAt(array, element, compare, start, end) {
+    if (array.length == 0) {
+        return -1;
+    }
+    start = start || 0;
+    end = end || array.length;
+    var pivot = Math.floor((start + end) / 2);
+    //If array even, then this is the floor, if array odd then this is the exact middle
+    var middleElement = array[pivot];
+    var difference = compare(element, middleElement);
+
+    if (end - start <= 1) {
+        return difference <= -1 ? pivot : pivot + 1;
+    } else if (difference <= -1) {
+        return indexToInsertAt(array, element, compare, start, pivot);
+    } else if (difference == 0) {
+        return pivot;
+    } else {
+        //Difference greater than
+        return indexToInsertAt(array, element, compare, pivot, end);
+    }
 }
