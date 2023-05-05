@@ -2,7 +2,9 @@
     position: fixed;
     margin: 0px;
     width: 100%;
+    min-width: 320px;
     height: 100%;
+    min-height: 600px;
     background-color: #fffbfb;
     display: flex;
     flex-direction: column;

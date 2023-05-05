@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Mode } from './gameSlice';
 import { decrypt, encrypt } from './Security';
 
-const prefix = 'http://localhost:8080/'; //http://localhost:8080/
+const prefix = ''; //http://localhost:8080/
 
 export const getGameDataRequest = (mode: Mode) =>
     new Promise((resolve) => {

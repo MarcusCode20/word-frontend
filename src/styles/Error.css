@@ -1,0 +1,25 @@
+.error-container {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.error-message {
+    display: flex;
+    flex-direction: row;
+    font-family: 'Helvetica';
+    gap: 4px;
+    margin: 0 40px;
+}
+
+.error-message .MuiSvgIcon-root {
+    height: 100%;
+    width: 100%;
+    max-height: 50px;
+    max-width: 50px;
+    color: grey;
+}

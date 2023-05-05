@@ -5,6 +5,7 @@ import DoneOutlineRoundedIcon from '@mui/icons-material/DoneOutlineRounded';
 import BackspaceRoundedIcon from '@mui/icons-material/BackspaceRounded';
 import SkipNextRoundedIcon from '@mui/icons-material/SkipNextRounded';
 import '../../styles/Keyboard.css';
+import { useEffect } from 'react';
 
 const Keyboard = () => {
     const dispatch = useAppDispatch();
@@ -61,6 +62,25 @@ const Keyboard = () => {
         toRow(groupComps(rowTwo)),
         toRow([skipButton, ...groupComps(rowThree), backButton, goButton])
     ];
+
+    const addDesktopKeyboard = () => {
+        const allLetters = [...rowOne, ...rowTwo, ...rowThree];
+        addEventListener('keydown', (event: KeyboardEvent) => {
+            const symbolPressed = event.key.toUpperCase();
+            const index = allLetters.indexOf(symbolPressed);
+            if (index >= 0) {
+                const letter = allLetters[index];
+                addLetterCallback(letter)();
+            } else if (symbolPressed == 'BACKSPACE') {
+                removeLetterCallback();
+            } else if (symbolPressed == 'ENTER') {
+                checkUserWordCallback();
+            } else if (symbolPressed == '-') {
+                skipLevelCallBack();
+            }
+        });
+    };
+    useEffect(addDesktopKeyboard, []);
 
     return <Box className="keyboard-container">{rows}</Box>;
 };
