@@ -14,7 +14,6 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    column-gap: 3%;
 }
 
 .level-container.MuiPaper-root {

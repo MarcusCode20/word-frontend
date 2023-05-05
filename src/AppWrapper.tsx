@@ -22,14 +22,17 @@ const AppWrapper = () => {
     };
 
     const checkScreenSize = () => {
-        let height = window.innerHeight;
-        let width = window.innerWidth;
-        //Size defined in App.css
-        if (height <= 600 || width <= 320) {
-            setIsScreenValid(false);
-        } else {
-            setIsScreenValid(true);
-        }
+        //Add delay since IOS Chrome is slow on the screen size
+        setTimeout(() => {
+            let height = window.outerHeight;
+            let width = window.outerWidth;
+            //Size defined in App.css
+            if (height <= 600 || width <= 320) {
+                setIsScreenValid(false);
+            } else {
+                setIsScreenValid(true);
+            }
+        }, 100);
     };
 
     const detectSize = () => {
