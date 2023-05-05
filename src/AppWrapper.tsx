@@ -34,8 +34,7 @@ const AppWrapper = () => {
 
     const detectSize = () => {
         checkScreenSize();
-        let portrait = window.matchMedia('(orientation: portrait)');
-        portrait.addEventListener('change', function (e) {
+        window.addEventListener('resize', function (e) {
             checkScreenSize();
         });
     };
