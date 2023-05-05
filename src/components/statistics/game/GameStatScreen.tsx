@@ -42,14 +42,7 @@ const GameStatScreen = () => {
             });
         }
     };
-    const openOnFinish = () => {
-        if (gameState.ended) {
-            setShowScreen(true);
-        }
-    };
-
     useEffect(getTotalCount, [showScreen]);
-    useEffect(openOnFinish, [gameState.ended]);
 
     return (
         <>

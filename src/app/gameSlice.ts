@@ -151,6 +151,8 @@ export const gameSlice = createSlice({
             game.alive = false;
             game.started = false;
             game.loaded = true;
+            game.ended = false;
+            game.completed = false;
         },
         addLetter: (state, action: PayloadAction<string>) => {
             const currentGame = state.games[state.currentMode];
