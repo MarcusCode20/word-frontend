@@ -9,3 +9,25 @@ kubectl describe managedcertificate managed-cert
 C:\Users\marcu\AppData\Roaming\gcloud\logs\2023.04.13\23.47.06.779811.log
 
 gcloud artifacts repositories create word-game-repo --project=word-game-383622 --repository-format=docker  --location=europe-west2 --description="Docker repository"
+
+gcloud compute instances list
+
+gcloud compute ssh dummy-vm-instance --zone europe-north1-a
+
+sudo apt update
+
+sudo apt upgrade
+
+sudo apt-get install git
+
+curl -sL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+
+sudo apt-get install -y nodejs
+
+Ctrl D
+
+sudo npm install pm2@latest -g
+
+pm2 start index.js
+
+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
