@@ -6,6 +6,7 @@ import BackspaceRoundedIcon from '@mui/icons-material/BackspaceRounded';
 import SkipNextRoundedIcon from '@mui/icons-material/SkipNextRounded';
 import '../../styles/Keyboard.css';
 import { useEffect } from 'react';
+import { StorageKey, StorageWrapper } from '../../app/storageWrapper';
 
 const Keyboard = () => {
     const dispatch = useAppDispatch();
@@ -66,17 +67,21 @@ const Keyboard = () => {
     const addDesktopKeyboard = () => {
         const allLetters = [...rowOne, ...rowTwo, ...rowThree];
         addEventListener('keydown', (event: KeyboardEvent) => {
-            const symbolPressed = event.key.toUpperCase();
-            const index = allLetters.indexOf(symbolPressed);
-            if (index >= 0) {
-                const letter = allLetters[index];
-                addLetterCallback(letter)();
-            } else if (symbolPressed == 'BACKSPACE') {
-                removeLetterCallback();
-            } else if (symbolPressed == 'ENTER') {
-                checkUserWordCallback();
-            } else if (symbolPressed == '-') {
-                skipLevelCallBack();
+            //Hack for now as when the username is not set
+            //We use the keyboard to type.
+            if (StorageWrapper.getItem(StorageKey.USERNAME)) {
+                const symbolPressed = event.key.toUpperCase();
+                const index = allLetters.indexOf(symbolPressed);
+                if (index >= 0) {
+                    const letter = allLetters[index];
+                    addLetterCallback(letter)();
+                } else if (symbolPressed == 'BACKSPACE') {
+                    removeLetterCallback();
+                } else if (symbolPressed == 'ENTER') {
+                    checkUserWordCallback();
+                } else if (symbolPressed == '-') {
+                    skipLevelCallBack();
+                }
             }
         });
     };

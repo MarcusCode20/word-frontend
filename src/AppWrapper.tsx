@@ -22,9 +22,10 @@ const AppWrapper = () => {
     };
 
     const checkScreenSize = () => {
-        let height = screen.height;
-        let width = screen.width;
+        let height = window.innerHeight;
+        let width = window.innerWidth;
         //Size defined in App.css
+        console.log('height: ' + height + ' width: ' + width);
         if (height <= 600 || width <= 320) {
             setIsScreenValid(false);
         } else {
@@ -36,6 +37,7 @@ const AppWrapper = () => {
         checkScreenSize();
         let portrait = window.matchMedia('(orientation: portrait)');
         portrait.addEventListener('change', function (e) {
+            console.log('Changing');
             checkScreenSize();
         });
     };
