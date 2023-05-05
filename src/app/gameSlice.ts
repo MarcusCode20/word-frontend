@@ -14,6 +14,8 @@ export interface GameData {
     loaded: boolean;
     started: boolean;
     date?: string;
+    ended: boolean;
+    completed: boolean;
 }
 
 export interface RawData {
@@ -69,7 +71,9 @@ const intitalGameData: GameData = {
     currentLevelNo: 0,
     alive: false,
     loaded: false,
-    started: false
+    started: false,
+    ended: false,
+    completed: false
 };
 
 const initialState: GameState = {
@@ -111,6 +115,11 @@ export const gameSlice = createSlice({
                         currentGame.currentLevelNo++;
                     } else {
                         currentGame.alive = false;
+                        currentGame.ended = !currentGame.alive && currentGame.started && currentGame.loaded;
+                        currentGame.completed = currentGame.levels.reduce(
+                            (completed, level) => completed && level.status == Status.CORRECT,
+                            true
+                        );
                     }
                 } else {
                     toast('Not a valid word!');
@@ -184,6 +193,7 @@ export const gameSlice = createSlice({
                 currentGame.currentLevelNo++;
             } else {
                 currentGame.alive = false;
+                currentGame.ended = !currentGame.alive && currentGame.started && currentGame.loaded;
             }
         },
         startGame: (state, action: PayloadAction<Mode>) => {

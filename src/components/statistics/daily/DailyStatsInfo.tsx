@@ -1,55 +1,62 @@
-import { Box, TableCell, TableRow } from '@mui/material';
-import React from 'react';
+import { Box } from '@mui/material';
 import '../../../styles/DailyStatInfo.css';
+import { StorageKey, StorageWrapper } from '../../../app/StorageWrapper';
+
+export enum Stat {
+    PLAYED = 'PLAYED',
+    COMPLETED = 'COMPLETED',
+    CURRENT_STREAK = 'CURRENT_STREAK',
+    BEST_STREAK = 'BEST_STREAK',
+    AVG_OF_MAX = 'AVG_OF_MAX'
+}
+
+interface CurrentStreak {
+    streak: number;
+    lastDate: string; //String array "[dd, mm, yyyy]"
+}
+
+export interface DailyStatsData {
+    [Stat.PLAYED]: number;
+    [Stat.COMPLETED]: number;
+    [Stat.CURRENT_STREAK]: CurrentStreak;
+    [Stat.BEST_STREAK]: number;
+    [Stat.AVG_OF_MAX]: number[];
+}
+
+export const initialStatsData: DailyStatsData = {
+    [Stat.PLAYED]: 0,
+    [Stat.COMPLETED]: 0,
+    [Stat.CURRENT_STREAK]: {
+        streak: 0,
+        lastDate: ''
+    },
+    [Stat.BEST_STREAK]: 0,
+    [Stat.AVG_OF_MAX]: []
+};
 
 const DailyStatsInfo = () => {
-    const played = (
+    const dailyStats = StorageWrapper.getItem(StorageKey.DAILY_STATS) as DailyStatsData;
+    const listOfAverages = dailyStats[Stat.AVG_OF_MAX];
+    const averageOfMax =
+        listOfAverages.length > 0
+            ? Math.floor(listOfAverages.reduce((sum, element) => sum + element, 0) / listOfAverages.length)
+            : 0;
+
+    const createInfo = (key: string, value: number) => (
         <Box className="dailyStatInfo-info">
             <Box className="dailyStatInfo-info-key">
-                <span>Played</span>
+                <span>{key}</span>
             </Box>
-            <Box className="dailyStatInfo-info-value">162</Box>
-        </Box>
-    );
-    const completed = (
-        <Box className="dailyStatInfo-info">
-            <Box className="dailyStatInfo-info-key">
-                <span>Completed</span>
-            </Box>
-            <Box className="dailyStatInfo-info-value">100</Box>
-        </Box>
-    );
-    const currentStreak = (
-        <Box className="dailyStatInfo-info">
-            <Box className="dailyStatInfo-info-key">
-                <span>Current Streak</span>
-            </Box>
-            <Box className="dailyStatInfo-info-value">21</Box>
-        </Box>
-    );
-    const bestStreak = (
-        <Box className="dailyStatInfo-info">
-            <Box className="dailyStatInfo-info-key">
-                <span>Best Streak</span>
-            </Box>
-            <Box className="dailyStatInfo-info-value">41</Box>
-        </Box>
-    );
-    const cumulativeAvgScore = (
-        <Box className="dailyStatInfo-info">
-            <Box className="dailyStatInfo-info-key">
-                <span>Avg. % of Max Score</span>
-            </Box>
-            <Box className="dailyStatInfo-info-value">17</Box>
+            <Box className="dailyStatInfo-info-value">{value}</Box>
         </Box>
     );
     return (
         <Box className="dailyStatInfo-container">
-            {played}
-            {completed}
-            {currentStreak}
-            {bestStreak}
-            {cumulativeAvgScore}
+            {createInfo('Played', dailyStats[Stat.PLAYED])}
+            {createInfo('Completed', dailyStats[Stat.COMPLETED])}
+            {createInfo('Current Streak', dailyStats[Stat.CURRENT_STREAK].streak)}
+            {createInfo('Best Streak', dailyStats[Stat.BEST_STREAK])}
+            {createInfo('Avg. % of Max Score', averageOfMax)}
         </Box>
     );
 };

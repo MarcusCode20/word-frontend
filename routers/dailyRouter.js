@@ -3,7 +3,6 @@ import { encrypt, decrypt } from '../utils/security.js';
 import { getGameData } from '../utils/levelData.js';
 import moment from 'moment';
 import { sortedInsert } from '../utils/dataManipulation.js';
-import { fakeUserScores } from '../utils/mockData.js';
 
 export const dailyRouter = express.Router();
 
@@ -12,8 +11,8 @@ export const dailyRouter = express.Router();
 let dailyProblem = getGameData();
 let currentDate = getCurrentDay();
 let leaderboard = {
-    TODAY: fakeUserScores(20),
-    YESTERDAY: fakeUserScores(30)
+    TODAY: [],
+    YESTERDAY: []
 };
 let allUserAnswers = createAnswerStore();
 
