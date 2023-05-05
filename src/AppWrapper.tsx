@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { getTokenRequest } from './app/Requests';
-import { StorageWrapper, StorageKey } from './app/StorageWrapper';
+import { getTokenRequest } from './app/requests';
+import { StorageWrapper, StorageKey } from './app/storageWrapper';
 import App from './App';
 import TokenScreenError from './components/error/TokenScreenError';
 import FlipScreenError from './components/error/FlipScreenError';

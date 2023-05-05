@@ -1,8 +1,8 @@
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { getCurrentGame, getCurrentMode, Mode, setGameData, setLoading, startGame } from '../../app/gameSlice';
-import { useAppDispatch, useAppSelector } from '../../app/Hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { IconButton } from '@mui/material';
-import { getGameDataRequest } from '../../app/Requests';
+import { getGameDataRequest } from '../../app/requests';
 import '../../styles/Common.css';
 
 const RestartButton = () => {

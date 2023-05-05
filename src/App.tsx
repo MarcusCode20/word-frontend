@@ -5,15 +5,15 @@ import Keyboard from './components/keyboard/Keyboard';
 import TitleBar from './components/TitleBar';
 import './styles/App.css';
 import { setGameData, Mode, startGame, getDailyGame, loadCachedDaily } from './app/gameSlice';
-import { useAppDispatch, useAppSelector } from './app/Hooks';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 import { useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Zoom } from 'react-toastify';
 import './styles/Toast.css';
-import { getGameDataRequest, postDailyScoreRequest } from './app/Requests';
+import { getGameDataRequest, postDailyScoreRequest } from './app/requests';
 import NameScreen from './components/NameScreen';
-import { StorageKey, StorageWrapper } from './app/StorageWrapper';
+import { StorageKey, StorageWrapper } from './app/storageWrapper';
 import { DailyStatsData, Stat, initialStatsData } from './components/statistics/daily/DailyStatsInfo';
 import moment from 'moment';
 

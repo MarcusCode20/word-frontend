@@ -1,6 +1,6 @@
 import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { getCurrentMode, Mode, setMode } from '../app/gameSlice';
-import { useAppDispatch, useAppSelector } from '../app/Hooks';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import '../styles/TitleBar.css';
 import GameStatScreen from './statistics/game/GameStatScreen';
 import RestartButton from './game/RestartButton';

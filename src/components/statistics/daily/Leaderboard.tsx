@@ -11,7 +11,7 @@ import {
     RadioGroup
 } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { getLeaderboardRequest } from '../../../app/Requests';
+import { getLeaderboardRequest } from '../../../app/requests';
 import '../../../styles/Leaderboard.css';
 import '../../../styles/Common.css';
 import MetaTable from '../../common/MetaTable';

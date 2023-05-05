@@ -11,7 +11,7 @@ import {
     TableRow
 } from '@mui/material';
 import { Mode, getCurrentGame, getCurrentMode } from '../../../app/gameSlice';
-import { useAppSelector } from '../../../app/Hooks';
+import { useAppSelector } from '../../../app/hooks';
 import '../../../styles/GameStatScreen.css';
 import { WordAndCountAndScore } from './GameStatScreen';
 import { useState } from 'react';

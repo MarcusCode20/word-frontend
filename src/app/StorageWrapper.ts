@@ -1,4 +1,4 @@
-import { decrypt, encrypt } from './Security';
+import { decrypt, encrypt } from './security';
 
 export enum StorageKey {
     GAME_SAVED = 'game',

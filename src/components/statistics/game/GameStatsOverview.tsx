@@ -1,5 +1,5 @@
 import { getCurrentGame } from '../../../app/gameSlice';
-import { useAppSelector } from '../../../app/Hooks';
+import { useAppSelector } from '../../../app/hooks';
 import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import '../../../styles/GameStatScreen.css';
 import MetaTable from '../../common/MetaTable';

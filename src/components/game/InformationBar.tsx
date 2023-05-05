@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { getCurrentGame } from '../../app/gameSlice';
-import { useAppSelector } from '../../app/Hooks';
+import { useAppSelector } from '../../app/hooks';
 import '../../styles/InformationBar.css';
 
 const InformationBar = () => {

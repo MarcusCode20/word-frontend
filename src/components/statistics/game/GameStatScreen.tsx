@@ -1,5 +1,5 @@
 import { Mode, getCurrentGame, getCurrentMode } from '../../../app/gameSlice';
-import { useAppSelector } from '../../../app/Hooks';
+import { useAppSelector } from '../../../app/hooks';
 import { Box, Dialog, IconButton, Tab, Tabs } from '@mui/material';
 import { SyntheticEvent, useEffect, useState } from 'react';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
@@ -8,7 +8,7 @@ import '../../../styles/Common.css';
 import GameStatsOverview from './GameStatsOverview';
 import { TabPanel, a11yProps } from '../../common/Tabbing';
 import GameStatsDetailed from './GameStatsDetailed';
-import { getCountRequest } from '../../../app/Requests';
+import { getCountRequest } from '../../../app/requests';
 
 export interface ScoreAndCount {
     score: number;
