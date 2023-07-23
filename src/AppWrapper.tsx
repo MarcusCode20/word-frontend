@@ -6,8 +6,9 @@ import TokenScreenError from './components/error/TokenScreenError';
 import FlipScreenError from './components/error/FlipScreenError';
 
 const AppWrapper = () => {
+    const [responseRecieved, setResponseRecieved] = useState(false);
     const [tokenValid, setTokenValid] = useState(false);
-    const [isScreenValid, setIsScreenValid] = useState(false);
+    const [isScreenValid, setIsScreenValid] = useState(true);
 
     const authToken = () => {
         getTokenRequest().then((data: any) => {
@@ -18,6 +19,7 @@ const AppWrapper = () => {
             }
             StorageWrapper.setItem(StorageKey.TOKEN, token + '');
             setTokenValid(true);
+            setResponseRecieved(true);
         });
     };
 
@@ -45,7 +47,23 @@ const AppWrapper = () => {
     useEffect(authToken, []);
     useEffect(detectSize, []);
 
-    return <>{tokenValid ? isScreenValid ? <App /> : <FlipScreenError /> : <TokenScreenError />}</>;
+    return (
+        <>
+            {responseRecieved ? (
+                tokenValid ? (
+                    isScreenValid ? (
+                        <App />
+                    ) : (
+                        <FlipScreenError />
+                    )
+                ) : (
+                    <TokenScreenError />
+                )
+            ) : (
+                <div></div>
+            )}
+        </>
+    );
 };
 
 export default AppWrapper;
