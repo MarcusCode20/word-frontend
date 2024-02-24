@@ -12,9 +12,9 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { getLeaderboardRequest } from '../../../app/requests';
-import '../../../styles/Leaderboard.css';
-import '../../../styles/Common.css';
-import MetaTable from '../../common/MetaTable';
+import '../../../styles/leaderboard.css';
+import '../../../styles/common.css';
+import MetaTable from '../../common/meta-table';
 
 interface UserScore {
     user: string;

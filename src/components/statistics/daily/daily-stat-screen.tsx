@@ -1,11 +1,11 @@
 import { Dialog, Box, IconButton, Tab, Tabs } from '@mui/material';
 import { SyntheticEvent, useState } from 'react';
 import LeaderboardIcon from '@mui/icons-material/Leaderboard';
-import '../../../styles/DailyStatScreen.css';
-import '../../../styles/Common.css';
-import { a11yProps, TabPanel } from '../../common/Tabbing';
-import Leaderboard from './Leaderboard';
-import DailyStatsInfo from './DailyStatsInfo';
+import '../../../styles/daily-stat-screen.css';
+import '../../../styles/common.css';
+import { a11yProps, TabPanel } from '../../common/tabbing';
+import Leaderboard from './leaderboard';
+import DailyStatsInfo from './daily-stats-info';
 
 const DailyStatScreen = () => {
     const [showScreen, setShowScreen] = useState(false);

@@ -1,10 +1,10 @@
 import { Box, ToggleButton, ToggleButtonGroup } from '@mui/material';
-import { getCurrentMode, Mode, setMode } from '../app/gameSlice';
+import { getCurrentMode, Mode, setMode } from '../app/game-slice';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import '../styles/TitleBar.css';
-import GameStatScreen from './statistics/game/GameStatScreen';
-import RestartButton from './game/RestartButton';
-import DailyStatScreen from './statistics/daily/DailyStatScreen';
+import '../styles/title-bar.css';
+import GameStatScreen from './statistics/game/game-stats-screen';
+import RestartButton from './game/restart-button';
+import DailyStatScreen from './statistics/daily/daily-stat-screen';
 
 const TitleBar = () => {
     const dispatch = useAppDispatch();

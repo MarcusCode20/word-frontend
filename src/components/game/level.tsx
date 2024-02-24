@@ -1,8 +1,8 @@
 import { Box, Paper } from '@mui/material';
-import ScreenLetter from './ScreenLetter';
-import { API_BLANK, LevelData, Status } from '../../app/gameSlice';
+import ScreenLetter from './screen-letter';
+import { API_BLANK, LevelData, Status } from '../../app/game-slice';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import '../../styles/Level.css';
+import '../../styles/level.css';
 
 interface LevelProp {
     data: LevelData;

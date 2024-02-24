@@ -1,7 +1,7 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material';
 import { useState } from 'react';
-import { BLANK } from '../app/gameSlice';
-import { StorageKey, StorageWrapper } from '../app/storageWrapper';
+import { BLANK } from '../app/game-slice';
+import { StorageKey, StorageWrapper } from '../app/storage-wrapper';
 
 const NameScreen = () => {
     const [text, setText] = useState('');

@@ -1,7 +1,7 @@
 import React from 'react';
 import ScreenRotationIcon from '@mui/icons-material/ScreenRotation';
 import { Box } from '@mui/material';
-import '../../styles/Error.css';
+import '../../styles/error.css';
 
 const FlipScreenError = () => {
     return (

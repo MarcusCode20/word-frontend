@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { getTokenRequest } from './app/requests';
-import { StorageWrapper, StorageKey } from './app/storageWrapper';
-import App from './App';
-import TokenScreenError from './components/error/TokenScreenError';
-import FlipScreenError from './components/error/FlipScreenError';
+import { StorageWrapper, StorageKey } from './app/storage-wrapper';
+import App from './app';
+import TokenScreenError from './components/error/token-screen-error';
+import FlipScreenError from './components/error/flip-screen-error';
 
 const AppWrapper = () => {
     const [responseRecieved, setResponseRecieved] = useState(false);

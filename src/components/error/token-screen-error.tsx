@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../styles/Error.css';
+import '../../styles/error.css';
 import { Box } from '@mui/material';
 import SickIcon from '@mui/icons-material/Sick';
 

@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
-import '../../../styles/DailyStatInfo.css';
-import { StorageKey, StorageWrapper } from '../../../app/storageWrapper';
+import '../../../styles/daily-stat-info.css';
+import { StorageKey, StorageWrapper } from '../../../app/storage-wrapper';
 
 export enum Stat {
     PLAYED = 'PLAYED',

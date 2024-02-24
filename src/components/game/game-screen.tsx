@@ -1,8 +1,8 @@
 import { Box, CircularProgress } from '@mui/material';
-import Level from './Level';
-import { getCurrentGame } from '../../app/gameSlice';
+import Level from './level';
+import { getCurrentGame } from '../../app/game-slice';
 import { useAppSelector } from '../../app/hooks';
-import '../../styles/GameScreen.css';
+import '../../styles/game-screen.css';
 
 const GameScreen = () => {
     const game = useAppSelector(getCurrentGame);

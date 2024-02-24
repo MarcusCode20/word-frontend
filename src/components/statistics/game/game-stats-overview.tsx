@@ -1,8 +1,8 @@
-import { getCurrentGame } from '../../../app/gameSlice';
+import { getCurrentGame } from '../../../app/game-slice';
 import { useAppSelector } from '../../../app/hooks';
 import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import '../../../styles/GameStatScreen.css';
-import MetaTable from '../../common/MetaTable';
+import '../../../styles/game-stat-screen.css';
+import MetaTable from '../../common/meta-table';
 
 enum Option {
     EASIEST = 'Easist',

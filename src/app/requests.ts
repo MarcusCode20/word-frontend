@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Mode } from './gameSlice';
+import { Mode } from './game-slice';
 import { decrypt, encrypt } from './security';
 
 const prefix = ''; //http://localhost:8080/

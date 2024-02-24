@@ -10,12 +10,12 @@ import {
     TableHead,
     TableRow
 } from '@mui/material';
-import { Mode, getCurrentGame, getCurrentMode } from '../../../app/gameSlice';
+import { Mode, getCurrentGame, getCurrentMode } from '../../../app/game-slice';
 import { useAppSelector } from '../../../app/hooks';
-import '../../../styles/GameStatScreen.css';
-import { WordAndCountAndScore } from './GameStatScreen';
+import '../../../styles/game-stat-screen.css';
+import { WordAndCountAndScore } from './game-stats-screen';
 import { useState } from 'react';
-import MetaTable from '../../common/MetaTable';
+import MetaTable from '../../common/meta-table';
 
 interface StatsDetailedProp {
     totalCount: WordAndCountAndScore[];

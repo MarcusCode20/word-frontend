@@ -1,20 +1,20 @@
 import { Box } from '@mui/material';
-import GameScreen from './components/game/GameScreen';
-import InformationBar from './components/game/InformationBar';
-import Keyboard from './components/keyboard/Keyboard';
-import TitleBar from './components/TitleBar';
-import './styles/App.css';
-import { setGameData, Mode, startGame, getDailyGame, loadCachedDaily } from './app/gameSlice';
+import GameScreen from './components/game/game-screen';
+import InformationBar from './components/game/information-bar';
+import Keyboard from './components/keyboard/keyboard';
+import TitleBar from './components/title-bar';
+import './styles/app.css';
+import { setGameData, Mode, startGame, getDailyGame, loadCachedDaily } from './app/game-slice';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Zoom } from 'react-toastify';
-import './styles/Toast.css';
+import './styles/toast.css';
 import { getGameDataRequest, postDailyScoreRequest } from './app/requests';
-import NameScreen from './components/NameScreen';
-import { StorageKey, StorageWrapper } from './app/storageWrapper';
-import { DailyStatsData, Stat, initialStatsData } from './components/statistics/daily/DailyStatsInfo';
+import NameScreen from './components/name-screen';
+import { StorageKey, StorageWrapper } from './app/storage-wrapper';
+import { DailyStatsData, Stat, initialStatsData } from './components/statistics/daily/daily-stats-info';
 import moment from 'moment';
 
 function getCurrentDay() {
